@@ -18,6 +18,10 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.amazonaws.mobileconnectors.lambdainvoker.*;
+import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.regions.Regions;
+
 public class Weather extends AppCompatActivity {
 
     /**

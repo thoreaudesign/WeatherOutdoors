@@ -1,5 +1,7 @@
 package com.thoreaudesign.weatheroutdoors;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.lambdainvoker.*;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
@@ -119,10 +123,55 @@ public class Weather extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.fragment_weather, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+
+            CognitoCachingCredentialsProvider credentialsProvider =
+                    new CognitoCachingCredentialsProvider(
+                            this.getActivity().getApplicationContext(),
+                            "us-east-1:710ef06b-950f-44d4-8b5b-dbd630484d1c",
+                            Regions.AP_NORTHEAST_1
+                    );
+
+            LambdaInvokerFactory factory = new LambdaInvokerFactory(
+                    this.getActivity().getApplicationContext(),
+                    Regions.AP_NORTHEAST_1,
+                    credentialsProvider
+            );
+
+            final WeatherInterface weatherInterface = factory.build(WeatherInterface.class);
+
+            final Context context;
+            context = this.getActivity().getApplicationContext();
+
+            WeatherInput data = new WeatherInput(-32, 14);
+
+            new AsyncTask<WeatherInput, Void, String>() {
+
+                @Override
+                protected String doInBackground(WeatherInput... params) {
+                    // invoke "echo" method. In case it fails, it will throw a
+                    // LambdaFunctionException.
+                    try {
+                        return weatherInterface.marine_stormglass(params[0]);
+                    } catch (LambdaFunctionException lfe) {
+                        Log.e("Error", "Failed to invoke echo", lfe);
+                        return null;
+                    }
+                }
+
+                @Override
+                protected void onPostExecute(String result) {
+                    if (result == null) {
+                        return;
+                    }
+
+                    // Do a toast
+                    Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+                }
+            }.execute(data);
+
             return rootView;
         }
     }
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.

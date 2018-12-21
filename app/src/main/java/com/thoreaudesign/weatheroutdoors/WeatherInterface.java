@@ -2,7 +2,10 @@ package com.thoreaudesign.weatheroutdoors;
 
 import com.amazonaws.mobileconnectors.lambdainvoker.LambdaFunction;
 
+import org.json.JSONObject;
+
 public interface WeatherInterface {
+
     @LambdaFunction
-    String marine_stormglass(WeatherInput weatherInput);
+    JSONObject MarineStormglass(MarineRequest marineRequest);
 }

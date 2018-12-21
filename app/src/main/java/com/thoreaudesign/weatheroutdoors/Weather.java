@@ -4,18 +4,18 @@ import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
 import android.os.Bundle;
-
 import android.util.Log;
 import android.view.View;
-
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.amazonaws.mobileconnectors.lambdainvoker.*;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonWriter;
 
 public class Weather extends AppCompatActivity
 {
@@ -82,9 +82,8 @@ public class Weather extends AppCompatActivity
 
                         try
                         {
-                            String data = weatherInterface.MetOcean(params[0]).toString();
-                            Log.e("Info", data);
-                            return data;
+                            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                            return gson.toJson(weatherInterface.MetOcean(params[0]));
                         }
                         catch (LambdaFunctionException lfe)
                         {
@@ -128,9 +127,8 @@ public class Weather extends AppCompatActivity
 
                         try
                         {
-                            String data = weatherInterface.Stormglass(params[0]).toString();
-                            Log.e("Info", data);
-                            return data;
+                            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+                            return gson.toJson(weatherInterface.Stormglass(params[0]));
                         }
                         catch (LambdaFunctionException lfe)
                         {

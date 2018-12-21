@@ -3,21 +3,13 @@ package com.thoreaudesign.weatheroutdoors;
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import android.widget.TextView;
 
@@ -25,172 +17,137 @@ import com.amazonaws.mobileconnectors.lambdainvoker.*;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
 
-import org.json.JSONObject;
+public class Weather extends AppCompatActivity
+{
+    private FloatingActionButton metocean;
+    private FloatingActionButton stormglass;
+    private FloatingActionButton land;
+    private TextView container;
 
-public class Weather extends AppCompatActivity {
+    private LambdaInvokerFactory getLambdaInvokerFactory(CognitoCachingCredentialsProvider provider) {
+        return new LambdaInvokerFactory(
+                Weather.this,
+                Regions.US_EAST_1,
+                provider
+        );
+    }
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    private ViewPager mViewPager;
+    private CognitoCachingCredentialsProvider getCredentialsProvider() {
+        return new CognitoCachingCredentialsProvider(
+                Weather.this,
+                "us-east-1:710ef06b-950f-44d4-8b5b-dbd630484d1c",
+                Regions.US_EAST_1
+        );
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_weather);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        container = findViewById(R.id.container);
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        container.setText("Welcome to Weather Outdoors! Click an icon below to see weather data in JSON format.");
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        land = findViewById(R.id.land);
+
+        land.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                container.setText("Land!!!!");
             }
         });
 
-    }
+        metocean = findViewById(R.id.metocean);
 
+        metocean.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("StaticFieldLeak")
+            @Override
+            public void onClick(View view)
+            {
+                final CognitoCachingCredentialsProvider credentials = Weather.this.getCredentialsProvider();
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_weather, menu);
-        return true;
-    }
+                final LambdaInvokerFactory factory = Weather.this.getLambdaInvokerFactory(credentials);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+                MarineRequest data = new MarineRequest("-32", "14");
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+                new AsyncTask<MarineRequest, Void, String>()
+                {
+                    @Override
+                    protected String doInBackground(MarineRequest... params)
+                    {
+                        WeatherInterface weatherInterface = factory.build(WeatherInterface.class);
 
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @SuppressLint("StaticFieldLeak")
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_weather, container, false);
-            final TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-
-            CognitoCachingCredentialsProvider credentialsProvider =
-                    new CognitoCachingCredentialsProvider(
-                            this.getActivity().getApplicationContext(),
-                            "us-east-1:710ef06b-950f-44d4-8b5b-dbd630484d1c",
-                            Regions.US_EAST_1
-                    );
-
-            final LambdaInvokerFactory factory = new LambdaInvokerFactory(
-                    this.getActivity().getApplicationContext(),
-                    Regions.US_EAST_1,
-                    credentialsProvider
-            );
-
-            MarineRequest data = new MarineRequest("-32", "14");
-
-            new AsyncTask<MarineRequest, Void, String>() {
-
-                @Override
-                protected String doInBackground(MarineRequest... params) {
-
-                    WeatherInterface weatherInterface = factory.build(WeatherInterface.class);
-
-                    try {
-                        return weatherInterface.MarineStormglass(params[0]).toString();
-                    } catch (LambdaFunctionException lfe) {
-                        String error = "Failed to invoke Stormglass API...";
-                        Log.e("Error", error, lfe);
-                        return error;
-                    }
-                }
-
-                @Override
-                protected void onPostExecute(String result) {
-                    if (result == null) {
-                        return;
+                        try
+                        {
+                            String data = weatherInterface.MetOcean(params[0]).toString();
+                            Log.e("Info", data);
+                            return data;
+                        }
+                        catch (LambdaFunctionException lfe)
+                        {
+                            String error = "Failed to invoke MetOcean API...";
+                            Log.e("Error", error, lfe);
+                            return error;
+                        }
                     }
 
-                    textView.setText(result);
-                }
-            }.execute(data);
+                    @Override
+                    protected void onPostExecute(String result)
+                    {
 
-            return rootView;
-        }
-    }
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+                        container.setText(result);
 
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
+                    }
+                }.execute(data);
+            }
+        });
 
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
-        }
+        stormglass = findViewById(R.id.stormglass);
 
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return 3;
-        }
+        stormglass.setOnClickListener(new View.OnClickListener()
+        {
+            @SuppressLint("StaticFieldLeak")
+            @Override
+            public void onClick(View view)
+            {
+                final CognitoCachingCredentialsProvider credentials = Weather.this.getCredentialsProvider();
+
+                final LambdaInvokerFactory factory = Weather.this.getLambdaInvokerFactory(credentials);
+
+                MarineRequest data = new MarineRequest("-32", "14");
+
+                new AsyncTask<MarineRequest, Void, String>()
+                {
+                    @Override
+                    protected String doInBackground(MarineRequest... params)
+                    {
+                        WeatherInterface weatherInterface = factory.build(WeatherInterface.class);
+
+                        try
+                        {
+                            String data = weatherInterface.Stormglass(params[0]).toString();
+                            Log.e("Info", data);
+                            return data;
+                        }
+                        catch (LambdaFunctionException lfe)
+                        {
+                            String error = "Failed to invoke Stormglass API...";
+                            Log.e("Error", error, lfe);
+                            return error;
+                        }
+                    }
+
+                    @Override
+                    protected void onPostExecute(String result) {
+
+                        container.setText(result);
+
+                    }
+                }.execute(data);
+            }
+        });
     }
 }

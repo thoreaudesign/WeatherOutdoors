@@ -7,5 +7,8 @@ import org.json.JSONObject;
 public interface WeatherInterface {
 
     @LambdaFunction
-    JSONObject MarineStormglass(MarineRequest marineRequest);
+    Object Stormglass(MarineRequest marineRequest);
+
+    @LambdaFunction
+    Object MetOcean(MarineRequest marineRequest);
 }

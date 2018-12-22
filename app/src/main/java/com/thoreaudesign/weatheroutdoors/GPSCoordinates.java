@@ -1,26 +1,25 @@
 package com.thoreaudesign.weatheroutdoors;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
-
-import java.security.Security;
 
 public class GPSCoordinates
 {
-    private Context context;
+    private Weather activity;
 
-    public GPSCoordinates(Context context)
+    public GPSCoordinates(Weather activity)
     {
-        this.context = context;
+        this.activity = activity;
     }
 
     public Location getLocation()
     {
-        LocationManager manager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+        LocationManager manager = (LocationManager)activity.getSystemService(Context.LOCATION_SERVICE);
 
         try
         {
@@ -31,9 +30,17 @@ public class GPSCoordinates
 
             String bestProvider = manager.getBestProvider(criteria, true);
 
-            Location location = (Location) manager.getLastKnownLocation(bestProvider);
+            if(bestProvider == null)
+            {
+                return null;
+            }
+            else
+            {
 
-            return location;
+                Location location = (Location) manager.getLastKnownLocation(bestProvider);
+
+                return location;
+            }
         }
         catch (SecurityException e)
         {

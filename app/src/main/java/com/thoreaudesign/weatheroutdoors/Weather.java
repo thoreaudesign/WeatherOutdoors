@@ -3,11 +3,14 @@ package com.thoreaudesign.weatheroutdoors;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -34,7 +37,6 @@ public class Weather extends AppCompatActivity
     private TextView container;
     private int REQUEST_RESULT_FINE;
     private int REQUEST_RESULT_COARSE;
-    private HashMap<Object, Integer> permissions;
 
     public TextView getContainer()
     {
@@ -57,7 +59,7 @@ public class Weather extends AppCompatActivity
         );
     }
 
-    private void userPermissionsCheck()
+    private void verifyPermissions()
     {
         Context context = Weather.this.getApplicationContext();
 
@@ -65,52 +67,16 @@ public class Weather extends AppCompatActivity
         {
             ActivityCompat.requestPermissions(Weather.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, this.REQUEST_RESULT_FINE);
         }
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
-            ActivityCompat.requestPermissions(Weather.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, this.REQUEST_RESULT_COARSE);
-        }
-    }
-
-    private void verifyPermissions()
-    {
-        this.permissions = new HashMap<Object, Integer>();
-
-        this.userPermissionsCheck();
-
-        if ((this.permissions.get(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) &&
-            (this.permissions.get(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults)
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults)
     {
-        if (requestCode == this.REQUEST_RESULT_COARSE)
+        if (requestCode == this.REQUEST_RESULT_FINE)
         {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            if (grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_DENIED)
             {
-                this.permissions.put(Manifest.permission.ACCESS_COARSE_LOCATION, PackageManager.PERMISSION_GRANTED);
-            }
-            else
-            {
-                this.permissions.put(Manifest.permission.ACCESS_COARSE_LOCATION, PackageManager.PERMISSION_DENIED);
-            }
-        }
-        else if (requestCode == this.REQUEST_RESULT_FINE)
-        {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-            {
-                this.permissions.put(Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_GRANTED);
-            }
-            else
-            {
-                this.permissions.put(Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_DENIED);
+                finishAffinity();
             }
         }
     }
@@ -126,14 +92,29 @@ public class Weather extends AppCompatActivity
 
         container.setText("Welcome to Weather Outdoors! Click an icon below to see weather data in JSON format.");
 
-        if(verifyPermissions())
+        verifyPermissions();
+
+        CognitoCachingCredentialsProvider credentials = Weather.this.getCredentialsProvider();
+        LambdaInvokerFactory factory = Weather.this.getLambdaInvokerFactory(credentials);
+
+        GPSCoordinates gps = new GPSCoordinates(Weather.this);
+        Location location = gps.getLocation();
+
+        if(location == null)
         {
-            CognitoCachingCredentialsProvider credentials = Weather.this.getCredentialsProvider();
-            LambdaInvokerFactory factory = Weather.this.getLambdaInvokerFactory(credentials);
+            AlertDialog.Builder alert = new AlertDialog.Builder(Weather.this);
 
-            GPSCoordinates gps = new GPSCoordinates(Weather.this.getApplicationContext());
-            Location location = gps.getLocation();
-
+            alert.setMessage("Unable to obtain location provider. Please review permissions for WeatherOutdoors under Settings > Apps > WeatherOutdoors.");
+            alert.setTitle("Error");
+            alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finishAffinity();
+                }
+            });
+        }
+        else
+        {
             RequestParams params = new RequestParams(Double.toString(location.getLatitude()), Double.toString(location.getLongitude()));
 
             darksky = findViewById(R.id.darksky);
@@ -144,10 +125,6 @@ public class Weather extends AppCompatActivity
 
             stormglass = findViewById(R.id.stormglass);
             stormglass.setOnClickListener(new RequestTemplate(this, factory, LambdaFunctions.STORMGLASS, params));
-        }
-        else
-        {
-            finishAffinity();
         }
     }
 }

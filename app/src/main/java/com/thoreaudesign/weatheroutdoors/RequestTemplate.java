@@ -7,12 +7,14 @@ public class RequestTemplate implements View.OnClickListener
 {
     private Weather currentActivity;
     private LambdaInvokerFactory factory;
-    String lambdaFunctionName;
+    private String lambdaFunctionName;
+    private RequestParams params;
 
-    public RequestTemplate(Weather currentActivity, LambdaInvokerFactory factory, String lambdaFunctionName)
+    public RequestTemplate(Weather currentActivity, LambdaInvokerFactory factory, String lambdaFunctionName, RequestParams params)
     {
-        this.currentActivity = currentActivity;
+        this.params = params;
         this.factory = factory;
+        this.currentActivity = currentActivity;
         this.lambdaFunctionName = lambdaFunctionName;
     }
 
@@ -47,10 +49,8 @@ public class RequestTemplate implements View.OnClickListener
     @Override
     public void onClick(View view)
     {
-        RequestParams data = new RequestParams("-32", "14");
-
         AsyncRequest request = new AsyncRequest(RequestTemplate.this, RequestTemplate.this.lambdaFunctionName);
 
-        request.execute(data);
+        request.execute(params);
     }
 }

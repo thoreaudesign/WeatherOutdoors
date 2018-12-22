@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.amazonaws.mobileconnectors.lambdainvoker.*;
@@ -15,14 +14,18 @@ import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonWriter;
 
 public class Weather extends AppCompatActivity
 {
     private FloatingActionButton metocean;
     private FloatingActionButton stormglass;
-    private FloatingActionButton land;
+    private FloatingActionButton darksky;
     private TextView container;
+
+    public TextView getContainer()
+    {
+        return this.container;
+    }
 
     private LambdaInvokerFactory getLambdaInvokerFactory(CognitoCachingCredentialsProvider provider) {
         return new LambdaInvokerFactory(
@@ -51,101 +54,21 @@ public class Weather extends AppCompatActivity
 
         container.setText("Welcome to Weather Outdoors! Click an icon below to see weather data in JSON format.");
 
-        land = findViewById(R.id.land);
 
-        land.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                container.setText("Land!!!!");
-            }
-        });
+        CognitoCachingCredentialsProvider credentials = Weather.this.getCredentialsProvider();
+
+        LambdaInvokerFactory factory = Weather.this.getLambdaInvokerFactory(credentials);
+
+        darksky = findViewById(R.id.darksky);
+
+        darksky.setOnClickListener(new RequestTemplate(this, factory, LambdaFunctions.DARKSKY));
 
         metocean = findViewById(R.id.metocean);
 
-        metocean.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("StaticFieldLeak")
-            @Override
-            public void onClick(View view)
-            {
-                final CognitoCachingCredentialsProvider credentials = Weather.this.getCredentialsProvider();
-
-                final LambdaInvokerFactory factory = Weather.this.getLambdaInvokerFactory(credentials);
-
-                MarineRequest data = new MarineRequest("-32", "14");
-
-                new AsyncTask<MarineRequest, Void, String>()
-                {
-                    @Override
-                    protected String doInBackground(MarineRequest... params)
-                    {
-                        WeatherInterface weatherInterface = factory.build(WeatherInterface.class);
-
-                        try
-                        {
-                            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                            return gson.toJson(weatherInterface.MetOcean(params[0]));
-                        }
-                        catch (LambdaFunctionException lfe)
-                        {
-                            String error = "Failed to invoke MetOcean API...";
-                            Log.e("Error", error, lfe);
-                            return error;
-                        }
-                    }
-
-                    @Override
-                    protected void onPostExecute(String result)
-                    {
-
-                        container.setText(result);
-
-                    }
-                }.execute(data);
-            }
-        });
+        metocean.setOnClickListener(new RequestTemplate(this, factory, LambdaFunctions.METOCEAN));
 
         stormglass = findViewById(R.id.stormglass);
 
-        stormglass.setOnClickListener(new View.OnClickListener()
-        {
-            @SuppressLint("StaticFieldLeak")
-            @Override
-            public void onClick(View view)
-            {
-                final CognitoCachingCredentialsProvider credentials = Weather.this.getCredentialsProvider();
-
-                final LambdaInvokerFactory factory = Weather.this.getLambdaInvokerFactory(credentials);
-
-                MarineRequest data = new MarineRequest("-32", "14");
-
-                new AsyncTask<MarineRequest, Void, String>()
-                {
-                    @Override
-                    protected String doInBackground(MarineRequest... params)
-                    {
-                        WeatherInterface weatherInterface = factory.build(WeatherInterface.class);
-
-                        try
-                        {
-                            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                            return gson.toJson(weatherInterface.Stormglass(params[0]));
-                        }
-                        catch (LambdaFunctionException lfe)
-                        {
-                            String error = "Failed to invoke Stormglass API...";
-                            Log.e("Error", error, lfe);
-                            return error;
-                        }
-                    }
-
-                    @Override
-                    protected void onPostExecute(String result) {
-
-                        container.setText(result);
-
-                    }
-                }.execute(data);
-            }
-        });
+        stormglass.setOnClickListener(new RequestTemplate(this, factory, LambdaFunctions.STORMGLASS));
     }
 }

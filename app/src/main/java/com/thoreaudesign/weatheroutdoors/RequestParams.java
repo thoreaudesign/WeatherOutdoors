@@ -1,10 +1,10 @@
 package com.thoreaudesign.weatheroutdoors;
 
-public class MarineRequest {
+public class RequestParams {
     private String lat;
     private String lon;
 
-    public MarineRequest(String lat, String lon) {
+    public RequestParams(String lat, String lon) {
         this.lat = lat;
         this.lon = lon;
     }

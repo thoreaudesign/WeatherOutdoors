@@ -1,36 +1,27 @@
 package com.thoreaudesign.weatheroutdoors;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.AsyncTask;
-import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
-
 import com.amazonaws.mobileconnectors.lambdainvoker.*;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class Weather extends AppCompatActivity
 {
+    private static final int UPDATE_INTERVAL = 1800000;
+
     private FloatingActionButton metocean;
     private FloatingActionButton stormglass;
     private FloatingActionButton darksky;
@@ -86,45 +77,72 @@ public class Weather extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
 
+        /**
+         * Only validate permissions if the activity never previously existed.
+         */
+        if(savedInstanceState == null)
+        {
+            verifyPermissions();
+        }
+
         setContentView(R.layout.activity_weather);
 
         container = findViewById(R.id.container);
 
         container.setText("Welcome to Weather Outdoors! Click an icon below to see weather data in JSON format.");
 
-        verifyPermissions();
+        final Handler handler = new Handler();
 
-        CognitoCachingCredentialsProvider credentials = Weather.this.getCredentialsProvider();
-        LambdaInvokerFactory factory = Weather.this.getLambdaInvokerFactory(credentials);
-
-        GPSCoordinates gps = new GPSCoordinates(Weather.this);
-        Location location = gps.getLocation();
-
-        if(location == null)
+        Runnable weatherData = new Runnable()
         {
-            AlertDialog.Builder alert = new AlertDialog.Builder(Weather.this);
+            @Override
+            public void run()
+            {
+                CognitoCachingCredentialsProvider credentials = Weather.this.getCredentialsProvider();
+                LambdaInvokerFactory factory = Weather.this.getLambdaInvokerFactory(credentials);
 
-            alert.setMessage("Unable to obtain location provider. Please review permissions for WeatherOutdoors under Settings > Apps > WeatherOutdoors.");
-            alert.setTitle("Error");
-            alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    finishAffinity();
+                GPSCoordinates gps = new GPSCoordinates(Weather.this);
+                Location location = gps.getLocation();
+
+                if (location == null)
+                {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(Weather.this);
+
+                    alert.setMessage("Unable to obtain location provider. Please review permissions for WeatherOutdoors under Settings > Apps > WeatherOutdoors.");
+                    alert.setTitle("Error");
+                    alert.setPositiveButton("OK", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        {
+                            finishAffinity();
+                        }
+                    });
+                } else
+                {
+                    RequestParams params = new RequestParams(Double.toString(location.getLatitude()), Double.toString(location.getLongitude()));
+
+                    RequestTemplate darksky = new RequestTemplate(Weather.this, factory, LambdaFunctions.DARKSKY, params);
+                    new AsyncRequest(darksky, LambdaFunctions.DARKSKY).execute(params);
+
+                    RequestTemplate stormglass = new RequestTemplate(Weather.this, factory, LambdaFunctions.STORMGLASS, params);
+                    new AsyncRequest(stormglass, LambdaFunctions.STORMGLASS).execute(params);
+
+                    RequestTemplate metocean = new RequestTemplate(Weather.this, factory, LambdaFunctions.METOCEAN, params);
+                    new AsyncRequest(metocean, LambdaFunctions.METOCEAN).execute(params);
+
+                    handler.postDelayed(this, Weather.this.UPDATE_INTERVAL);
+
                 }
-            });
-        }
-        else
-        {
-            RequestParams params = new RequestParams(Double.toString(location.getLatitude()), Double.toString(location.getLongitude()));
+            }
+        };
 
-            darksky = findViewById(R.id.darksky);
-            darksky.setOnClickListener(new RequestTemplate(this, factory, LambdaFunctions.DARKSKY, params));
+        handler.post(weatherData);
 
-            metocean = findViewById(R.id.metocean);
-            metocean.setOnClickListener(new RequestTemplate(this, factory, LambdaFunctions.METOCEAN, params));
+        findViewById(R.id.darksky).setOnClickListener(new Test(this, LambdaFunctions.DARKSKY));
 
-            stormglass = findViewById(R.id.stormglass);
-            stormglass.setOnClickListener(new RequestTemplate(this, factory, LambdaFunctions.STORMGLASS, params));
-        }
+        findViewById(R.id.stormglass).setOnClickListener(new Test(this, LambdaFunctions.STORMGLASS));
+
+        findViewById(R.id.metocean).setOnClickListener(new Test(this, LambdaFunctions.METOCEAN));
     }
 }

@@ -3,7 +3,7 @@ package com.thoreaudesign.weatheroutdoors;
 import android.view.View;
 import com.amazonaws.mobileconnectors.lambdainvoker.LambdaInvokerFactory;
 
-public class RequestTemplate implements View.OnClickListener
+public class RequestTemplate //implements View.OnClickListener
 {
     private Weather currentActivity;
     private LambdaInvokerFactory factory;
@@ -45,12 +45,13 @@ public class RequestTemplate implements View.OnClickListener
                 throw new Exception("Tried to call unsupported lambda function (AWS).");
         }
     }
-
+/*
     @Override
     public void onClick(View view)
     {
         AsyncRequest request = new AsyncRequest(RequestTemplate.this, RequestTemplate.this.lambdaFunctionName);
 
-        request.execute(params);
+        request.execute(this.params);
     }
+    */
 }

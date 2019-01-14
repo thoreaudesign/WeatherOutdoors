@@ -2,8 +2,8 @@ package com.thoreaudesign.weatheroutdoors;
 
 import com.amazonaws.mobileconnectors.lambdainvoker.LambdaFunction;
 
-public interface WeatherInterface {
-
+public interface WeatherInterface
+{
     @LambdaFunction
     Object stormglass(RequestParams requestParams);
 

@@ -1,6 +1,7 @@
 package com.thoreaudesign.weatheroutdoors;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,31 +11,32 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
+
 import com.amazonaws.mobileconnectors.lambdainvoker.*;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
+import com.google.gson.JsonObject;
 
-public class Weather extends AppCompatActivity
+public class Weather extends FragmentActivity
 {
     private static final int UPDATE_INTERVAL = 1800000;
 
     private FloatingActionButton metocean;
     private FloatingActionButton stormglass;
     private FloatingActionButton darksky;
-    private TextView container;
     private int REQUEST_RESULT_FINE;
     private int REQUEST_RESULT_COARSE;
 
-    public TextView getContainer()
+    private LambdaInvokerFactory getLambdaInvokerFactory(CognitoCachingCredentialsProvider provider)
     {
-        return this.container;
-    }
-
-    private LambdaInvokerFactory getLambdaInvokerFactory(CognitoCachingCredentialsProvider provider) {
         return new LambdaInvokerFactory(
                 Weather.this,
                 Regions.US_EAST_1,
@@ -42,7 +44,8 @@ public class Weather extends AppCompatActivity
         );
     }
 
-    private CognitoCachingCredentialsProvider getCredentialsProvider() {
+    private CognitoCachingCredentialsProvider getCredentialsProvider()
+    {
         return new CognitoCachingCredentialsProvider(
                 Weather.this,
                 "us-east-1:710ef06b-950f-44d4-8b5b-dbd630484d1c",
@@ -75,22 +78,13 @@ public class Weather extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
 
-        /**
-         * Only validate permissions if the activity never previously existed.
-         */
         if(savedInstanceState == null)
-        {
             verifyPermissions();
-        }
 
-        setContentView(R.layout.activity_weather);
+        setContentView(R.layout.activity_main);
 
-        container = findViewById(R.id.container);
-
-        container.setText("Welcome to Weather Outdoors! Click an icon below to see weather data in JSON format.");
-
+/*
         final Handler handler = new Handler();
 
         Runnable weatherData = new Runnable()
@@ -98,51 +92,94 @@ public class Weather extends AppCompatActivity
             @Override
             public void run()
             {
-                CognitoCachingCredentialsProvider credentials = Weather.this.getCredentialsProvider();
-                LambdaInvokerFactory factory = Weather.this.getLambdaInvokerFactory(credentials);
+*/
+        CognitoCachingCredentialsProvider credentials = Weather.this.getCredentialsProvider();
+        LambdaInvokerFactory factory = Weather.this.getLambdaInvokerFactory(credentials);
 
-                GPSCoordinates gps = new GPSCoordinates(Weather.this);
-                Location location = gps.getLocation();
+        GPSCoordinates gps = new GPSCoordinates(Weather.this);
+        Location location = gps.getLocation();
 
-                if (location == null)
+        Log.i("Location",
+        "Lat: " + Double.toString(location.getLatitude()) + "\n" +
+            "Lon: " + Double.toString(location.getLongitude()));
+
+        if (location == null)
+        {
+            AlertDialog.Builder alert = new AlertDialog.Builder(Weather.this);
+
+            alert.setMessage("Unable to obtain location provider. Please review permissions for WeatherOutdoors under Settings > Apps > WeatherOutdoors.");
+            alert.setTitle("Error");
+            alert.setPositiveButton("OK", new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
                 {
-                    AlertDialog.Builder alert = new AlertDialog.Builder(Weather.this);
-
-                    alert.setMessage("Unable to obtain location provider. Please review permissions for WeatherOutdoors under Settings > Apps > WeatherOutdoors.");
-                    alert.setTitle("Error");
-                    alert.setPositiveButton("OK", new DialogInterface.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which)
-                        {
-                            finishAffinity();
-                        }
-                    });
-                } else
-                {
-                    RequestParams params = new RequestParams(Double.toString(location.getLatitude()), Double.toString(location.getLongitude()));
-
-                    RequestTemplate darksky = new RequestTemplate(Weather.this, factory, LambdaFunctions.DARKSKY, params);
-                    new AsyncRequest(darksky, LambdaFunctions.DARKSKY).execute(params);
-
-                    RequestTemplate stormglass = new RequestTemplate(Weather.this, factory, LambdaFunctions.STORMGLASS, params);
-                    new AsyncRequest(stormglass, LambdaFunctions.STORMGLASS).execute(params);
-
-                    RequestTemplate metocean = new RequestTemplate(Weather.this, factory, LambdaFunctions.METOCEAN, params);
-                    new AsyncRequest(metocean, LambdaFunctions.METOCEAN).execute(params);
-
-                    handler.postDelayed(this, Weather.this.UPDATE_INTERVAL);
-
+                    finishAffinity();
                 }
+            });
+        }
+        else
+        {
+            RequestParams params = new RequestParams(Double.toString(location.getLatitude()), Double.toString(location.getLongitude()));
+
+            RequestTemplate darksky = new RequestTemplate(Weather.this, factory, LambdaFunctions.DARKSKY, params);
+            new AsyncRequest(darksky, LambdaFunctions.DARKSKY).execute(params);
+
+            RequestTemplate stormglass = new RequestTemplate(Weather.this, factory, LambdaFunctions.STORMGLASS, params);
+            new AsyncRequest(stormglass, LambdaFunctions.STORMGLASS).execute(params);
+
+            RequestTemplate metocean = new RequestTemplate(Weather.this, factory, LambdaFunctions.METOCEAN, params);
+            new AsyncRequest(metocean, LambdaFunctions.METOCEAN).execute(params);
+
+        }
+/*
+                handler.postDelayed(this, Weather.this.UPDATE_INTERVAL);
             }
         };
 
         handler.post(weatherData);
+*/
+        ViewPager pager = findViewById(R.id.viewPager);
+        pager.setAdapter(new WeatherPagerAdapter(getSupportFragmentManager(), this));
 
-        findViewById(R.id.darksky).setOnClickListener(new Test(this, LambdaFunctions.DARKSKY));
+        super.onCreate(savedInstanceState);
+    }
 
-        findViewById(R.id.stormglass).setOnClickListener(new Test(this, LambdaFunctions.STORMGLASS));
+    private class WeatherPagerAdapter extends FragmentPagerAdapter
+    {
+        private Activity activity;
 
-        findViewById(R.id.metocean).setOnClickListener(new Test(this, LambdaFunctions.METOCEAN));
+        public WeatherPagerAdapter(FragmentManager fm, Activity activity)
+        {
+            super(fm);
+            this.activity = activity;
+        }
+
+        @Override
+        public Fragment getItem(int pos)
+        {
+            switch(pos)
+            {
+                case 0: return DataFragment.newInstance();
+
+                case 1:
+                    Darksky darksky = new Darksky();
+
+                    JsonObject data = darksky.getDarkskyData(this.activity);
+
+                    return SummaryFragment.newInstance(
+                            darksky.getWindData(data),
+                            darksky.getWeatherData(data),
+                            "14mB");
+
+                default: return DataFragment.newInstance();
+            }
+        }
+
+        @Override
+        public int getCount()
+        {
+            return 3;
+        }
     }
 }

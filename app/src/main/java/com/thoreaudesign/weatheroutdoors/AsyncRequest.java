@@ -2,7 +2,6 @@ package com.thoreaudesign.weatheroutdoors;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.amazonaws.mobileconnectors.lambdainvoker.LambdaFunctionException;
 import com.google.gson.Gson;
@@ -53,15 +52,15 @@ public class AsyncRequest extends AsyncTask<RequestParams, Void, String>
     @Override
     protected void onPreExecute()
     {
-        Toast.makeText(this.getRequestTemplate().getCurrentActivity().getBaseContext(), "Loading weather data...", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this.getRequestTemplate().getCurrentActivity().getBaseContext(), "Loading weather data...", Toast.LENGTH_LONG).show();
     }
 
     @Override
     protected void onPostExecute(String result)
     {
         CacheController cache = new CacheController(this.getRequestTemplate().getCurrentActivity());
-
-        Log.i("AsyncRequest",result);
+        Log.i("AysncRequest",
+        "Attempting to write weather data for service '" + this.functionName + "' to cache...");
         cache.write(this.functionName, result);
     }
 }

@@ -1,17 +1,21 @@
 package com.thoreaudesign.weatheroutdoors;
 
-import android.util.Log;
+import android.content.Context;
 import android.view.View;
+import android.widget.TextView;
 
-public class Test implements View.OnClickListener
+public class RawData implements View.OnClickListener
 {
-    private Weather currentActivity;
+    private Context currentActivity;
     private String lambda;
+    private TextView displayData;
 
-    public Test(Weather currentActivity, String lambda) {
+    public RawData(Context currentActivity, String lambda, TextView displayData)
+    {
         this.currentActivity = currentActivity;
         this.lambda = lambda;
-        }
+        this.displayData = displayData;
+    }
 
     @Override
     public void onClick(View view)
@@ -20,6 +24,6 @@ public class Test implements View.OnClickListener
 
         String data = cache.read(this.lambda);
 
-        Test.this.currentActivity.getContainer().setText(data);
+        displayData.setText(data);
     }
 }

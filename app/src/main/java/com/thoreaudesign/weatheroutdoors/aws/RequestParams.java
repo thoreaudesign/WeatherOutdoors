@@ -1,4 +1,4 @@
-package com.thoreaudesign.weatheroutdoors;
+package com.thoreaudesign.weatheroutdoors.aws;
 
 public class RequestParams {
     private String lat;

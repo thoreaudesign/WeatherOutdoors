@@ -17,6 +17,16 @@
         android:layout_column="0"
         />
     <TextView
+        android:id="@+id/moon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:layout_gravity="fill"
+        android:layout_row="0"
+        android:layout_column="2"
+        />
+    <TextView
         android:id="@+id/weather"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -26,6 +36,16 @@
         android:layout_row="1"
         android:layout_column="1"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
+    <TextView
+        android:id="@+id/tide"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:layout_gravity="fill"
+        android:layout_row="2"
+        android:layout_column="0"
         />
     <TextView
         android:id="@+id/pressure"

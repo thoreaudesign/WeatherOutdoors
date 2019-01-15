@@ -1,7 +1,10 @@
-package com.thoreaudesign.weatheroutdoors;
+package com.thoreaudesign.weatheroutdoors.aws;
 
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.amazonaws.mobileconnectors.lambdainvoker.LambdaFunction;
+import com.thoreaudesign.weatheroutdoors.CacheController;
 
 import com.amazonaws.mobileconnectors.lambdainvoker.LambdaFunctionException;
 import com.google.gson.Gson;
@@ -38,7 +41,7 @@ public class AsyncRequest extends AsyncTask<RequestParams, Void, String>
         }
         catch (LambdaFunctionException lfe)
         {
-            String error = "Failed to invoke MetOcean API...";
+            String error = "Failed to invoke " + this.functionName + " API...";
             Log.e("Error", error, lfe);
             return error;
         }

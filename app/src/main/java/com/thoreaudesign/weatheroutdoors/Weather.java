@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -25,13 +24,11 @@ import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.google.gson.JsonObject;
 
+import com.thoreaudesign.weatheroutdoors.fragments.*;
+import com.thoreaudesign.weatheroutdoors.aws.*;
+
 public class Weather extends FragmentActivity
 {
-    private static final int UPDATE_INTERVAL = 1800000;
-
-    private FloatingActionButton metocean;
-    private FloatingActionButton stormglass;
-    private FloatingActionButton darksky;
     private int REQUEST_RESULT_FINE;
     private int REQUEST_RESULT_COARSE;
 
@@ -84,15 +81,6 @@ public class Weather extends FragmentActivity
 
         setContentView(R.layout.activity_main);
 
-/*
-        final Handler handler = new Handler();
-
-        Runnable weatherData = new Runnable()
-        {
-            @Override
-            public void run()
-            {
-*/
         CognitoCachingCredentialsProvider credentials = Weather.this.getCredentialsProvider();
         LambdaInvokerFactory factory = Weather.this.getLambdaInvokerFactory(credentials);
 
@@ -128,17 +116,13 @@ public class Weather extends FragmentActivity
             RequestTemplate stormglass = new RequestTemplate(Weather.this, factory, LambdaFunctions.STORMGLASS, params);
             new AsyncRequest(stormglass, LambdaFunctions.STORMGLASS).execute(params);
 
+            RequestTemplate stormglass_astro = new RequestTemplate(Weather.this, factory, LambdaFunctions.STORMGLASS_ASTRO, params);
+            new AsyncRequest(stormglass_astro, LambdaFunctions.STORMGLASS_ASTRO).execute(params);
+
             RequestTemplate metocean = new RequestTemplate(Weather.this, factory, LambdaFunctions.METOCEAN, params);
             new AsyncRequest(metocean, LambdaFunctions.METOCEAN).execute(params);
-
         }
-/*
-                handler.postDelayed(this, Weather.this.UPDATE_INTERVAL);
-            }
-        };
 
-        handler.post(weatherData);
-*/
         ViewPager pager = findViewById(R.id.viewPager);
         pager.setAdapter(new WeatherPagerAdapter(getSupportFragmentManager(), this));
 
@@ -165,12 +149,16 @@ public class Weather extends FragmentActivity
                 case 1:
                     Darksky darksky = new Darksky();
 
-                    JsonObject data = darksky.getDarkskyData(this.activity);
+                    String data = darksky.getSummaryData(this.activity);
 
-                    return SummaryFragment.newInstance(
+                    return SummaryFragment.newInstance(data);
+                    /*
                             darksky.getWindData(data),
+                            darksky.getMoonData(data),
                             darksky.getWeatherData(data),
-                            "14mB");
+                            darksky.getTideData(data),
+                            darksky.getPressureData(data)
+                    */
 
                 default: return DataFragment.newInstance();
             }
@@ -179,7 +167,7 @@ public class Weather extends FragmentActivity
         @Override
         public int getCount()
         {
-            return 3;
+            return 2;
         }
     }
 }

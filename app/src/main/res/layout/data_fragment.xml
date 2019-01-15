@@ -22,11 +22,22 @@
             />
     </ScrollView>
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/stormglass"
+        android:id="@+id/stormglass_astro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/fab_margin"
+        android:tint="#FFF"
+        app:srcCompat="@drawable/ic_round_brightness_3_24px"
+        />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/stormglass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="80dp"
+        android:clickable="true"
         android:tint="#FFF"
         app:srcCompat="@drawable/ic_boat_dark"
         />
@@ -36,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_marginBottom="16dp"
-        android:layout_marginRight="84dp"
+        android:layout_marginRight="146dp"
         android:clickable="true"
         android:tint="#FFF"
         app:srcCompat="@drawable/ic_boat_dark"
@@ -47,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_marginBottom="16dp"
-        android:layout_marginRight="150dp"
+        android:layout_marginRight="207dp"
         android:clickable="true"
         android:tint="#FFF"
         app:srcCompat="@drawable/ic_terrain_dark"

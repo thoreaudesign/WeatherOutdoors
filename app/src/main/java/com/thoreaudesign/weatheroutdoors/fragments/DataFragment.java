@@ -1,4 +1,4 @@
-package com.thoreaudesign.weatheroutdoors;
+package com.thoreaudesign.weatheroutdoors.fragments;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -7,6 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.thoreaudesign.weatheroutdoors.R;
+import com.thoreaudesign.weatheroutdoors.aws.*;
+import com.thoreaudesign.weatheroutdoors.fragments.eventhandlers.DataFragmentOnClickListener;
 
 public class DataFragment extends Fragment
 {
@@ -19,13 +23,16 @@ public class DataFragment extends Fragment
         displayData.setText("Welcome to Weather Outdoors! Click an icon below to see weather data in JSON format.");
 
         FloatingActionButton darksky = layout.findViewById(R.id.darksky);
-        darksky.setOnClickListener(new RawData(this.getActivity(), LambdaFunctions.DARKSKY, displayData));
+        darksky.setOnClickListener(new DataFragmentOnClickListener(this.getActivity(), LambdaFunctions.DARKSKY, displayData));
 
         FloatingActionButton stormglass = layout.findViewById(R.id.stormglass);
-        stormglass.setOnClickListener(new RawData(this.getActivity(), LambdaFunctions.STORMGLASS, displayData));
+        stormglass.setOnClickListener(new DataFragmentOnClickListener(this.getActivity(), LambdaFunctions.STORMGLASS, displayData));
+
+        FloatingActionButton stormglass_astro = layout.findViewById(R.id.stormglass_astro);
+        stormglass_astro.setOnClickListener(new DataFragmentOnClickListener(this.getActivity(), LambdaFunctions.STORMGLASS_ASTRO, displayData));
 
         FloatingActionButton metocean = layout.findViewById(R.id.metocean);
-        metocean.setOnClickListener(new RawData(this.getActivity(), LambdaFunctions.METOCEAN, displayData));
+        metocean.setOnClickListener(new DataFragmentOnClickListener(this.getActivity(), LambdaFunctions.METOCEAN, displayData));
 
         FloatingActionButton clearJson = layout.findViewById(R.id.clearJson);
 

@@ -1,16 +1,18 @@
-package com.thoreaudesign.weatheroutdoors;
+package com.thoreaudesign.weatheroutdoors.fragments.eventhandlers;
 
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
-public class RawData implements View.OnClickListener
+import com.thoreaudesign.weatheroutdoors.CacheController;
+
+public class Listener implements View.OnClickListener
 {
     private Context currentActivity;
     private String lambda;
     private TextView displayData;
 
-    public RawData(Context currentActivity, String lambda, TextView displayData)
+    public Listener(Context currentActivity, String lambda, TextView displayData)
     {
         this.currentActivity = currentActivity;
         this.lambda = lambda;

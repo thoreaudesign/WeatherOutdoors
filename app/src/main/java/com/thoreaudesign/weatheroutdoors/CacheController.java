@@ -1,7 +1,6 @@
 package com.thoreaudesign.weatheroutdoors;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,7 +12,6 @@ import java.io.IOException;
 public class CacheController
 {
     private Context context;
-    private static final String LOG_TAG = "CacheController";
 
     public CacheController(Context context)
     {
@@ -29,11 +27,11 @@ public class CacheController
             writer.write(data);
             writer.close();
 
-            Log.i(LOG_TAG, "Cache file written: " + cache.getAbsolutePath());
+            Log.i("Cache file written: " + cache.getAbsolutePath());
         }
         catch (IOException e)
         {
-            Log.e(LOG_TAG, e.toString());
+            Log.e(e.toString());
         }
     }
 
@@ -53,15 +51,15 @@ public class CacheController
                 line = buffer.readLine();
             }
 
-            Log.i(LOG_TAG, "Cache file read: " + cache.getAbsolutePath());
+            Log.i("Cache file read: " + cache.getAbsolutePath());
         }
         catch (FileNotFoundException e)
         {
-            Log.e("CacheController::ready", e.toString());
+            Log.e(e.toString());
         }
         catch (IOException e)
         {
-            Log.e("CacheController::read", e.toString());
+            Log.e(e.toString());
         }
 
         return  builder.toString();

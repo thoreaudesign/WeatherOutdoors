@@ -1,7 +1,7 @@
 package com.thoreaudesign.weatheroutdoors.aws;
 
 import com.amazonaws.mobileconnectors.lambdainvoker.LambdaInvokerFactory;
-import com.thoreaudesign.weatheroutdoors.Weather;
+import com.thoreaudesign.weatheroutdoors.*;
 
 public class RequestTemplate
 {
@@ -30,18 +30,20 @@ public class RequestTemplate
 
     public Object getLambdaResponse(WeatherInterface weatherInterface, String lambdaFunctionName, RequestParams... params) throws Exception
     {
+        Log.v("Returning lambda response for " + lambdaFunctionName + ".\n");
+
         switch(lambdaFunctionName)
         {
-            case LambdaFunctions.DARKSKY:
+            case LambdaFunctions.darksky:
                 return weatherInterface.darksky(params[0]);
 
-            case LambdaFunctions.METOCEAN:
+            case LambdaFunctions.metocean:
                 return weatherInterface.metocean(params[0]);
 
-            case LambdaFunctions.STORMGLASS:
+            case LambdaFunctions.stormglass:
                 return weatherInterface.stormglass(params[0]);
 
-            case LambdaFunctions.STORMGLASS_ASTRO:
+            case LambdaFunctions.stormglass_astro:
                 return weatherInterface.stormglass_astro(params[0]);
 
             default:

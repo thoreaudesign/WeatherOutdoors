@@ -11,6 +11,9 @@ import android.widget.TextView;
 import com.thoreaudesign.weatheroutdoors.R;
 import com.thoreaudesign.weatheroutdoors.aws.*;
 import com.thoreaudesign.weatheroutdoors.fragments.eventhandlers.DataFragmentOnClickListener;
+import com.thoreaudesign.weatheroutdoors.Log;
+
+import java.lang.reflect.Field;
 
 public class DataFragment extends Fragment
 {
@@ -22,17 +25,18 @@ public class DataFragment extends Fragment
         TextView displayData = layout.findViewById(R.id.display_data);
         displayData.setText("Welcome to Weather Outdoors! Click an icon below to see weather data in JSON format.");
 
-        FloatingActionButton darksky = layout.findViewById(R.id.darksky);
-        darksky.setOnClickListener(new DataFragmentOnClickListener(this.getActivity(), LambdaFunctions.DARKSKY, displayData));
+        LambdaFunctions fxns = new LambdaFunctions();
 
-        FloatingActionButton stormglass = layout.findViewById(R.id.stormglass);
-        stormglass.setOnClickListener(new DataFragmentOnClickListener(this.getActivity(), LambdaFunctions.STORMGLASS, displayData));
+        for(Field field : fxns.getClass().getDeclaredFields())
+        {
+            int id = getResources().getIdentifier(field.getName(), "id", "com.thoreaudesign.weatheroutdoors");
 
-        FloatingActionButton stormglass_astro = layout.findViewById(R.id.stormglass_astro);
-        stormglass_astro.setOnClickListener(new DataFragmentOnClickListener(this.getActivity(), LambdaFunctions.STORMGLASS_ASTRO, displayData));
+            FloatingActionButton fab = layout.findViewById(id);
 
-        FloatingActionButton metocean = layout.findViewById(R.id.metocean);
-        metocean.setOnClickListener(new DataFragmentOnClickListener(this.getActivity(), LambdaFunctions.METOCEAN, displayData));
+            fab.setOnClickListener(new DataFragmentOnClickListener(this.getActivity(), field.getName(), displayData));
+
+            Log.d("Attached onClickListener for FloatingActionButton " + field.getName() + "successfully.");
+        }
 
         FloatingActionButton clearJson = layout.findViewById(R.id.clearJson);
 

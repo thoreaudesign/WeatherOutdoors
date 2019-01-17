@@ -11,6 +11,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
+import java.lang.reflect.Field;
 import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -29,9 +30,9 @@ public class Darksky
         DateFormat hourFormat = new SimpleDateFormat("HH");
         int hour = Integer.parseInt(hourFormat.format(date));
 
-        String dataDarksky = cache.read(LambdaFunctions.DARKSKY);
-        String dataStormglass = cache.read(LambdaFunctions.STORMGLASS);
-        String dataStormglass_astro = cache.read(LambdaFunctions.STORMGLASS_ASTRO);
+        String dataDarksky = cache.read(LambdaFunctions.darksky);
+        String dataStormglass = cache.read(LambdaFunctions.stormglass);
+        String dataStormglass_astro = cache.read(LambdaFunctions.stormglass_astro);
 
         JsonParser parser = new JsonParser();
 
@@ -116,19 +117,6 @@ public class Darksky
         return summary;
     }
 
-
-    public JsonObject getDarkskyData(Activity activity)
-    {
-        CacheController cache = new CacheController(activity);
-
-        String dataDarksky = cache.read(LambdaFunctions.DARKSKY);
-
-        JsonParser parser = new JsonParser();
-
-        JsonObject darkskyJson = (JsonObject)parser.parse(dataDarksky);
-
-        return darkskyJson.getAsJsonObject("currently");
-    }
 
     public String getWindData(JsonObject data)
     {

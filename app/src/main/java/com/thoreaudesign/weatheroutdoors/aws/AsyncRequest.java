@@ -1,11 +1,7 @@
 package com.thoreaudesign.weatheroutdoors.aws;
 
+import com.thoreaudesign.weatheroutdoors.*;
 import android.os.AsyncTask;
-import android.util.Log;
-
-import com.amazonaws.mobileconnectors.lambdainvoker.LambdaFunction;
-import com.thoreaudesign.weatheroutdoors.CacheController;
-
 import com.amazonaws.mobileconnectors.lambdainvoker.LambdaFunctionException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -37,17 +33,18 @@ public class AsyncRequest extends AsyncTask<RequestParams, Void, String>
             String functionName = AsyncRequest.this.functionName;
 
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
             return gson.toJson(AsyncRequest.this.getRequestTemplate().getLambdaResponse(weatherInterface, functionName, params));
         }
         catch (LambdaFunctionException lfe)
         {
-            String error = "Failed to invoke " + this.functionName + " API...";
-            Log.e("Error", error, lfe);
+            String error = "Failed to invoke " + this.functionName + " API...\n";
+            Log.e(error + lfe.getMessage());
             return error;
         }
         catch (Exception e)
         {
-            Log.e("Error", e.getMessage(), e);
+            Log.e(e.getMessage());
             return e.getMessage();
         }
     }
@@ -62,8 +59,9 @@ public class AsyncRequest extends AsyncTask<RequestParams, Void, String>
     protected void onPostExecute(String result)
     {
         CacheController cache = new CacheController(this.getRequestTemplate().getCurrentActivity());
-        Log.i("AysncRequest",
-        "Attempting to write weather data for service '" + this.functionName + "' to cache...");
+
         cache.write(this.functionName, result);
+
+        Log.i("Wrote weather data for service '" + this.functionName + "' to cache.");
     }
 }

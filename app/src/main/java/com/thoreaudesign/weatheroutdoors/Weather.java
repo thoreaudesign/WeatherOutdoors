@@ -27,7 +27,7 @@ public class Weather extends FragmentActivity
 {
     private int REQUEST_RESULT_FINE;
     private int REQUEST_RESULT_COARSE;
-    private long CACHE_LIFE_MILLIS = 60 * 60 * 1000;
+    private long CACHE_LIFE_MILLIS = 30 * 60 * 1000;
 
     private ViewPager mViewPager;
 
@@ -52,23 +52,6 @@ public class Weather extends FragmentActivity
         Location location = gps.getLocation();
 
         return location;
-    }
-
-    private boolean verifyCache()
-    {
-        Cache cache = this.getCache();
-
-        Log.v("Cache status of " + cache.getName() + ": " + cache.exists());
-
-        if(cache.exists())
-        {
-            Log.v(cache.getName() + " data: \n" + cache.getData());
-            return true;
-        }
-        else
-        {
-            return false;
-        }
     }
 
     @Override
@@ -142,8 +125,6 @@ public class Weather extends FragmentActivity
                 this.lambdaRequest = new AsyncRequest(requestTemplate, lambdaName, this.getCache());
 
                 lambdaRequest.execute(params);
-
-                Log.v("AsyncTask complete!");
             }
             catch (LambdaFunctionException lfe)
             {
@@ -167,10 +148,17 @@ public class Weather extends FragmentActivity
         String cacheName = "weatheroutdoors";
 
         Cache cache = new Cache(this.getCacheDir(), cacheName);
-
         setCache(cache);
+        cache.read();
 
         Log.v("Checking weather data cache...");
+
+        long now = System.currentTimeMillis();
+        long lastModified = this.getCache().getCache().lastModified();
+
+        Log.v("Current time: " + now);
+        Log.v("Last modified: " + lastModified);
+        Log.v("Filesize: " + this.getCache().getCache().length());
 
         if(!cache.exists())
         {
@@ -178,16 +166,17 @@ public class Weather extends FragmentActivity
 
             getWeatherData();
         }
-        else
+        else if(this.getCache().getData() == null)
         {
-            Log.v("Cache is set. Retrieving saved weather data.");
+            Log.v("Cache is empty... re-populating cache.");
 
-            if(this.getCache().getData() == null)
-            {
-                Log.v("Cache data corrupt... repopulating cache.");
+            getWeatherData();
+        }
+        else if(now - lastModified > this.CACHE_LIFE_MILLIS)
+        {
+            Log.v("Cache is out-of-date... re-populating cache.");
 
-                getWeatherData();
-            }
+            getWeatherData();
         }
 
         super.onCreate(savedInstanceState);
@@ -263,7 +252,7 @@ public class Weather extends FragmentActivity
         @Override
         public int getCount()
         {
-            return 3;
+            return 1;
         }
     }
 }

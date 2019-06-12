@@ -1,8 +1,5 @@
 package com.thoreaudesign.weatheroutdoors;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,29 +7,37 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Cache implements Parcelable
+//public class Cache implements Parcelable
+public class Cache
 {
     private File cache;
     private File dir;
     private String name;
     private String data;
 
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public Cache createFromParcel(Parcel in) {
-            return new Cache(in);
-        }
+//    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+//        public Cache createFromParcel(Parcel in) {
+//            return new Cache(in);
+//        }
+//
+//        public Cache[] newArray(int size) {
+//            return new Cache[size];
+//        }
+//    };
+//
+//    public Cache(Parcel in)
+//    {
+//        this.dir = new File(in.readString());
+//        this.cache = new File(in.readString());
+//        this.name = in.readString();
+//        this.data = in.readString();
+//    }
 
-        public Cache[] newArray(int size) {
-            return new Cache[size];
-        }
-    };
-
-    public Cache(Parcel in)
+    public Cache(String dir, String name)
     {
-        this.dir = new File(in.readString());
-        this.cache = new File(in.readString());
-        this.name = in.readString();
-        this.data = in.readString();
+        this.dir = new File(dir);
+        this.name = name;
+        this.cache = new File(dir, name);
     }
 
     public Cache(File dir, String name)
@@ -168,18 +173,18 @@ public class Cache implements Parcelable
         return cache;
     }
 
-    @Override
-    public int describeContents()
-    {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags)
-    {
-        dest.writeString(this.dir.getAbsolutePath());
-        dest.writeString(this.cache.getAbsolutePath());
-        dest.writeString(this.name);
-        dest.writeString(this.data);
-    }
+//    @Override
+//    public int describeContents()
+//    {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void writeToParcel(Parcel dest, int flags)
+//    {
+//        dest.writeString(this.dir.getAbsolutePath());
+//        dest.writeString(this.cache.getAbsolutePath());
+//        dest.writeString(this.name);
+//        dest.writeString(this.data);
+//    }
 }

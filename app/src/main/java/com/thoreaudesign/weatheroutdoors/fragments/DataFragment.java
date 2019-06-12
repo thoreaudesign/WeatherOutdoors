@@ -22,7 +22,8 @@ public class DataFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         Bundle bundle = this.getArguments();
-        Cache cache = bundle.getParcelable("cache");
+        Cache cache = new Cache(bundle.getString("cacheDir"), bundle.getString("cacheName"));
+        cache.read();
 
         final View layout = inflater.inflate(R.layout.data_fragment, container, false);
 
@@ -32,8 +33,6 @@ public class DataFragment extends Fragment
 
         try
         {
-            cache.read();
-
             JSONObject cacheData = new JSONObject(cache.getData());
 
             String rawData = cacheData.toString();
@@ -85,12 +84,14 @@ public class DataFragment extends Fragment
     }
 
     public static DataFragment newInstance(Cache cache)
+//    public static DataFragment newInstance(String cacheDir, String cacheName)
     {
         DataFragment fragment = new DataFragment();
 
         Bundle bundle = new Bundle();
-
-        bundle.putParcelable("cache", cache);
+        bundle.putString("cacheDir", cache.getDir().toString());
+        bundle.putString("cacheName", cache.getName());
+//        bundle.putParcelable("cacheDir", cacheDir);
 
         fragment.setArguments(bundle);
 

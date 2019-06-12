@@ -8,34 +8,59 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.thoreaudesign.weatheroutdoors.R;
-import com.thoreaudesign.weatheroutdoors.aws.*;
-import com.thoreaudesign.weatheroutdoors.fragments.eventhandlers.DataFragmentOnClickListener;
+import com.thoreaudesign.weatheroutdoors.Cache;
 import com.thoreaudesign.weatheroutdoors.Log;
+import com.thoreaudesign.weatheroutdoors.R;
+import com.thoreaudesign.weatheroutdoors.aws.LambdaFunctions;
+import com.thoreaudesign.weatheroutdoors.fragments.eventhandlers.DataFragmentOnClickListener;
 
-import java.lang.reflect.Field;
+import org.json.JSONObject;
 
 public class DataFragment extends Fragment
 {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+        Bundle bundle = this.getArguments();
+        Cache cache = bundle.getParcelable("cache");
+
         final View layout = inflater.inflate(R.layout.data_fragment, container, false);
 
         TextView displayData = layout.findViewById(R.id.display_data);
-        displayData.setText("Welcome to Weather Outdoors! Click an icon below to see weather data in JSON format.");
 
-        LambdaFunctions fxns = new LambdaFunctions();
+        displayData.setText("Welcome to Weather Outdoors! Click an icon below to see weather cacheList in JSON format.");
 
-        for(Field field : fxns.getClass().getDeclaredFields())
+        try
         {
-            int id = getResources().getIdentifier(field.getName(), "id", "com.thoreaudesign.weatheroutdoors");
+            cache.read();
 
-            FloatingActionButton fab = layout.findViewById(id);
+            JSONObject cacheData = new JSONObject(cache.getData());
 
-            fab.setOnClickListener(new DataFragmentOnClickListener(this.getActivity(), field.getName(), displayData));
+            String rawData = cacheData.toString();
 
-            Log.d("Attached onClickListener for FloatingActionButton " + field.getName() + "successfully.");
+            for (String functionName : LambdaFunctions.getFunctionNames())
+            {
+                int id = getResources().getIdentifier(functionName, "id", "com.thoreaudesign.weatheroutdoors");
+
+                FloatingActionButton fab = layout.findViewById(id);
+
+                if(rawData == null)
+                {
+                    rawData = "Loading weather data...";
+                }
+                else
+                {
+                    rawData = cacheData.getJSONObject(functionName).toString();
+                }
+
+                fab.setOnClickListener(new DataFragmentOnClickListener(rawData, displayData));
+
+                Log.d("Attached onClickListener for FloatingActionButton " + functionName + "successfully.");
+            }
+        }
+        catch (Exception e)
+        {
+            Log.v("Failed to load cache data: " + e.getMessage());
         }
 
         FloatingActionButton clearJson = layout.findViewById(R.id.clearJson);
@@ -59,8 +84,17 @@ public class DataFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
     }
 
-    public static DataFragment newInstance()
+    public static DataFragment newInstance(Cache cache)
     {
-        return new DataFragment();
+        DataFragment fragment = new DataFragment();
+
+        Bundle bundle = new Bundle();
+
+        bundle.putParcelable("cache", cache);
+
+        fragment.setArguments(bundle);
+
+        return fragment;
+
     }
 }

@@ -29,6 +29,7 @@ public class Log
 
     public static String getTag()
     {
+        String prefix = "[WeatherOutdoors] ";
         Throwable t = new Throwable();
 
         String className = t.getStackTrace()[2].getClassName();
@@ -37,10 +38,11 @@ public class Log
 
         if (packageNames.length > 0)
         {
-            return packageNames[packageNames.length - 1] + "::" + t.getStackTrace()[2].getMethodName() + "()";
-        } else
+            return prefix + packageNames[packageNames.length - 1] + "::" + t.getStackTrace()[2].getMethodName() + "()";
+        }
+        else
         {
-            return className + "::" + t.getStackTrace()[2].getMethodName() + "()";
+            return prefix + className + "::" + t.getStackTrace()[2].getMethodName() + "()";
         }
     }
 }

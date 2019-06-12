@@ -1,20 +1,24 @@
 package com.thoreaudesign.weatheroutdoors.aws;
 
-import com.thoreaudesign.weatheroutdoors.*;
 import android.os.AsyncTask;
+
 import com.amazonaws.mobileconnectors.lambdainvoker.LambdaFunctionException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.thoreaudesign.weatheroutdoors.Cache;
+import com.thoreaudesign.weatheroutdoors.Log;
 
 public class AsyncRequest extends AsyncTask<RequestParams, Void, String>
 {
     private String functionName;
     private RequestTemplate requestTemplate;
+    private Cache cache;
 
-    public AsyncRequest(RequestTemplate requestTemplate, String functionName)
+    public AsyncRequest(RequestTemplate requestTemplate, String functionName, Cache cache)
     {
         this.requestTemplate = requestTemplate;
         this.functionName = functionName;
+        this.cache = cache;
     }
 
     private RequestTemplate getRequestTemplate()
@@ -26,21 +30,33 @@ public class AsyncRequest extends AsyncTask<RequestParams, Void, String>
     protected String doInBackground(RequestParams... params)
     {
         WeatherInterface weatherInterface =
-            AsyncRequest.this.getRequestTemplate().getLambdaFactory().build(WeatherInterface.class);
+            this.getRequestTemplate().getLambdaFactory().build(WeatherInterface.class);
 
         try
         {
             String functionName = AsyncRequest.this.functionName;
 
+            Log.v("Submitting request for " + functionName + ".");
+
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-            return gson.toJson(AsyncRequest.this.getRequestTemplate().getLambdaResponse(weatherInterface, functionName, params));
+            Object response = this.getRequestTemplate().getLambdaResponse(weatherInterface, functionName, params);
+
+            String data = gson.toJson(response);
+
+            Log.v("Successfully obtained data from AWS Lambda '" + functionName + ".'");
+
+            this.cache.setData(data);
+
+            return data;
         }
         catch (LambdaFunctionException lfe)
         {
-            String error = "Failed to invoke " + this.functionName + " API...\n";
-            Log.e(error + lfe.getMessage());
-            return error;
+            Log.v("Failed to invoke AWS Lambda function '" + this.functionName + ".'");
+            String exception = lfe.getMessage();
+            Log.d(exception);
+            Log.v(lfe.getStackTrace().toString());
+            return exception;
         }
         catch (Exception e)
         {
@@ -50,18 +66,9 @@ public class AsyncRequest extends AsyncTask<RequestParams, Void, String>
     }
 
     @Override
-    protected void onPreExecute()
+    protected void onPostExecute(String data)
     {
-        //Toast.makeText(this.getRequestTemplate().getCurrentActivity().getBaseContext(), "Loading weather data...", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    protected void onPostExecute(String result)
-    {
-        CacheController cache = new CacheController(this.getRequestTemplate().getCurrentActivity());
-
-        cache.write(this.functionName, result);
-
-        Log.i("Wrote weather data for service '" + this.functionName + "' to cache.");
+        this.cache.setData(data);
+        this.cache.write();
     }
 }

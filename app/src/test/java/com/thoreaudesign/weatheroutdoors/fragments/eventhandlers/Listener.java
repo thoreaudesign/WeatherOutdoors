@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
 
-import com.thoreaudesign.weatheroutdoors.CacheController;
+import com.thoreaudesign.weatheroutdoors.Cache;
 
 public class Listener implements View.OnClickListener
 {
@@ -22,7 +22,7 @@ public class Listener implements View.OnClickListener
     @Override
     public void onClick(View view)
     {
-        CacheController cache = new CacheController(this.currentActivity);
+        Cache cache = new Cache(this.currentActivity);
 
         String data = cache.read(this.lambda);
 

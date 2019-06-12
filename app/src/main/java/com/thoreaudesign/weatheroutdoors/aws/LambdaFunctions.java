@@ -1,16 +1,16 @@
 package com.thoreaudesign.weatheroutdoors.aws;
 
-import java.lang.reflect.Field;
-
 public class LambdaFunctions
 {
-    public static final String darksky = "darksky";
-    public static final String metocean = "metocean";
-    public static final String stormglass = "stormglass";
-    public static final String stormglass_astro = "stormglass_astro";
-
-    public Field[] getAll()
+    public static String[] getFunctionNames()
     {
-        return this.getClass().getDeclaredFields();
+        String[] names = new String[4];
+
+        names[0] = "darksky";
+        names[1] = "metocean";
+        names[2] = "stormglass";
+        names[3] = "stormglass_astro";
+
+        return names;
     }
 }

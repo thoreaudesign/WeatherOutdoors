@@ -1,10 +1,10 @@
 package com.thoreaudesign.weatheroutdoors;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -12,41 +12,28 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
-import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.widget.Toast;
 
-import com.amazonaws.mobileconnectors.lambdainvoker.*;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.lambdainvoker.LambdaFunctionException;
+import com.amazonaws.mobileconnectors.lambdainvoker.LambdaInvokerFactory;
 import com.amazonaws.regions.Regions;
-
-import com.thoreaudesign.weatheroutdoors.fragments.*;
-import com.thoreaudesign.weatheroutdoors.aws.*;
-
-import java.lang.reflect.Field;
+import com.thoreaudesign.weatheroutdoors.aws.AsyncRequest;
+import com.thoreaudesign.weatheroutdoors.aws.RequestParams;
+import com.thoreaudesign.weatheroutdoors.aws.RequestTemplate;
+import com.thoreaudesign.weatheroutdoors.fragments.DataFragment;
 
 public class Weather extends FragmentActivity
 {
     private int REQUEST_RESULT_FINE;
     private int REQUEST_RESULT_COARSE;
+    private long CACHE_LIFE_MILLIS = 60 * 60 * 1000;
 
-    private LambdaInvokerFactory getLambdaInvokerFactory(CognitoCachingCredentialsProvider provider)
-    {
-        return new LambdaInvokerFactory(
-                Weather.this,
-                Regions.US_EAST_1,
-                provider
-        );
-    }
+    private ViewPager mViewPager;
 
-    private CognitoCachingCredentialsProvider getCredentialsProvider()
-    {
-        return new CognitoCachingCredentialsProvider(
-                Weather.this,
-                "us-east-1:710ef06b-950f-44d4-8b5b-dbd630484d1c",
-                Regions.US_EAST_1
-        );
-    }
+    private Cache cache;
+
+    private AsyncRequest lambdaRequest;
 
     private void verifyPermissions()
     {
@@ -64,13 +51,23 @@ public class Weather extends FragmentActivity
 
         Location location = gps.getLocation();
 
-        if(location == null)
+        return location;
+    }
+
+    private boolean verifyCache()
+    {
+        Cache cache = this.getCache();
+
+        Log.v("Cache status of " + cache.getName() + ": " + cache.exists());
+
+        if(cache.exists())
         {
-            throw new RuntimeException("Failed to obatin GPS coordinates from device.");
+            Log.v(cache.getName() + " data: \n" + cache.getData());
+            return true;
         }
         else
         {
-            return location;
+            return false;
         }
     }
 
@@ -86,6 +83,79 @@ public class Weather extends FragmentActivity
         }
     }
 
+    private LambdaInvokerFactory getLambdaInvokerFactory(CognitoCachingCredentialsProvider provider)
+    {
+        return new LambdaInvokerFactory(
+                Weather.this.getApplicationContext(),
+                Regions.US_EAST_1,
+                provider
+        );
+    }
+
+    private CognitoCachingCredentialsProvider getCredentialsProvider()
+    {
+        return new CognitoCachingCredentialsProvider(
+                Weather.this.getApplicationContext(),
+                "us-east-1:710ef06b-950f-44d4-8b5b-dbd630484d1c",
+                Regions.US_EAST_1
+        );
+    }
+
+    public Cache getCache()
+    {
+        return this.cache;
+    }
+
+    public void setCache(Cache cache)
+    {
+        this.cache = cache;
+    }
+
+    private void getWeatherData()
+    {
+        Location location = this.getLocation();
+
+        if (location == null)
+        {
+            throw new RuntimeException("Failed to obatin GPS coordinates from device.");
+        }
+        else
+        {
+            Log.d("Successfully created Location object.");
+
+            String lat = Double.toString(location.getLatitude());
+            Log.i("Latitude: " + lat + ".");
+
+            String lon = Double.toString(location.getLongitude());
+            Log.i("Longitude: " + lon + ".");
+
+            String lambdaName = "weatheroutdoors";
+
+            try
+            {
+                LambdaInvokerFactory factory = this.getLambdaInvokerFactory(this.getCredentialsProvider());
+
+                RequestParams params = new RequestParams(lat, lon);
+
+                RequestTemplate requestTemplate = new RequestTemplate(factory);
+
+                this.lambdaRequest = new AsyncRequest(requestTemplate, lambdaName, this.getCache());
+
+                lambdaRequest.execute(params);
+
+                Log.v("AsyncTask complete!");
+            }
+            catch (LambdaFunctionException lfe)
+            {
+                Log.v("Failed to invoke AWS Lambda function '" + this.cache.getName() + ".'");
+            }
+            catch (Exception e)
+            {
+                Log.e("Exception ocurred running lambda: " + e.getMessage());
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -94,59 +164,69 @@ public class Weather extends FragmentActivity
 
         setContentView(R.layout.activity_main);
 
-        CognitoCachingCredentialsProvider credentials = Weather.this.getCredentialsProvider();
-        Log.d("Established AWS CognitoCachingCredentialsProvider.");
-        Log.v(credentials.toString());
-        LambdaInvokerFactory factory = Weather.this.getLambdaInvokerFactory(credentials);
-        Log.d("Established AWS LambdaInvokerFactory.");
-        Log.v(factory.toString());
+        String cacheName = "weatheroutdoors";
 
-        try
+        Cache cache = new Cache(this.getCacheDir(), cacheName);
+
+        setCache(cache);
+
+        Log.v("Checking weather data cache...");
+
+        if(!cache.exists())
         {
-            Location location = this.getLocation();
-            Log.d("Successfully created Location object.");
+            Log.v("Cache not set. Retrieving weather data from source.");
 
-            String lat = Double.toString(location.getLatitude());
-            Log.i("Latitude: " + lat + ".");
-            String lon = Double.toString(location.getLongitude());
-            Log.i("Longitude: " + lon + ".");
+            getWeatherData();
+        }
+        else
+        {
+            Log.v("Cache is set. Retrieving saved weather data.");
 
-            RequestParams params = new RequestParams(Double.toString(location.getLatitude()), Double.toString(location.getLongitude()));
-            Log.d("Successfully created RequestParams object.");
-            Log.v(params.toString());
-
-            LambdaFunctions fxns = new LambdaFunctions();
-
-            for(Field field : fxns.getClass().getDeclaredFields())
+            if(this.getCache().getData() == null)
             {
-                String name = field.getName();
+                Log.v("Cache data corrupt... repopulating cache.");
 
-                RequestTemplate request = new RequestTemplate(Weather.this, factory, field.getName(), params);
-                Log.d("Successfull created RequestTemplate object for AWS Lambda function " + name + ".");
-                new AsyncRequest(request, field.getName()).execute(params);
-                Log.d("Successfully submitted AsyncRequest for AWS Lambda function " + name + ".");
+                getWeatherData();
             }
         }
-        catch (RuntimeException e)
-        {
-            Log.e(e.toString());
-            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT);
-        }
-
-        ViewPager pager = findViewById(R.id.viewPager);
-        pager.setAdapter(new WeatherPagerAdapter(getSupportFragmentManager(), this));
 
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    protected void onResume()
+    {
+        mViewPager = findViewById(R.id.viewPager);
+        mViewPager.setAdapter(new WeatherPagerAdapter(this, getSupportFragmentManager()));
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+    }
+
     private class WeatherPagerAdapter extends FragmentPagerAdapter
     {
-        private Activity activity;
+        Weather weather;
 
-        public WeatherPagerAdapter(FragmentManager fm, Activity activity)
+        public WeatherPagerAdapter(Weather weather, FragmentManager fm)
         {
             super(fm);
-            this.activity = activity;
+            this.weather = weather;
         }
 
         @Override
@@ -155,28 +235,35 @@ public class Weather extends FragmentActivity
             switch(pos)
             {
                 case 0:
-                Log.d("Returning Data Fragment...");
-                return DataFragment.newInstance();
+                default:
+                    return DataFragment.newInstance(this.weather.getCache());
+/*                case 1:
 
-                case 1:
-                    Darksky darksky = new Darksky();
+                    String data;
 
-                    String data = darksky.getSummaryData(this.activity);
+                    Cache cache = this.weather.getCache();
 
-                    Log.d("Loaded Summary data successfully.");
-
-                    Log.d("Returning Summary Fragment...");
+                    if(cache.exists() && cache.getData() != null)
+                    {
+                        Log.v("Cache good");
+                        Darksky darksky = new Darksky();
+                        data = darksky.getSummaryData(cache);
+                        Log.v("Darksky data:" + data);
+                    }
+                    else
+                    {
+                        data = "Loading weather data...";
+                    }
 
                     return SummaryFragment.newInstance(data);
-
-                default: return DataFragment.newInstance();
+*/
             }
         }
 
         @Override
         public int getCount()
         {
-            return 2;
+            return 3;
         }
     }
 }

@@ -16,7 +16,7 @@ import com.thoreaudesign.weatheroutdoors.fragments.eventhandlers.DataFragmentOnC
 
 import org.json.JSONObject;
 
-public class DataFragment extends Fragment
+public class DailyForecastFragment extends Fragment
 {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -83,10 +83,10 @@ public class DataFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
     }
 
-    public static DataFragment newInstance(Cache cache)
-//    public static DataFragment newInstance(String cacheDir, String cacheName)
+    public static DailyForecastFragment newInstance(Cache cache)
+//    public static DailyForecastFragment newInstance(String cacheDir, String cacheName)
     {
-        DataFragment fragment = new DataFragment();
+        DailyForecastFragment fragment = new DailyForecastFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString("cacheDir", cache.getDir().toString());

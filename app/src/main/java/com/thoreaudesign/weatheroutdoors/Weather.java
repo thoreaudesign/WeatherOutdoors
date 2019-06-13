@@ -21,7 +21,7 @@ import com.amazonaws.regions.Regions;
 import com.thoreaudesign.weatheroutdoors.aws.AsyncRequest;
 import com.thoreaudesign.weatheroutdoors.aws.RequestParams;
 import com.thoreaudesign.weatheroutdoors.aws.RequestTemplate;
-import com.thoreaudesign.weatheroutdoors.fragments.DataFragment;
+import com.thoreaudesign.weatheroutdoors.fragments.DailyForecastFragment;
 
 public class Weather extends FragmentActivity
 {
@@ -168,13 +168,13 @@ public class Weather extends FragmentActivity
         }
         else if(this.getCache().getData() == null)
         {
-            Log.v("Cache is empty... re-populating cache.");
+            Log.v("Cache is empty. Re-populating cache.");
 
             getWeatherData();
         }
         else if(now - lastModified > this.CACHE_LIFE_MILLIS)
         {
-            Log.v("Cache is out-of-date... re-populating cache.");
+            Log.v("Cache is out-of-date. Re-populating cache.");
 
             getWeatherData();
         }
@@ -223,9 +223,12 @@ public class Weather extends FragmentActivity
         {
             switch(pos)
             {
+                /*
+                 * HomeFragment
+                 */
                 case 0:
                 default:
-                    return DataFragment.newInstance(this.weather.getCache());
+                    return DailyForecastFragment.newInstance(this.weather.getCache());
 /*                case 1:
 
                     String data;

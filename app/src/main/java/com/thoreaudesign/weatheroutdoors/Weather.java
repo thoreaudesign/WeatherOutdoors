@@ -22,7 +22,8 @@ import com.thoreaudesign.weatheroutdoors.aws.AsyncRequest;
 import com.thoreaudesign.weatheroutdoors.aws.RequestParams;
 import com.thoreaudesign.weatheroutdoors.aws.RequestTemplate;
 import com.thoreaudesign.weatheroutdoors.fragments.DailyForecastFragment;
-import com.thoreaudesign.weatheroutdoors.fragments.HomeFragment;
+import com.thoreaudesign.weatheroutdoors.fragments.LunarForecastFragment;
+import com.thoreaudesign.weatheroutdoors.fragments.MarineForecastFragment;
 
 public class Weather extends FragmentActivity
 {
@@ -224,14 +225,13 @@ public class Weather extends FragmentActivity
         {
             switch(pos)
             {
-                /*
-                 * HomeFragment
-                 */
                 case 0:
                 default:
                     return DailyForecastFragment.newInstance(this.weather.getCache());
                 case 1:
-                    return HomeFragment.newInstance();
+                    return MarineForecastFragment.newInstance();
+                case 2:
+                    return LunarForecastFragment.newInstance();
 /*
 
                     String data;
@@ -258,7 +258,7 @@ public class Weather extends FragmentActivity
         @Override
         public int getCount()
         {
-            return 1;
+            return 3;
         }
     }
 }

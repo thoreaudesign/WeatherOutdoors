@@ -1,82 +1,62 @@
 package com.thoreaudesign.weatheroutdoors.fragments;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ScrollView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.thoreaudesign.weatheroutdoors.Cache;
-import com.thoreaudesign.weatheroutdoors.Log;
 import com.thoreaudesign.weatheroutdoors.R;
-import com.thoreaudesign.weatheroutdoors.aws.LambdaFunctions;
-import com.thoreaudesign.weatheroutdoors.fragments.eventhandlers.DataFragmentOnClickListener;
+import com.thoreaudesign.weatheroutdoors.jsonTypes.Darksky.Darksky;
 
 import org.json.JSONObject;
 
 public class DailyForecastFragment extends Fragment
 {
+    private String dataSource = "darksky";
+
+    private String getDarksyAsString(Cache cache)
+    {
+        String target = new String();
+        try
+        {
+            JSONObject data = new JSONObject();
+            data = new JSONObject(cache.getData());
+            target = data.getString(this.dataSource);
+
+        }
+        catch (Exception e)
+        {
+
+        }
+
+        return target;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         Bundle bundle = this.getArguments();
+
         Cache cache = new Cache(bundle.getString("cacheDir"), bundle.getString("cacheName"));
         cache.read();
 
-        final View layout = inflater.inflate(R.layout.data_fragment, container, false);
+        String jsonString = this.getDarksyAsString(cache);
 
-        TextView displayData = layout.findViewById(R.id.display_data);
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        Darksky data = gson.fromJson(jsonString, Darksky.class);
 
-        displayData.setText("Welcome to Weather Outdoors! Click an icon below to see weather cacheList in JSON format.");
+        final View layout = inflater.inflate(R.layout.daily_forecast_fragment, container, false);
 
-        try
-        {
-            JSONObject cacheData = new JSONObject(cache.getData());
+        ScrollView scrollView = layout.findViewById(R.id.scrollView);
 
-            String rawData = cacheData.toString();
-
-            for (String functionName : LambdaFunctions.getFunctionNames())
-            {
-                int id = getResources().getIdentifier(functionName, "id", "com.thoreaudesign.weatheroutdoors");
-
-                FloatingActionButton fab = layout.findViewById(id);
-
-                if(rawData == null)
-                {
-                    rawData = "Loading weather data...";
-                }
-                else
-                {
-                    rawData = cacheData.getJSONObject(functionName).toString();
-                }
-
-                fab.setOnClickListener(new DataFragmentOnClickListener(rawData, displayData));
-
-                Log.d("Attached onClickListener for FloatingActionButton " + functionName + "successfully.");
-            }
-        }
-        catch (Exception e)
-        {
-            Log.v("Failed to load cache data: " + e.getMessage());
-        }
-
-        FloatingActionButton clearJson = layout.findViewById(R.id.clearJson);
-
-        clearJson.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                TextView displayData = layout.findViewById(R.id.display_data);
-                displayData.setText("");
-            }
-        });
-
-        return layout;
+        return scrollView;
     }
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState)
     {
@@ -84,14 +64,12 @@ public class DailyForecastFragment extends Fragment
     }
 
     public static DailyForecastFragment newInstance(Cache cache)
-//    public static DailyForecastFragment newInstance(String cacheDir, String cacheName)
     {
         DailyForecastFragment fragment = new DailyForecastFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString("cacheDir", cache.getDir().toString());
         bundle.putString("cacheName", cache.getName());
-//        bundle.putParcelable("cacheDir", cacheDir);
 
         fragment.setArguments(bundle);
 

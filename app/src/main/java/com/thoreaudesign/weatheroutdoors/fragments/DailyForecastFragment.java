@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -36,9 +36,11 @@ public class DailyForecastFragment extends DataFragment
 
         final View layout = inflater.inflate(R.layout.daily_forecast_fragment, container, false);
 
-        ScrollView scrollView92 = layout.findViewById(R.id.scrollView);
-
-        return scrollView92;
+        TextView description = (TextView)layout.findViewById(R.id.current_description);
+        description.setText(data.getCurrently().getSummary());
+        TextView degrees = (TextView)layout.findViewById(R.id.current_degrees);
+        degrees.setText(Double.toString(data.getCurrently().getTemperature()));
+        return layout;
     }
     @Override
     public void onActivityCreated(Bundle savedInstanceState)

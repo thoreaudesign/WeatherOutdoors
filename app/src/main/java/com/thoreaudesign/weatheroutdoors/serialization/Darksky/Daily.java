@@ -1,5 +1,5 @@
 
-package com.thoreaudesign.weatheroutdoors.jsonTypes.Darksky;
+package com.thoreaudesign.weatheroutdoors.serialization.Darksky;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Hourly implements Serializable, Parcelable
+public class Daily implements Serializable, Parcelable
 {
 
     @SerializedName("summary")
@@ -27,36 +27,36 @@ public class Hourly implements Serializable, Parcelable
     @SerializedName("data")
     @Expose
 
-    private List<Datum_> data = new ArrayList<Datum_>();
-    public final static Parcelable.Creator<Hourly> CREATOR = new Creator<Hourly>() {
+    private List<Datum__> data = new ArrayList<Datum__>();
+    public final static Parcelable.Creator<Daily> CREATOR = new Creator<Daily>() {
 
 
         @SuppressWarnings({
             "unchecked"
         })
-        public Hourly createFromParcel(Parcel in) {
-            return new Hourly(in);
+        public Daily createFromParcel(Parcel in) {
+            return new Daily(in);
         }
 
-        public Hourly[] newArray(int size) {
-            return (new Hourly[size]);
+        public Daily[] newArray(int size) {
+            return (new Daily[size]);
         }
 
     }
     ;
-    private final static long serialVersionUID = 1088714212528463360L;
+    private final static long serialVersionUID = 8148669332741098316L;
 
-    protected Hourly(Parcel in) {
+    protected Daily(Parcel in) {
         this.summary = ((String) in.readValue((String.class.getClassLoader())));
         this.icon = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.data, (com.thoreaudesign.weatheroutdoors.jsonTypes.Darksky.Datum_.class.getClassLoader()));
+        in.readList(this.data, (com.thoreaudesign.weatheroutdoors.serialization.Darksky.Datum__.class.getClassLoader()));
     }
 
     /**
      * No args constructor for use in serialization
      * 
      */
-    public Hourly() {
+    public Daily() {
     }
 
     /**
@@ -65,7 +65,7 @@ public class Hourly implements Serializable, Parcelable
      * @param icon
      * @param data
      */
-    public Hourly(String summary, String icon, List<Datum_> data) {
+    public Daily(String summary, String icon, List<Datum__> data) {
         super();
         this.summary = summary;
         this.icon = icon;
@@ -80,7 +80,7 @@ public class Hourly implements Serializable, Parcelable
         this.summary = summary;
     }
 
-    public Hourly withSummary(String summary) {
+    public Daily withSummary(String summary) {
         this.summary = summary;
         return this;
     }
@@ -93,20 +93,20 @@ public class Hourly implements Serializable, Parcelable
         this.icon = icon;
     }
 
-    public Hourly withIcon(String icon) {
+    public Daily withIcon(String icon) {
         this.icon = icon;
         return this;
     }
 
-    public List<Datum_> getData() {
+    public List<Datum__> getData() {
         return data;
     }
 
-    public void setData(List<Datum_> data) {
+    public void setData(List<Datum__> data) {
         this.data = data;
     }
 
-    public Hourly withData(List<Datum_> data) {
+    public Daily withData(List<Datum__> data) {
         this.data = data;
         return this;
     }
@@ -126,10 +126,10 @@ public class Hourly implements Serializable, Parcelable
         if (other == this) {
             return true;
         }
-        if ((other instanceof Hourly) == false) {
+        if ((other instanceof Daily) == false) {
             return false;
         }
-        Hourly rhs = ((Hourly) other);
+        Daily rhs = ((Daily) other);
         return new EqualsBuilder().append(summary, rhs.summary).append(icon, rhs.icon).append(data, rhs.data).isEquals();
     }
 

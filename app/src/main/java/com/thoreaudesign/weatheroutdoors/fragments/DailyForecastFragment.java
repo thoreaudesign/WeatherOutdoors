@@ -1,7 +1,6 @@
 package com.thoreaudesign.weatheroutdoors.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,45 +10,30 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.thoreaudesign.weatheroutdoors.Cache;
 import com.thoreaudesign.weatheroutdoors.R;
-import com.thoreaudesign.weatheroutdoors.jsonTypes.Darksky.Darksky;
+import com.thoreaudesign.weatheroutdoors.fragments.eventhandlers.DataFragment;
+import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Darksky;
 
-import org.json.JSONObject;
-
-public class DailyForecastFragment extends Fragment
+public class DailyForecastFragment extends DataFragment
 {
-    private String dataSource = "darksky";
+    private String darksky = "darksky";
 
-    private String getDarksyAsString(Cache cache)
+    private Darksky hydrate(Bundle bundle)
     {
-        String target = new String();
-        try
-        {
-            JSONObject data = new JSONObject();
-            data = new JSONObject(cache.getData());
-            target = data.getString(this.dataSource);
+        Cache cache = new Cache(bundle.getString("cacheDir"), bundle.getString("cacheName"));
+        cache.read();
 
-        }
-        catch (Exception e)
-        {
+        String json = this.getCacheSection(cache, this.darksky);
 
-        }
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
 
-        return target;
+        return gson.fromJson(json, Darksky.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        Bundle bundle = this.getArguments();
-
-        Cache cache = new Cache(bundle.getString("cacheDir"), bundle.getString("cacheName"));
-        cache.read();
-
-        String jsonString = this.getDarksyAsString(cache);
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        Gson gson = gsonBuilder.create();
-        Darksky data = gson.fromJson(jsonString, Darksky.class);
+        Darksky data = this.hydrate(this.getArguments());
 
         final View layout = inflater.inflate(R.layout.daily_forecast_fragment, container, false);
 

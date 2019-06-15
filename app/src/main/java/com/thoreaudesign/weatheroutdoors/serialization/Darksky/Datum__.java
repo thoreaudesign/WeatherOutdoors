@@ -1,5 +1,5 @@
 
-package com.thoreaudesign.weatheroutdoors.jsonTypes.Darksky;
+package com.thoreaudesign.weatheroutdoors.serialization.Darksky;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -18,7 +18,7 @@ public class Datum__ implements Serializable, Parcelable
 
     @SerializedName("time")
     @Expose
-    private long time;
+    private double time;
     @SerializedName("summary")
     @Expose
     private String summary;
@@ -27,10 +27,10 @@ public class Datum__ implements Serializable, Parcelable
     private String icon;
     @SerializedName("sunriseTime")
     @Expose
-    private long sunriseTime;
+    private double sunriseTime;
     @SerializedName("sunsetTime")
     @Expose
-    private long sunsetTime;
+    private double sunsetTime;
     @SerializedName("moonPhase")
     @Expose
     private double moonPhase;
@@ -42,7 +42,7 @@ public class Datum__ implements Serializable, Parcelable
     private double precipIntensityMax;
     @SerializedName("precipIntensityMaxTime")
     @Expose
-    private long precipIntensityMaxTime;
+    private double precipIntensityMaxTime;
     @SerializedName("precipProbability")
     @Expose
     private double precipProbability;
@@ -54,25 +54,25 @@ public class Datum__ implements Serializable, Parcelable
     private double temperatureHigh;
     @SerializedName("temperatureHighTime")
     @Expose
-    private long temperatureHighTime;
+    private double temperatureHighTime;
     @SerializedName("temperatureLow")
     @Expose
     private double temperatureLow;
     @SerializedName("temperatureLowTime")
     @Expose
-    private long temperatureLowTime;
+    private double temperatureLowTime;
     @SerializedName("apparentTemperatureHigh")
     @Expose
     private double apparentTemperatureHigh;
     @SerializedName("apparentTemperatureHighTime")
     @Expose
-    private long apparentTemperatureHighTime;
+    private double apparentTemperatureHighTime;
     @SerializedName("apparentTemperatureLow")
     @Expose
     private double apparentTemperatureLow;
     @SerializedName("apparentTemperatureLowTime")
     @Expose
-    private long apparentTemperatureLowTime;
+    private double apparentTemperatureLowTime;
     @SerializedName("dewPoint")
     @Expose
     private double dewPoint;
@@ -90,19 +90,19 @@ public class Datum__ implements Serializable, Parcelable
     private double windGust;
     @SerializedName("windGustTime")
     @Expose
-    private long windGustTime;
+    private double windGustTime;
     @SerializedName("windBearing")
     @Expose
-    private long windBearing;
+    private double windBearing;
     @SerializedName("cloudCover")
     @Expose
     private double cloudCover;
     @SerializedName("uvIndex")
     @Expose
-    private long uvIndex;
+    private double uvIndex;
     @SerializedName("uvIndexTime")
     @Expose
-    private long uvIndexTime;
+    private double uvIndexTime;
     @SerializedName("visibility")
     @Expose
     private double visibility;
@@ -114,25 +114,25 @@ public class Datum__ implements Serializable, Parcelable
     private double temperatureMin;
     @SerializedName("temperatureMinTime")
     @Expose
-    private long temperatureMinTime;
+    private double temperatureMinTime;
     @SerializedName("temperatureMax")
     @Expose
     private double temperatureMax;
     @SerializedName("temperatureMaxTime")
     @Expose
-    private long temperatureMaxTime;
+    private double temperatureMaxTime;
     @SerializedName("apparentTemperatureMin")
     @Expose
     private double apparentTemperatureMin;
     @SerializedName("apparentTemperatureMinTime")
     @Expose
-    private long apparentTemperatureMinTime;
+    private double apparentTemperatureMinTime;
     @SerializedName("apparentTemperatureMax")
     @Expose
     private double apparentTemperatureMax;
     @SerializedName("apparentTemperatureMaxTime")
     @Expose
-    private long apparentTemperatureMaxTime;
+    private double apparentTemperatureMaxTime;
     public final static Parcelable.Creator<Datum__> CREATOR = new Creator<Datum__>() {
 
 
@@ -285,7 +285,7 @@ public class Datum__ implements Serializable, Parcelable
         this.apparentTemperatureMaxTime = apparentTemperatureMaxTime;
     }
 
-    public long getTime() {
+    public double getTime() {
         return time;
     }
 
@@ -324,7 +324,7 @@ public class Datum__ implements Serializable, Parcelable
         return this;
     }
 
-    public long getSunriseTime() {
+    public double getSunriseTime() {
         return sunriseTime;
     }
 
@@ -337,7 +337,7 @@ public class Datum__ implements Serializable, Parcelable
         return this;
     }
 
-    public long getSunsetTime() {
+    public double getSunsetTime() {
         return sunsetTime;
     }
 
@@ -389,7 +389,7 @@ public class Datum__ implements Serializable, Parcelable
         return this;
     }
 
-    public long getPrecipIntensityMaxTime() {
+    public double getPrecipIntensityMaxTime() {
         return precipIntensityMaxTime;
     }
 
@@ -441,7 +441,7 @@ public class Datum__ implements Serializable, Parcelable
         return this;
     }
 
-    public long getTemperatureHighTime() {
+    public double getTemperatureHighTime() {
         return temperatureHighTime;
     }
 
@@ -467,7 +467,7 @@ public class Datum__ implements Serializable, Parcelable
         return this;
     }
 
-    public long getTemperatureLowTime() {
+    public double getTemperatureLowTime() {
         return temperatureLowTime;
     }
 
@@ -493,7 +493,7 @@ public class Datum__ implements Serializable, Parcelable
         return this;
     }
 
-    public long getApparentTemperatureHighTime() {
+    public double getApparentTemperatureHighTime() {
         return apparentTemperatureHighTime;
     }
 
@@ -519,7 +519,7 @@ public class Datum__ implements Serializable, Parcelable
         return this;
     }
 
-    public long getApparentTemperatureLowTime() {
+    public double getApparentTemperatureLowTime() {
         return apparentTemperatureLowTime;
     }
 
@@ -597,7 +597,7 @@ public class Datum__ implements Serializable, Parcelable
         return this;
     }
 
-    public long getWindGustTime() {
+    public double getWindGustTime() {
         return windGustTime;
     }
 
@@ -610,7 +610,7 @@ public class Datum__ implements Serializable, Parcelable
         return this;
     }
 
-    public long getWindBearing() {
+    public double getWindBearing() {
         return windBearing;
     }
 
@@ -636,7 +636,7 @@ public class Datum__ implements Serializable, Parcelable
         return this;
     }
 
-    public long getUvIndex() {
+    public double getUvIndex() {
         return uvIndex;
     }
 
@@ -649,7 +649,7 @@ public class Datum__ implements Serializable, Parcelable
         return this;
     }
 
-    public long getUvIndexTime() {
+    public double getUvIndexTime() {
         return uvIndexTime;
     }
 
@@ -701,7 +701,7 @@ public class Datum__ implements Serializable, Parcelable
         return this;
     }
 
-    public long getTemperatureMinTime() {
+    public double getTemperatureMinTime() {
         return temperatureMinTime;
     }
 
@@ -727,7 +727,7 @@ public class Datum__ implements Serializable, Parcelable
         return this;
     }
 
-    public long getTemperatureMaxTime() {
+    public double getTemperatureMaxTime() {
         return temperatureMaxTime;
     }
 
@@ -753,7 +753,7 @@ public class Datum__ implements Serializable, Parcelable
         return this;
     }
 
-    public long getApparentTemperatureMinTime() {
+    public double getApparentTemperatureMinTime() {
         return apparentTemperatureMinTime;
     }
 
@@ -779,7 +779,7 @@ public class Datum__ implements Serializable, Parcelable
         return this;
     }
 
-    public long getApparentTemperatureMaxTime() {
+    public double getApparentTemperatureMaxTime() {
         return apparentTemperatureMaxTime;
     }
 

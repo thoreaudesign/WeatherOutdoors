@@ -1,5 +1,5 @@
 
-package com.thoreaudesign.weatheroutdoors.jsonTypes.Darksky;
+package com.thoreaudesign.weatheroutdoors.serialization.Darksky;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -18,7 +18,7 @@ public class Currently implements Serializable, Parcelable
 
     @SerializedName("time")
     @Expose
-    private long time;
+    private double time;
     @SerializedName("summary")
     @Expose
     private String summary;
@@ -27,16 +27,16 @@ public class Currently implements Serializable, Parcelable
     private String icon;
     @SerializedName("nearestStormDistance")
     @Expose
-    private long nearestStormDistance;
+    private double nearestStormDistance;
     @SerializedName("nearestStormBearing")
     @Expose
-    private long nearestStormBearing;
+    private double nearestStormBearing;
     @SerializedName("precipIntensity")
     @Expose
-    private long precipIntensity;
+    private double precipIntensity;
     @SerializedName("precipProbability")
     @Expose
-    private long precipProbability;
+    private double precipProbability;
     @SerializedName("temperature")
     @Expose
     private double temperature;
@@ -60,19 +60,19 @@ public class Currently implements Serializable, Parcelable
     private double windGust;
     @SerializedName("windBearing")
     @Expose
-    private long windBearing;
+    private double windBearing;
     @SerializedName("cloudCover")
     @Expose
     private double cloudCover;
     @SerializedName("uvIndex")
     @Expose
-    private long uvIndex;
+    private double uvIndex;
     @SerializedName("visibility")
     @Expose
     private double visibility;
     @SerializedName("ozone")
     @Expose
-    private long ozone;
+    private double ozone;
     public final static Parcelable.Creator<Currently> CREATOR = new Creator<Currently>() {
 
 
@@ -165,7 +165,7 @@ public class Currently implements Serializable, Parcelable
         this.ozone = ozone;
     }
 
-    public long getTime() {
+    public double getTime() {
         return time;
     }
 
@@ -204,7 +204,7 @@ public class Currently implements Serializable, Parcelable
         return this;
     }
 
-    public long getNearestStormDistance() {
+    public double getNearestStormDistance() {
         return nearestStormDistance;
     }
 
@@ -217,7 +217,7 @@ public class Currently implements Serializable, Parcelable
         return this;
     }
 
-    public long getNearestStormBearing() {
+    public double getNearestStormBearing() {
         return nearestStormBearing;
     }
 
@@ -230,7 +230,7 @@ public class Currently implements Serializable, Parcelable
         return this;
     }
 
-    public long getPrecipIntensity() {
+    public double getPrecipIntensity() {
         return precipIntensity;
     }
 
@@ -243,7 +243,7 @@ public class Currently implements Serializable, Parcelable
         return this;
     }
 
-    public long getPrecipProbability() {
+    public double getPrecipProbability() {
         return precipProbability;
     }
 
@@ -347,7 +347,7 @@ public class Currently implements Serializable, Parcelable
         return this;
     }
 
-    public long getWindBearing() {
+    public double getWindBearing() {
         return windBearing;
     }
 
@@ -373,7 +373,7 @@ public class Currently implements Serializable, Parcelable
         return this;
     }
 
-    public long getUvIndex() {
+    public double getUvIndex() {
         return uvIndex;
     }
 
@@ -399,7 +399,7 @@ public class Currently implements Serializable, Parcelable
         return this;
     }
 
-    public long getOzone() {
+    public double getOzone() {
         return ozone;
     }
 

@@ -1,5 +1,5 @@
 
-package com.thoreaudesign.weatheroutdoors.jsonTypes.Darksky;
+package com.thoreaudesign.weatheroutdoors.serialization.Darksky;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -18,7 +18,7 @@ public class Datum_ implements Serializable, Parcelable
 
     @SerializedName("time")
     @Expose
-    private long time;
+    private double time;
     @SerializedName("summary")
     @Expose
     private String summary;
@@ -54,13 +54,13 @@ public class Datum_ implements Serializable, Parcelable
     private double windGust;
     @SerializedName("windBearing")
     @Expose
-    private long windBearing;
+    private double windBearing;
     @SerializedName("cloudCover")
     @Expose
     private double cloudCover;
     @SerializedName("uvIndex")
     @Expose
-    private long uvIndex;
+    private double uvIndex;
     @SerializedName("visibility")
     @Expose
     private double visibility;
@@ -153,7 +153,7 @@ public class Datum_ implements Serializable, Parcelable
         this.ozone = ozone;
     }
 
-    public long getTime() {
+    public double getTime() {
         return time;
     }
 
@@ -309,7 +309,7 @@ public class Datum_ implements Serializable, Parcelable
         return this;
     }
 
-    public long getWindBearing() {
+    public double getWindBearing() {
         return windBearing;
     }
 
@@ -335,7 +335,7 @@ public class Datum_ implements Serializable, Parcelable
         return this;
     }
 
-    public long getUvIndex() {
+    public double getUvIndex() {
         return uvIndex;
     }
 

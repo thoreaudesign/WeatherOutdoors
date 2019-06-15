@@ -1,5 +1,5 @@
 
-package com.thoreaudesign.weatheroutdoors.jsonTypes.Darksky;
+package com.thoreaudesign.weatheroutdoors.serialization.Darksky;
 
 import android.os.Parcel;
 import android.os.Parcelable;

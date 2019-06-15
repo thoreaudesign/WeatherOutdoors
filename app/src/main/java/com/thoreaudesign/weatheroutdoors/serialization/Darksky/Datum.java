@@ -1,5 +1,5 @@
 
-package com.thoreaudesign.weatheroutdoors.jsonTypes.Darksky;
+package com.thoreaudesign.weatheroutdoors.serialization.Darksky;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -18,7 +18,7 @@ public class Datum implements Serializable, Parcelable
 
     @SerializedName("time")
     @Expose
-    private long time;
+    private double time;
     @SerializedName("precipIntensity")
     @Expose
     private double precipIntensity;
@@ -69,7 +69,7 @@ public class Datum implements Serializable, Parcelable
         this.precipProbability = precipProbability;
     }
 
-    public long getTime() {
+    public double getTime() {
         return time;
     }
 

@@ -1,5 +1,5 @@
 
-package com.thoreaudesign.weatheroutdoors.jsonTypes.Darksky;
+package com.thoreaudesign.weatheroutdoors.serialization.Darksky;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -47,7 +47,7 @@ public class Darksky implements Serializable, Parcelable
     private Flags flags;
     @SerializedName("offset")
     @Expose
-    private long offset;
+    private double offset;
     public final static Parcelable.Creator<Darksky> CREATOR = new Creator<Darksky>() {
 
 
@@ -214,7 +214,7 @@ public class Darksky implements Serializable, Parcelable
         return this;
     }
 
-    public long getOffset() {
+    public double getOffset() {
         return offset;
     }
 

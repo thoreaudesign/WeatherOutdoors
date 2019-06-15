@@ -1,5 +1,5 @@
 
-package com.thoreaudesign.weatheroutdoors.jsonTypes.Darksky;
+package com.thoreaudesign.weatheroutdoors.serialization.Darksky;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -49,7 +49,7 @@ public class Minutely implements Serializable, Parcelable
     protected Minutely(Parcel in) {
         this.summary = ((String) in.readValue((String.class.getClassLoader())));
         this.icon = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.data, (com.thoreaudesign.weatheroutdoors.jsonTypes.Darksky.Datum.class.getClassLoader()));
+        in.readList(this.data, (com.thoreaudesign.weatheroutdoors.serialization.Darksky.Datum.class.getClassLoader()));
     }
 
     /**

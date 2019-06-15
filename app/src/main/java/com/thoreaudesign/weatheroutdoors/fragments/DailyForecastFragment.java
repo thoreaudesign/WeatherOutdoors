@@ -36,9 +36,9 @@ public class DailyForecastFragment extends DataFragment
 
         final View layout = inflater.inflate(R.layout.daily_forecast_fragment, container, false);
 
-        ScrollView scrollView = layout.findViewById(R.id.scrollView);
+        ScrollView scrollView92 = layout.findViewById(R.id.scrollView);
 
-        return scrollView;
+        return scrollView92;
     }
     @Override
     public void onActivityCreated(Bundle savedInstanceState)

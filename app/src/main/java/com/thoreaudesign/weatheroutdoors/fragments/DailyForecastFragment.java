@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.thoreaudesign.weatheroutdoors.Cache;
 import com.thoreaudesign.weatheroutdoors.R;
-import com.thoreaudesign.weatheroutdoors.fragments.eventhandlers.DataFragment;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Darksky;
 
 public class DailyForecastFragment extends DataFragment

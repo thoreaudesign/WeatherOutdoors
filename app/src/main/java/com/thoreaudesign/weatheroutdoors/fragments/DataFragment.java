@@ -1,4 +1,4 @@
-package com.thoreaudesign.weatheroutdoors.fragments.eventhandlers;
+package com.thoreaudesign.weatheroutdoors.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

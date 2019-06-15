@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.thoreaudesign.weatheroutdoors.Cache;
+import com.thoreaudesign.weatheroutdoors.Log;
 import com.thoreaudesign.weatheroutdoors.R;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Darksky;
 
@@ -29,6 +31,23 @@ public class DailyForecastFragment extends DataFragment
         return gson.fromJson(json, Darksky.class);
     }
 
+    public int getIcon(String iconText)
+    {
+        int resource = 0;
+
+        switch(iconText)
+        {
+            case "partly-cloudy-day":
+            case "partly-cloudy-night":
+                resource = R.mipmap.partly_cloudy_foreground;
+
+            case "clear-day":
+                resource = R.mipmap.sunny_foreground;
+        }
+
+        return resource;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -40,6 +59,13 @@ public class DailyForecastFragment extends DataFragment
         description.setText(data.getCurrently().getSummary());
         TextView degrees = (TextView)layout.findViewById(R.id.current_degrees);
         degrees.setText(Double.toString(data.getCurrently().getTemperature()));
+
+        Log.v("Current summary: " + data.getCurrently().getSummary());
+        Log.v("Current icon: " + data.getCurrently().getIcon());
+
+        ImageView icon = (ImageView)layout.findViewById(R.id.current_icon);
+        icon.setImageResource(this.getIcon(data.getCurrently().getIcon()));
+
         return layout;
     }
     @Override

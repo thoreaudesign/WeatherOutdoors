@@ -10,7 +10,6 @@
         android:id="@+id/current_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:text="Hot."
         android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@+id/current_icon"
@@ -26,7 +25,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteY="312dp"
         tools:src="@mipmap/hot_foreground" />
 
     <TextView
@@ -39,4 +37,5 @@
         app:layout_constraintEnd_toEndOf="@+id/current_icon"
         app:layout_constraintStart_toStartOf="@+id/current_icon"
         app:layout_constraintTop_toBottomOf="@+id/current_icon" />
+
 </android.support.constraint.ConstraintLayout>

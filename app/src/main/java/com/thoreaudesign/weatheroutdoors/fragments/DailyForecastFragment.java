@@ -39,7 +39,7 @@ public class DailyForecastFragment extends Fragment implements WeatherFragment
             TextView description = this.layout.findViewById(R.id.current_description);
             description.setText(this.data.getCurrently().getSummary());
             TextView degrees = this.layout.findViewById(R.id.current_degrees);
-            degrees.setText(Double.toString(this.data.getCurrently().getTemperature()));
+            degrees.setText(Double.toString(this.data.getCurrently().getTemperature()) + "\u00B0 F");
 
             Log.v("Current summary: " + this.data.getCurrently().getSummary());
             Log.v("Current icon: " + this.data.getCurrently().getIcon());
@@ -75,11 +75,42 @@ public class DailyForecastFragment extends Fragment implements WeatherFragment
         {
             case "partly-cloudy-day":
             case "partly-cloudy-night":
-                resource = R.mipmap.partly_cloudy_foreground;
+                resource = R.mipmap.mostly_cloudy_foreground;
                 break;
 
             case "clear-day":
+            case "clear-night":
                 resource = R.mipmap.sunny_foreground;
+                break;
+
+            case "rain":
+                resource = R.mipmap.rainy_foreground;
+                break;
+
+            case "snow":
+                resource = R.mipmap.snowy_foreground;
+                break;
+
+            case "sleet":
+                resource = R.mipmap.sleet_foreground;
+                break;
+
+            case "wind":
+                resource = R.mipmap.windy_foreground;
+                break;
+
+            case "fog":
+                resource = R.mipmap.foggy_foreground;
+                break;
+
+            case "cloudy":
+                resource = R.mipmap.cloudy_foreground;
+                break;
+
+            case "hail":
+            case "thunderstorm":
+            case "tornado":
+                resource = R.mipmap.thunderstorms_foreground;
                 break;
         }
 

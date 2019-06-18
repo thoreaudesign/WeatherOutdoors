@@ -90,8 +90,6 @@ public class DailyForecastFragment extends Fragment implements WeatherFragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        this.data = this.hydrate(this.getArguments());
     }
 
     @Override

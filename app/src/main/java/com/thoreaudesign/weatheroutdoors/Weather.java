@@ -106,7 +106,7 @@ public class Weather extends FragmentActivity
     private void populateCache()
     {
         Cache cache = new Cache(this.getCacheDir());
-        cache.delete();
+
         Log.i("Checking weather data cache...");
 
         if(cache.getFile().exists())
@@ -202,6 +202,8 @@ public class Weather extends FragmentActivity
                     Cache cache = new Cache(Weather.this.getCacheDir());
 
                     String data = new Gson().toJson(response);
+
+                    Log.v(data);
 
                     int numFailures = Weather.this.validateResponse(data);
 

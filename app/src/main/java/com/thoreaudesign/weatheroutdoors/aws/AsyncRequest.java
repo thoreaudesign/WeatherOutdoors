@@ -41,7 +41,6 @@ public class AsyncRequest extends AsyncTask<RequestParams, Integer, Object>
     @Override
     protected Object doInBackground(RequestParams... params)
     {
-        Log.v("Start doInBackground.");
         WeatherInterface weatherInterface =
             this.getRequestTemplate().getLambdaFactory().build(WeatherInterface.class);
 

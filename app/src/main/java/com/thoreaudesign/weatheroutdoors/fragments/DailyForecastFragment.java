@@ -1,6 +1,7 @@
 package com.thoreaudesign.weatheroutdoors.fragments;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +13,53 @@ import com.google.gson.GsonBuilder;
 import com.thoreaudesign.weatheroutdoors.Cache;
 import com.thoreaudesign.weatheroutdoors.Log;
 import com.thoreaudesign.weatheroutdoors.R;
+import com.thoreaudesign.weatheroutdoors.aws.ServiceName;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Darksky;
 
-public class DailyForecastFragment extends DataFragment
+public class DailyForecastFragment extends Fragment implements WeatherFragment
 {
-    private String darksky = "darksky";
+    private Darksky data;
+    public View layout;
+
+    @Override
+    public void update()
+    {
+        this.data = this.hydrate(this.getArguments());
+
+        if(data == null)
+        {
+            Log.e("Failed to update fragment. Cache data null.");
+        }
+        else if(this.layout == null)
+        {
+            Log.e("Failed to update fragment. Layout unavailable.");
+        }
+        else
+        {
+            TextView description = this.layout.findViewById(R.id.current_description);
+            description.setText(this.data.getCurrently().getSummary());
+            TextView degrees = this.layout.findViewById(R.id.current_degrees);
+            degrees.setText(Double.toString(this.data.getCurrently().getTemperature()));
+
+            Log.v("Current summary: " + this.data.getCurrently().getSummary());
+            Log.v("Current icon: " + this.data.getCurrently().getIcon());
+
+            ImageView icon = this.layout.findViewById(R.id.current_icon);
+            icon.setImageResource(this.getIcon(this.data.getCurrently().getIcon()));
+        }
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState)
+    {
+        super.onActivityCreated(savedInstanceState);
+    }
 
     private Darksky hydrate(Bundle bundle)
     {
-        Cache cache = new Cache(bundle.getString("cacheDir"), bundle.getString("cacheName"));
-        cache.read();
+        Cache cache = new Cache(bundle.getString("cacheDir"));
 
-        String json = this.getCacheSection(cache, this.darksky);
+        String json = cache.getSection(ServiceName.DARKSKY.toLower());
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
@@ -40,51 +76,41 @@ public class DailyForecastFragment extends DataFragment
             case "partly-cloudy-day":
             case "partly-cloudy-night":
                 resource = R.mipmap.partly_cloudy_foreground;
+                break;
 
             case "clear-day":
                 resource = R.mipmap.sunny_foreground;
+                break;
         }
 
         return resource;
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+
+        this.data = this.hydrate(this.getArguments());
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        Darksky data = this.hydrate(this.getArguments());
+        this.layout = inflater.inflate(R.layout.daily_forecast_fragment, container, false);
+        this.update();
+        return this.layout;
 
-        final View layout = inflater.inflate(R.layout.daily_forecast_fragment, container, false);
-
-        TextView description = (TextView)layout.findViewById(R.id.current_description);
-        description.setText(data.getCurrently().getSummary());
-        TextView degrees = (TextView)layout.findViewById(R.id.current_degrees);
-        degrees.setText(Double.toString(data.getCurrently().getTemperature()));
-
-        Log.v("Current summary: " + data.getCurrently().getSummary());
-        Log.v("Current icon: " + data.getCurrently().getIcon());
-
-        ImageView icon = (ImageView)layout.findViewById(R.id.current_icon);
-        icon.setImageResource(this.getIcon(data.getCurrently().getIcon()));
-
-        return layout;
     }
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState)
-    {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    public static DailyForecastFragment newInstance(Cache cache)
+    public static DailyForecastFragment newInstance(String cacheDir)
     {
         DailyForecastFragment fragment = new DailyForecastFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putString("cacheDir", cache.getDir().toString());
-        bundle.putString("cacheName", cache.getName());
+        bundle.putString("cacheDir", cacheDir);
 
         fragment.setArguments(bundle);
 
         return fragment;
-
     }
 }

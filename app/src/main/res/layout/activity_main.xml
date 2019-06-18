@@ -32,4 +32,11 @@
         android:id="@+id/viewPager"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
+    <ProgressBar
+      android:id="@+id/progress"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:progress="25"
+      android:layout_gravity="center"
+      android:visibility="gone"/>
 </android.support.design.widget.CoordinatorLayout>

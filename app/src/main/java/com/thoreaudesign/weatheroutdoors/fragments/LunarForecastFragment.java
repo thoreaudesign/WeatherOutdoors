@@ -1,6 +1,7 @@
 package com.thoreaudesign.weatheroutdoors.fragments;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,18 +9,19 @@ import android.view.ViewGroup;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.thoreaudesign.weatheroutdoors.Cache;
+import com.thoreaudesign.weatheroutdoors.aws.ServiceName;
 import com.thoreaudesign.weatheroutdoors.serialization.StormglassAstro.StormglassAstro;
 
-public class LunarForecastFragment extends DataFragment
+public class LunarForecastFragment extends Fragment
 {
     private String stormglassAstro = "stormglass_astro";
 
     private StormglassAstro hydrate(Bundle bundle)
     {
-        Cache cache = new Cache(bundle.getString("cacheDir"), bundle.getString("cacheName"));
+        Cache cache = new Cache(bundle.getString("cacheDir"));
         cache.read();
 
-        String json = this.getCacheSection(cache, this.stormglassAstro);
+        String json = cache.getSection(ServiceName.STORMGLASSASTRO.toLower());
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();

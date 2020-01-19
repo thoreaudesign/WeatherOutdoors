@@ -13,29 +13,46 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.widget.ProgressBar;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
-import com.amazonaws.mobileconnectors.lambdainvoker.LambdaFunctionException;
 import com.amazonaws.mobileconnectors.lambdainvoker.LambdaInvokerFactory;
 import com.amazonaws.regions.Regions;
+import com.google.gson.Gson;
 import com.thoreaudesign.weatheroutdoors.aws.AsyncRequest;
 import com.thoreaudesign.weatheroutdoors.aws.RequestParams;
 import com.thoreaudesign.weatheroutdoors.aws.RequestTemplate;
+import com.thoreaudesign.weatheroutdoors.aws.ServiceName;
 import com.thoreaudesign.weatheroutdoors.fragments.DailyForecastFragment;
-import com.thoreaudesign.weatheroutdoors.fragments.LunarForecastFragment;
-import com.thoreaudesign.weatheroutdoors.fragments.MarineForecastFragment;
+import com.thoreaudesign.weatheroutdoors.fragments.WeatherFragment;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
 
 public class Weather extends FragmentActivity
 {
     private int REQUEST_RESULT_FINE;
     private int REQUEST_RESULT_COARSE;
+
     private long CACHE_LIFE_MILLIS = 30 * 60 * 1000;
+    public static final String CACHE_NAME = "weatheroutdoors";
 
     private ViewPager mViewPager;
+    private AsyncRequest lambdaRequest;
 
     private Cache cache;
 
-    private AsyncRequest lambdaRequest;
+    public Cache getCache()
+    {
+        return cache;
+    }
+
+    public void setCache(Cache cache)
+    {
+        this.cache = cache;
+    }
 
     private void verifyPermissions()
     {
@@ -86,14 +103,69 @@ public class Weather extends FragmentActivity
         );
     }
 
-    public Cache getCache()
+    private void populateCache()
     {
-        return this.cache;
+        Cache cache = new Cache(this.getCacheDir());
+
+        Log.i("Checking weather data cache...");
+
+        if(cache.getFile().exists())
+        {
+            long now = System.currentTimeMillis();
+            long lastModified = cache.getFile().lastModified();
+
+            Log.v("Current time: " + now);
+            Log.v("Last modified: " + lastModified);
+
+            Log.v("Filesize: " + cache.getFile().length());
+
+            if(now - lastModified > this.CACHE_LIFE_MILLIS)
+            {
+                Log.i("Cache is out-of-date. Re-populating cache.");
+
+                getWeatherData();
+            }
+            else
+            {
+                Log.i("Cache is current.");
+            }
+        }
+        else
+        {
+            Log.i("Cache not set. Retrieving weather data from source.");
+
+            getWeatherData();
+        }
     }
 
-    public void setCache(Cache cache)
+    private int validateResponse(String response)
     {
-        this.cache = cache;
+        int numFailures = 0;
+
+        try
+        {
+            JSONObject data = new JSONObject(response);
+
+            for(ServiceName value : ServiceName.values())
+            {
+                if (data.has(value.toLower()))
+                {
+                    continue;
+                }
+                else
+                {
+                    numFailures++;
+                    throw new JSONException("Lambda function returned invalid data from service '" + value.toLower() + ".'");
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Log.e(e.getMessage());
+            Log.v(response);
+        }
+
+        return numFailures;
     }
 
     private void getWeatherData()
@@ -114,27 +186,66 @@ public class Weather extends FragmentActivity
             String lon = Double.toString(location.getLongitude());
             Log.i("Longitude: " + lon + ".");
 
-            String lambdaName = "weatheroutdoors";
 
-            try
+            ProgressBar progress = findViewById(R.id.progress);
+            LambdaInvokerFactory factory = this.getLambdaInvokerFactory(this.getCredentialsProvider());
+            RequestParams params = new RequestParams(lat, lon);
+            RequestTemplate requestTemplate = new RequestTemplate(factory);
+
+            this.lambdaRequest = new AsyncRequest(requestTemplate, this.getCacheDir().toString(), progress);
+
+            this.lambdaRequest.setListener(new AsyncRequest.Listener()
             {
-                LambdaInvokerFactory factory = this.getLambdaInvokerFactory(this.getCredentialsProvider());
+                @Override
+                public void onTaskResult(Object response)
+                {
+                    Cache cache = new Cache(Weather.this.getCacheDir());
 
-                RequestParams params = new RequestParams(lat, lon);
+                    String data = new Gson().toJson(response);
 
-                RequestTemplate requestTemplate = new RequestTemplate(factory);
+                    Log.v(data);
 
-                this.lambdaRequest = new AsyncRequest(requestTemplate, lambdaName, this.getCache());
+                    int numFailures = Weather.this.validateResponse(data);
 
-                lambdaRequest.execute(params);
-            }
-            catch (LambdaFunctionException lfe)
+                    if(numFailures > 0)
+                    {
+                        cache.getFile().setLastModified(System.currentTimeMillis());
+                        Log.e("Lambda response failed validation. Updated lastModified date of cache. Data not updated.");
+                    }
+                    else
+                    {
+                        cache.setData(data);
+                        if(cache.write())
+                        {
+                            Log.i("Lambda response succeeeded. Updated cache with latest data.");
+                        }
+                        else
+                        {
+                            Log.e("Failed to write cache data.");
+                        }
+                    }
+
+                    Weather.this.updateFragments();
+
+                }
+            });
+
+            this.lambdaRequest.execute(params);
+        }
+    }
+
+    public void updateFragments()
+    {
+        List<Fragment> allFragments = getSupportFragmentManager().getFragments();
+        if (allFragments == null || allFragments.isEmpty())
+        {
+            return;
+        }
+        for (Fragment fragment : allFragments)
+        {
+            if (fragment.isVisible())
             {
-                Log.v("Failed to invoke AWS Lambda function '" + this.cache.getName() + ".'");
-            }
-            catch (Exception e)
-            {
-                Log.e("Exception ocurred running lambda: " + e.getMessage());
+                ((WeatherFragment) fragment).update();
             }
         }
     }
@@ -142,46 +253,14 @@ public class Weather extends FragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        if(savedInstanceState == null)
-            verifyPermissions();
-
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String cacheName = "weatheroutdoors";
-
-        Cache cache = new Cache(this.getCacheDir(), cacheName);
-        setCache(cache);
-        cache.read();
-
-        Log.v("Checking weather data cache...");
-
-        long now = System.currentTimeMillis();
-        long lastModified = this.getCache().getCache().lastModified();
-
-        Log.v("Current time: " + now);
-        Log.v("Last modified: " + lastModified);
-        Log.v("Filesize: " + this.getCache().getCache().length());
-
-        if(!cache.exists())
+        if(savedInstanceState == null)
         {
-            Log.v("Cache not set. Retrieving weather data from source.");
-
-            getWeatherData();
+            verifyPermissions();
+            populateCache();
         }
-        else if(this.getCache().getData() == null)
-        {
-            Log.v("Cache is empty. Re-populating cache.");
-
-            getWeatherData();
-        }
-        else if(now - lastModified > this.CACHE_LIFE_MILLIS)
-        {
-            Log.v("Cache is out-of-date. Re-populating cache.");
-
-            getWeatherData();
-        }
-
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -201,6 +280,10 @@ public class Weather extends FragmentActivity
     @Override
     protected void onStop()
     {
+        if(this.lambdaRequest != null)
+        {
+            this.lambdaRequest.cancel(true);
+        }
         super.onStop();
     }
 
@@ -227,16 +310,16 @@ public class Weather extends FragmentActivity
             {
                 case 0:
                 default:
-                    return DailyForecastFragment.newInstance(this.weather.getCache());
+                    return DailyForecastFragment.newInstance(this.weather.getCacheDir().toString());
+/*
                 case 1:
                     return MarineForecastFragment.newInstance();
                 case 2:
                     return LunarForecastFragment.newInstance();
-/*
 
                     String data;
 
-                    Cache cache = this.weather.getCache();
+                    Cache cache = this.weather.getFile();
 
                     if(cache.exists() && cache.getData() != null)
                     {
@@ -258,7 +341,7 @@ public class Weather extends FragmentActivity
         @Override
         public int getCount()
         {
-            return 3;
+            return 1;
         }
     }
 }

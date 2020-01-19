@@ -16,7 +16,7 @@ public class RequestTemplate
         return this.factory;
     }
 
-    public Object getLambdaResponse(WeatherInterface weatherInterface, String lambdaFunctionName, RequestParams... params) throws Exception
+    public Object getLambdaResponse(WeatherInterface weatherInterface, RequestParams... params) throws Exception
     {
         return weatherInterface.weatheroutdoors(params[0]);
     }

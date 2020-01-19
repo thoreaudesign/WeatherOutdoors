@@ -1,5 +1,8 @@
 package com.thoreaudesign.weatheroutdoors;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,47 +13,51 @@ import java.io.IOException;
 //public class Cache implements Parcelable
 public class Cache
 {
-    private File cache;
+    private File file;
     private File dir;
-    private String name;
+    private String name = Weather.CACHE_NAME;
     private String data;
 
-//    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-//        public Cache createFromParcel(Parcel in) {
-//            return new Cache(in);
-//        }
-//
-//        public Cache[] newArray(int size) {
-//            return new Cache[size];
-//        }
-//    };
-//
-//    public Cache(Parcel in)
-//    {
-//        this.dir = new File(in.readString());
-//        this.cache = new File(in.readString());
-//        this.name = in.readString();
-//        this.data = in.readString();
-//    }
-
-    public Cache(String dir, String name)
+    public Cache(String dir)
     {
         this.dir = new File(dir);
-        this.name = name;
-        this.cache = new File(dir, name);
+        this.file = new File(dir, name);
     }
 
-    public Cache(File dir, String name)
+    public Cache(File dir)
     {
         this.dir =  dir;
-        this.name = name;
-        this.cache = new File(dir, name);
+        this.file = new File(dir, name);
         this.data = null;
     }
 
-    public File getCache()
+    public String getSection(String name)
     {
-        return this.cache;
+        String section = null;
+
+        if(this.exists())
+        {
+            this.read();
+
+            try
+            {
+                JSONObject json = new JSONObject(this.getData());
+
+                section = json.getString(name);
+            }
+            catch (JSONException e)
+            {
+                Log.e("Failed to parse section '" + name + "' from JSON cache.");
+                throw new RuntimeException(e);
+            }
+        }
+
+        return section;
+    }
+
+    public File getFile()
+    {
+        return this.file;
     }
 
     public File getDir()
@@ -85,18 +92,18 @@ public class Cache
 
     public boolean exists()
     {
-        return this.getCache().exists();
+        return this.getFile().exists();
     }
 
     public boolean write()
     {
         try
         {
-            FileWriter writer = new FileWriter(this.getCache());
+            FileWriter writer = new FileWriter(this.getFile());
             writer.write(this.getData());
             writer.close();
 
-            Log.i("'" + this.getName() + "' cache written: " + this.getCache().getAbsolutePath());
+            Log.i("'" + this.getName() + "' file written: " + this.getFile().getAbsolutePath());
 
             return true;
         }
@@ -113,7 +120,7 @@ public class Cache
 
         try
         {
-            BufferedReader buffer = new BufferedReader(new FileReader(this.getCache()));
+            BufferedReader buffer = new BufferedReader(new FileReader(this.getFile()));
 
             String line = buffer.readLine();
 
@@ -123,7 +130,7 @@ public class Cache
                  line = buffer.readLine();
             }
 
-            Log.i("'" + this.getName() + "' cache read: " + this.getCache().getAbsolutePath());
+            Log.i("'" + this.getName() + "' file read: " + this.getFile().getAbsolutePath());
 
             this.setData(builder.toString());
 
@@ -143,48 +150,31 @@ public class Cache
 
     public boolean delete()
     {
-        String path = this.getCache().getAbsolutePath();
+        String path = this.getFile().getAbsolutePath();
 
-        if(this.getCache().exists())
+        if(this.getFile().exists())
         {
-            if (this.getCache().delete())
+            if (this.getFile().delete())
             {
-                Log.i("'" + this.getName() + "' cache deleted: " + path);
+                Log.i("'" + this.getName() + "' file deleted: " + path);
                 return true;
             }
             else
             {
-                Log.i("Failed to delete '" + this.getName() + "' cache: " + path);
+                Log.i("Failed to delete '" + this.getName() + "' file: " + path);
                 return false;
             }
         }
         else
         {
-            Log.i("Unable to delete '" + this.getName() + "' cache - does not exist: " + path);
+            Log.i("Unable to delete '" + this.getName() + "' file - does not exist: " + path);
             return false;
         }
     }
 
     public String toString()
     {
-        String cache = "Location: " + this.getCache().getAbsolutePath() + "\n" +
-                       "Data:\n" +
-                       this.getData();
-        return cache;
+        return this.getData();
     }
 
-//    @Override
-//    public int describeContents()
-//    {
-//        return 0;
-//    }
-//
-//    @Override
-//    public void writeToParcel(Parcel dest, int flags)
-//    {
-//        dest.writeString(this.dir.getAbsolutePath());
-//        dest.writeString(this.cache.getAbsolutePath());
-//        dest.writeString(this.name);
-//        dest.writeString(this.data);
-//    }
 }

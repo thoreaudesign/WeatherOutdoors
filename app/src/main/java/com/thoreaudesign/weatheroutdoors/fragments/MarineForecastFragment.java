@@ -8,19 +8,18 @@ import android.view.ViewGroup;
 
 public class MarineForecastFragment extends Fragment
 {
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        return container;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState)
-    {
-        super.onActivityCreated(savedInstanceState);
-    }
     public static MarineForecastFragment newInstance()
     {
         return new MarineForecastFragment();
+    }
+
+    public void onActivityCreated(Bundle paramBundle)
+    {
+        super.onActivityCreated(paramBundle);
+    }
+
+    public View onCreateView(LayoutInflater paramLayoutInflater, ViewGroup paramViewGroup, Bundle paramBundle)
+    {
+        return (View) paramViewGroup;
     }
 }

@@ -1,49 +1,110 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.constraint.ConstraintLayout
     android:id="@+id/current_summary"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.constraint.Guideline
+        android:orientation="horizontal"
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_begin="10.0dp" />
+
+    <android.support.constraint.Guideline
+        android:orientation="vertical"
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_begin="10.0dp" />
 
     <TextView
+        android:textSize="18.0dp"
+        android:textColor="#ffffffff"
         android:id="@+id/current_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/current_icon"
-        app:layout_constraintEnd_toEndOf="@+id/current_icon"
-        app:layout_constraintStart_toStartOf="@+id/current_icon" />
-
-    <ImageView
-        android:id="@+id/current_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <TextView
-        android:id="@+id/current_degrees"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="25sp"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="@+id/current_icon"
+        android:layout_marginTop="8.0dp"
+        android:layout_marginStart="8.0dp"
         app:layout_constraintStart_toStartOf="@+id/current_icon"
         app:layout_constraintTop_toBottomOf="@+id/current_icon" />
 
-    <ExpandableListView
-        android:id="@+id/forecast"
-        android:layout_width="match_parent"
+    <ImageView
+        android:gravity="center"
+        android:id="@+id/current_icon"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/cardview_dark_background"
-        app:layout_constraintTop_toBottomOf="@+id/current_degrees">
-    </ExpandableListView>
+        android:layout_marginTop="8.0dp"
+        android:layout_marginStart="8.0dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
 
+    <TextView
+        android:textSize="25.0dp"
+        android:textColor="#ffffffff"
+        android:id="@+id/current_degrees"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8.0dp"
+        android:layout_marginStart="8.0dp"
+        app:layout_constraintStart_toEndOf="@+id/current_icon"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+    <TextView
+        android:textSize="12.0dp"
+        android:textColor="#ffffffff"
+        android:id="@+id/current_humidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2.0dp"
+        app:layout_constraintStart_toStartOf="@+id/current_degrees"
+        app:layout_constraintTop_toBottomOf="@+id/current_apparent_temp" />
+
+    <TextView
+        android:textSize="12.0dp"
+        android:textStyle="italic"
+        android:textColor="#ffffffff"
+        android:id="@+id/current_apparent_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2.0dp"
+        app:layout_constraintStart_toStartOf="@+id/current_humidity"
+        app:layout_constraintTop_toBottomOf="@+id/current_degrees" />
+
+    <TextView
+        android:textSize="12.0dp"
+        android:textColor="#ffffffff"
+        android:id="@+id/current_wind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2.0dp"
+        app:layout_constraintStart_toStartOf="@+id/current_humidity"
+        app:layout_constraintTop_toBottomOf="@+id/current_humidity" />
+
+    <TextView
+        android:textSize="12.0dp"
+        android:textColor="#ffffffff"
+        android:id="@+id/current_dewpoint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2.0dp"
+        app:layout_constraintStart_toStartOf="@+id/current_wind"
+        app:layout_constraintTop_toBottomOf="@+id/current_wind" />
+
+    <android.support.constraint.Guideline
+        android:orientation="horizontal"
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintGuide_begin="170.0dp" />
+
+    <ExpandableListView
+        android:id="@+id/hourly_forecast"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8.0dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
 </android.support.constraint.ConstraintLayout>

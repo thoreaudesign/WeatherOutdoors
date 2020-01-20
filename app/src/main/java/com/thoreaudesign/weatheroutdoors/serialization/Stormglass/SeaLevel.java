@@ -18,80 +18,91 @@ public class SeaLevel implements Serializable, Parcelable
     @SerializedName("value")
     @Expose
     private double value;
-    public final static Creator<SeaLevel> CREATOR = new Creator<SeaLevel>() {
+    public final static Creator<SeaLevel> CREATOR = new Creator<SeaLevel>()
+    {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
-        public SeaLevel createFromParcel(Parcel in) {
+        public SeaLevel createFromParcel(Parcel in)
+        {
             return new SeaLevel(in);
         }
 
-        public SeaLevel[] newArray(int size) {
+        public SeaLevel[] newArray(int size)
+        {
             return (new SeaLevel[size]);
         }
 
-    }
-    ;
+    };
     private final static long serialVersionUID = 3346828443957783535L;
 
-    protected SeaLevel(Parcel in) {
+    protected SeaLevel(Parcel in)
+    {
         this.source = ((String) in.readValue((String.class.getClassLoader())));
         this.value = ((double) in.readValue((double.class.getClassLoader())));
     }
 
     /**
      * No args constructor for use in serialization
-     * 
      */
-    public SeaLevel() {
+    public SeaLevel()
+    {
     }
 
     /**
-     * 
      * @param source
      * @param value
      */
-    public SeaLevel(String source, double value) {
+    public SeaLevel(String source, double value)
+    {
         super();
         this.source = source;
         this.value = value;
     }
 
-    public String getSource() {
+    public String getSource()
+    {
         return source;
     }
 
-    public void setSource(String source) {
+    public void setSource(String source)
+    {
         this.source = source;
     }
 
-    public SeaLevel withSource(String source) {
+    public SeaLevel withSource(String source)
+    {
         this.source = source;
         return this;
     }
 
-    public double getValue() {
+    public double getValue()
+    {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(double value)
+    {
         this.value = value;
     }
 
-    public SeaLevel withValue(double value) {
+    public SeaLevel withValue(double value)
+    {
         this.value = value;
         return this;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeValue(source);
         dest.writeValue(value);
     }
 
-    public int describeContents() {
-        return  0;
+    public int describeContents()
+    {
+        return 0;
     }
 
 }

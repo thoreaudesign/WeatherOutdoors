@@ -73,25 +73,28 @@ public class Currently implements Serializable, Parcelable
     @SerializedName("ozone")
     @Expose
     private double ozone;
-    public final static Parcelable.Creator<Currently> CREATOR = new Creator<Currently>() {
+    public final static Parcelable.Creator<Currently> CREATOR = new Creator<Currently>()
+    {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
-        public Currently createFromParcel(Parcel in) {
+        public Currently createFromParcel(Parcel in)
+        {
             return new Currently(in);
         }
 
-        public Currently[] newArray(int size) {
+        public Currently[] newArray(int size)
+        {
             return (new Currently[size]);
         }
 
-    }
-    ;
+    };
     private final static long serialVersionUID = -2598816022788777640L;
 
-    protected Currently(Parcel in) {
+    protected Currently(Parcel in)
+    {
         this.time = ((long) in.readValue((long.class.getClassLoader())));
         this.summary = ((String) in.readValue((String.class.getClassLoader())));
         this.icon = ((String) in.readValue((String.class.getClassLoader())));
@@ -115,13 +118,12 @@ public class Currently implements Serializable, Parcelable
 
     /**
      * No args constructor for use in serialization
-     * 
      */
-    public Currently() {
+    public Currently()
+    {
     }
 
     /**
-     * 
      * @param summary
      * @param windGust
      * @param icon
@@ -142,7 +144,8 @@ public class Currently implements Serializable, Parcelable
      * @param uvIndex
      * @param precipProbability
      */
-    public Currently(long time, String summary, String icon, long nearestStormDistance, long nearestStormBearing, long precipIntensity, long precipProbability, double temperature, double apparentTemperature, double dewPoint, double humidity, double pressure, double windSpeed, double windGust, long windBearing, double cloudCover, long uvIndex, double visibility, long ozone) {
+    public Currently(long time, String summary, String icon, long nearestStormDistance, long nearestStormBearing, long precipIntensity, long precipProbability, double temperature, double apparentTemperature, double dewPoint, double humidity, double pressure, double windSpeed, double windGust, long windBearing, double cloudCover, long uvIndex, double visibility, long ozone)
+    {
         super();
         this.time = time;
         this.summary = summary;
@@ -165,276 +168,339 @@ public class Currently implements Serializable, Parcelable
         this.ozone = ozone;
     }
 
-    public double getTime() {
+    public double getTime()
+    {
         return time;
     }
 
-    public void setTime(long time) {
+    public void setTime(long time)
+    {
         this.time = time;
     }
 
-    public Currently withTime(long time) {
+    public Currently withTime(long time)
+    {
         this.time = time;
         return this;
     }
 
-    public String getSummary() {
+    public String getSummary()
+    {
         return summary;
     }
 
-    public void setSummary(String summary) {
+    public void setSummary(String summary)
+    {
         this.summary = summary;
     }
 
-    public Currently withSummary(String summary) {
+    public Currently withSummary(String summary)
+    {
         this.summary = summary;
         return this;
     }
 
-    public String getIcon() {
+    public String getIcon()
+    {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(String icon)
+    {
         this.icon = icon;
     }
 
-    public Currently withIcon(String icon) {
+    public Currently withIcon(String icon)
+    {
         this.icon = icon;
         return this;
     }
 
-    public double getNearestStormDistance() {
+    public double getNearestStormDistance()
+    {
         return nearestStormDistance;
     }
 
-    public void setNearestStormDistance(long nearestStormDistance) {
+    public void setNearestStormDistance(long nearestStormDistance)
+    {
         this.nearestStormDistance = nearestStormDistance;
     }
 
-    public Currently withNearestStormDistance(long nearestStormDistance) {
+    public Currently withNearestStormDistance(long nearestStormDistance)
+    {
         this.nearestStormDistance = nearestStormDistance;
         return this;
     }
 
-    public double getNearestStormBearing() {
+    public double getNearestStormBearing()
+    {
         return nearestStormBearing;
     }
 
-    public void setNearestStormBearing(long nearestStormBearing) {
+    public void setNearestStormBearing(long nearestStormBearing)
+    {
         this.nearestStormBearing = nearestStormBearing;
     }
 
-    public Currently withNearestStormBearing(long nearestStormBearing) {
+    public Currently withNearestStormBearing(long nearestStormBearing)
+    {
         this.nearestStormBearing = nearestStormBearing;
         return this;
     }
 
-    public double getPrecipIntensity() {
+    public double getPrecipIntensity()
+    {
         return precipIntensity;
     }
 
-    public void setPrecipIntensity(long precipIntensity) {
+    public void setPrecipIntensity(long precipIntensity)
+    {
         this.precipIntensity = precipIntensity;
     }
 
-    public Currently withPrecipIntensity(long precipIntensity) {
+    public Currently withPrecipIntensity(long precipIntensity)
+    {
         this.precipIntensity = precipIntensity;
         return this;
     }
 
-    public double getPrecipProbability() {
+    public double getPrecipProbability()
+    {
         return precipProbability;
     }
 
-    public void setPrecipProbability(long precipProbability) {
+    public void setPrecipProbability(long precipProbability)
+    {
         this.precipProbability = precipProbability;
     }
 
-    public Currently withPrecipProbability(long precipProbability) {
+    public Currently withPrecipProbability(long precipProbability)
+    {
         this.precipProbability = precipProbability;
         return this;
     }
 
-    public double getTemperature() {
+    public double getTemperature()
+    {
         return temperature;
     }
 
-    public void setTemperature(double temperature) {
+    public void setTemperature(double temperature)
+    {
         this.temperature = temperature;
     }
 
-    public Currently withTemperature(double temperature) {
+    public Currently withTemperature(double temperature)
+    {
         this.temperature = temperature;
         return this;
     }
 
-    public double getApparentTemperature() {
+    public double getApparentTemperature()
+    {
         return apparentTemperature;
     }
 
-    public void setApparentTemperature(double apparentTemperature) {
+    public void setApparentTemperature(double apparentTemperature)
+    {
         this.apparentTemperature = apparentTemperature;
     }
 
-    public Currently withApparentTemperature(double apparentTemperature) {
+    public Currently withApparentTemperature(double apparentTemperature)
+    {
         this.apparentTemperature = apparentTemperature;
         return this;
     }
 
-    public double getDewPoint() {
+    public double getDewPoint()
+    {
         return dewPoint;
     }
 
-    public void setDewPoint(double dewPoint) {
+    public void setDewPoint(double dewPoint)
+    {
         this.dewPoint = dewPoint;
     }
 
-    public Currently withDewPoint(double dewPoint) {
+    public Currently withDewPoint(double dewPoint)
+    {
         this.dewPoint = dewPoint;
         return this;
     }
 
-    public double getHumidity() {
+    public double getHumidity()
+    {
         return humidity;
     }
 
-    public void setHumidity(double humidity) {
+    public void setHumidity(double humidity)
+    {
         this.humidity = humidity;
     }
 
-    public Currently withHumidity(double humidity) {
+    public Currently withHumidity(double humidity)
+    {
         this.humidity = humidity;
         return this;
     }
 
-    public double getPressure() {
+    public double getPressure()
+    {
         return pressure;
     }
 
-    public void setPressure(double pressure) {
+    public void setPressure(double pressure)
+    {
         this.pressure = pressure;
     }
 
-    public Currently withPressure(double pressure) {
+    public Currently withPressure(double pressure)
+    {
         this.pressure = pressure;
         return this;
     }
 
-    public double getWindSpeed() {
+    public double getWindSpeed()
+    {
         return windSpeed;
     }
 
-    public void setWindSpeed(double windSpeed) {
+    public void setWindSpeed(double windSpeed)
+    {
         this.windSpeed = windSpeed;
     }
 
-    public Currently withWindSpeed(double windSpeed) {
+    public Currently withWindSpeed(double windSpeed)
+    {
         this.windSpeed = windSpeed;
         return this;
     }
 
-    public double getWindGust() {
+    public double getWindGust()
+    {
         return windGust;
     }
 
-    public void setWindGust(double windGust) {
+    public void setWindGust(double windGust)
+    {
         this.windGust = windGust;
     }
 
-    public Currently withWindGust(double windGust) {
+    public Currently withWindGust(double windGust)
+    {
         this.windGust = windGust;
         return this;
     }
 
-    public double getWindBearing() {
+    public double getWindBearing()
+    {
         return windBearing;
     }
 
-    public void setWindBearing(long windBearing) {
+    public void setWindBearing(long windBearing)
+    {
         this.windBearing = windBearing;
     }
 
-    public Currently withWindBearing(long windBearing) {
+    public Currently withWindBearing(long windBearing)
+    {
         this.windBearing = windBearing;
         return this;
     }
 
-    public double getCloudCover() {
+    public double getCloudCover()
+    {
         return cloudCover;
     }
 
-    public void setCloudCover(double cloudCover) {
+    public void setCloudCover(double cloudCover)
+    {
         this.cloudCover = cloudCover;
     }
 
-    public Currently withCloudCover(double cloudCover) {
+    public Currently withCloudCover(double cloudCover)
+    {
         this.cloudCover = cloudCover;
         return this;
     }
 
-    public double getUvIndex() {
+    public double getUvIndex()
+    {
         return uvIndex;
     }
 
-    public void setUvIndex(long uvIndex) {
+    public void setUvIndex(long uvIndex)
+    {
         this.uvIndex = uvIndex;
     }
 
-    public Currently withUvIndex(long uvIndex) {
+    public Currently withUvIndex(long uvIndex)
+    {
         this.uvIndex = uvIndex;
         return this;
     }
 
-    public double getVisibility() {
+    public double getVisibility()
+    {
         return visibility;
     }
 
-    public void setVisibility(double visibility) {
+    public void setVisibility(double visibility)
+    {
         this.visibility = visibility;
     }
 
-    public Currently withVisibility(double visibility) {
+    public Currently withVisibility(double visibility)
+    {
         this.visibility = visibility;
         return this;
     }
 
-    public double getOzone() {
+    public double getOzone()
+    {
         return ozone;
     }
 
-    public void setOzone(long ozone) {
+    public void setOzone(long ozone)
+    {
         this.ozone = ozone;
     }
 
-    public Currently withOzone(long ozone) {
+    public Currently withOzone(long ozone)
+    {
         this.ozone = ozone;
         return this;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return new ToStringBuilder(this).append("time", time).append("summary", summary).append("icon", icon).append("nearestStormDistance", nearestStormDistance).append("nearestStormBearing", nearestStormBearing).append("precipIntensity", precipIntensity).append("precipProbability", precipProbability).append("temperature", temperature).append("apparentTemperature", apparentTemperature).append("dewPoint", dewPoint).append("humidity", humidity).append("pressure", pressure).append("windSpeed", windSpeed).append("windGust", windGust).append("windBearing", windBearing).append("cloudCover", cloudCover).append("uvIndex", uvIndex).append("visibility", visibility).append("ozone", ozone).toString();
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return new HashCodeBuilder().append(summary).append(windGust).append(icon).append(pressure).append(nearestStormBearing).append(visibility).append(cloudCover).append(apparentTemperature).append(precipIntensity).append(dewPoint).append(temperature).append(ozone).append(windSpeed).append(time).append(humidity).append(windBearing).append(nearestStormDistance).append(uvIndex).append(precipProbability).toHashCode();
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (other == this) {
+    public boolean equals(Object other)
+    {
+        if (other == this)
+        {
             return true;
         }
-        if ((other instanceof Currently) == false) {
+        if ((other instanceof Currently) == false)
+        {
             return false;
         }
         Currently rhs = ((Currently) other);
         return new EqualsBuilder().append(summary, rhs.summary).append(windGust, rhs.windGust).append(icon, rhs.icon).append(pressure, rhs.pressure).append(nearestStormBearing, rhs.nearestStormBearing).append(visibility, rhs.visibility).append(cloudCover, rhs.cloudCover).append(apparentTemperature, rhs.apparentTemperature).append(precipIntensity, rhs.precipIntensity).append(dewPoint, rhs.dewPoint).append(temperature, rhs.temperature).append(ozone, rhs.ozone).append(windSpeed, rhs.windSpeed).append(time, rhs.time).append(humidity, rhs.humidity).append(windBearing, rhs.windBearing).append(nearestStormDistance, rhs.nearestStormDistance).append(uvIndex, rhs.uvIndex).append(precipProbability, rhs.precipProbability).isEquals();
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeValue(time);
         dest.writeValue(summary);
         dest.writeValue(icon);
@@ -456,8 +522,9 @@ public class Currently implements Serializable, Parcelable
         dest.writeValue(ozone);
     }
 
-    public int describeContents() {
-        return  0;
+    public int describeContents()
+    {
+        return 0;
     }
 
 }

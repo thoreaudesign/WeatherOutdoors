@@ -1,12 +1,15 @@
 package com.thoreaudesign.weatheroutdoors.aws;
 
-public class RequestParams {
+public class RequestParams
+{
     private String lat;
+
     private String lon;
 
-    public RequestParams(String lat, String lon) {
-        this.lat = lat;
-        this.lon = lon;
+    public RequestParams(String paramString1, String paramString2)
+    {
+        this.lat = paramString1;
+        this.lon = paramString2;
     }
 
     public String getLat()

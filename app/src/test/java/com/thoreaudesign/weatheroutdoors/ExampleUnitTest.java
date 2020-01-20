@@ -1,17 +1,16 @@
-package com.thoreaudesign.weatheroutdoors;
-
-import org.junit.Test;
-
-import static org.junit.Assert.*;
-
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
-public class ExampleUnitTest {
-    @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
-    }
-}
+<?xml version="1.0"encoding="UTF-8"?>
+<project version="4">
+<component name="AndroidLayouts">
+<shared>
+<config>
+<device id="Nexus 6"/>
+<device id="pixel"/>
+<device id="Nexus 4"/>
+<device id="Nexus One"/>
+<device id="Nexus 5"/>
+<target>android-28</target>
+</config>
+</shared>
+</component>
+<component name="AndroidLogFilters">
+<

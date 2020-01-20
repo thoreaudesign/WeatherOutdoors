@@ -18,80 +18,91 @@ public class SwellHeight implements Serializable, Parcelable
     @SerializedName("value")
     @Expose
     private double value;
-    public final static Creator<SwellHeight> CREATOR = new Creator<SwellHeight>() {
+    public final static Creator<SwellHeight> CREATOR = new Creator<SwellHeight>()
+    {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
-        public SwellHeight createFromParcel(Parcel in) {
+        public SwellHeight createFromParcel(Parcel in)
+        {
             return new SwellHeight(in);
         }
 
-        public SwellHeight[] newArray(int size) {
+        public SwellHeight[] newArray(int size)
+        {
             return (new SwellHeight[size]);
         }
 
-    }
-    ;
+    };
     private final static long serialVersionUID = 1708276802201244524L;
 
-    protected SwellHeight(Parcel in) {
+    protected SwellHeight(Parcel in)
+    {
         this.source = ((String) in.readValue((String.class.getClassLoader())));
         this.value = ((double) in.readValue((double.class.getClassLoader())));
     }
 
     /**
      * No args constructor for use in serialization
-     * 
      */
-    public SwellHeight() {
+    public SwellHeight()
+    {
     }
 
     /**
-     * 
      * @param source
      * @param value
      */
-    public SwellHeight(String source, double value) {
+    public SwellHeight(String source, double value)
+    {
         super();
         this.source = source;
         this.value = value;
     }
 
-    public String getSource() {
+    public String getSource()
+    {
         return source;
     }
 
-    public void setSource(String source) {
+    public void setSource(String source)
+    {
         this.source = source;
     }
 
-    public SwellHeight withSource(String source) {
+    public SwellHeight withSource(String source)
+    {
         this.source = source;
         return this;
     }
 
-    public double getValue() {
+    public double getValue()
+    {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(double value)
+    {
         this.value = value;
     }
 
-    public SwellHeight withValue(double value) {
+    public SwellHeight withValue(double value)
+    {
         this.value = value;
         return this;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeValue(source);
         dest.writeValue(value);
     }
 
-    public int describeContents() {
-        return  0;
+    public int describeContents()
+    {
+        return 0;
     }
 
 }

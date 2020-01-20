@@ -133,25 +133,28 @@ public class Datum__ implements Serializable, Parcelable
     @SerializedName("apparentTemperatureMaxTime")
     @Expose
     private double apparentTemperatureMaxTime;
-    public final static Parcelable.Creator<Datum__> CREATOR = new Creator<Datum__>() {
+    public final static Parcelable.Creator<Datum__> CREATOR = new Creator<Datum__>()
+    {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
-        public Datum__ createFromParcel(Parcel in) {
+        public Datum__ createFromParcel(Parcel in)
+        {
             return new Datum__(in);
         }
 
-        public Datum__[] newArray(int size) {
+        public Datum__[] newArray(int size)
+        {
             return (new Datum__[size]);
         }
 
-    }
-    ;
+    };
     private final static long serialVersionUID = 157983865386105425L;
 
-    protected Datum__(Parcel in) {
+    protected Datum__(Parcel in)
+    {
         this.time = ((long) in.readValue((long.class.getClassLoader())));
         this.summary = ((String) in.readValue((String.class.getClassLoader())));
         this.icon = ((String) in.readValue((String.class.getClassLoader())));
@@ -195,13 +198,12 @@ public class Datum__ implements Serializable, Parcelable
 
     /**
      * No args constructor for use in serialization
-     * 
      */
-    public Datum__() {
+    public Datum__()
+    {
     }
 
     /**
-     * 
      * @param temperatureMinTime
      * @param sunsetTime
      * @param summary
@@ -242,7 +244,8 @@ public class Datum__ implements Serializable, Parcelable
      * @param temperatureMax
      * @param apparentTemperatureHigh
      */
-    public Datum__(long time, String summary, String icon, long sunriseTime, long sunsetTime, double moonPhase, double precipIntensity, double precipIntensityMax, long precipIntensityMaxTime, double precipProbability, String precipType, double temperatureHigh, long temperatureHighTime, double temperatureLow, long temperatureLowTime, double apparentTemperatureHigh, long apparentTemperatureHighTime, double apparentTemperatureLow, long apparentTemperatureLowTime, double dewPoint, double humidity, double pressure, double windSpeed, double windGust, long windGustTime, long windBearing, double cloudCover, long uvIndex, long uvIndexTime, double visibility, double ozone, double temperatureMin, long temperatureMinTime, double temperatureMax, long temperatureMaxTime, double apparentTemperatureMin, long apparentTemperatureMinTime, double apparentTemperatureMax, long apparentTemperatureMaxTime) {
+    public Datum__(long time, String summary, String icon, long sunriseTime, long sunsetTime, double moonPhase, double precipIntensity, double precipIntensityMax, long precipIntensityMaxTime, double precipProbability, String precipType, double temperatureHigh, long temperatureHighTime, double temperatureLow, long temperatureLowTime, double apparentTemperatureHigh, long apparentTemperatureHighTime, double apparentTemperatureLow, long apparentTemperatureLowTime, double dewPoint, double humidity, double pressure, double windSpeed, double windGust, long windGustTime, long windBearing, double cloudCover, long uvIndex, long uvIndexTime, double visibility, double ozone, double temperatureMin, long temperatureMinTime, double temperatureMax, long temperatureMaxTime, double apparentTemperatureMin, long apparentTemperatureMinTime, double apparentTemperatureMax, long apparentTemperatureMaxTime)
+    {
         super();
         this.time = time;
         this.summary = summary;
@@ -285,536 +288,659 @@ public class Datum__ implements Serializable, Parcelable
         this.apparentTemperatureMaxTime = apparentTemperatureMaxTime;
     }
 
-    public double getTime() {
+    public double getTime()
+    {
         return time;
     }
 
-    public void setTime(long time) {
+    public void setTime(long time)
+    {
         this.time = time;
     }
 
-    public Datum__ withTime(long time) {
+    public Datum__ withTime(long time)
+    {
         this.time = time;
         return this;
     }
 
-    public String getSummary() {
+    public String getSummary()
+    {
         return summary;
     }
 
-    public void setSummary(String summary) {
+    public void setSummary(String summary)
+    {
         this.summary = summary;
     }
 
-    public Datum__ withSummary(String summary) {
+    public Datum__ withSummary(String summary)
+    {
         this.summary = summary;
         return this;
     }
 
-    public String getIcon() {
+    public String getIcon()
+    {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(String icon)
+    {
         this.icon = icon;
     }
 
-    public Datum__ withIcon(String icon) {
+    public Datum__ withIcon(String icon)
+    {
         this.icon = icon;
         return this;
     }
 
-    public double getSunriseTime() {
+    public double getSunriseTime()
+    {
         return sunriseTime;
     }
 
-    public void setSunriseTime(long sunriseTime) {
+    public void setSunriseTime(long sunriseTime)
+    {
         this.sunriseTime = sunriseTime;
     }
 
-    public Datum__ withSunriseTime(long sunriseTime) {
+    public Datum__ withSunriseTime(long sunriseTime)
+    {
         this.sunriseTime = sunriseTime;
         return this;
     }
 
-    public double getSunsetTime() {
+    public double getSunsetTime()
+    {
         return sunsetTime;
     }
 
-    public void setSunsetTime(long sunsetTime) {
+    public void setSunsetTime(long sunsetTime)
+    {
         this.sunsetTime = sunsetTime;
     }
 
-    public Datum__ withSunsetTime(long sunsetTime) {
+    public Datum__ withSunsetTime(long sunsetTime)
+    {
         this.sunsetTime = sunsetTime;
         return this;
     }
 
-    public double getMoonPhase() {
+    public double getMoonPhase()
+    {
         return moonPhase;
     }
 
-    public void setMoonPhase(double moonPhase) {
+    public void setMoonPhase(double moonPhase)
+    {
         this.moonPhase = moonPhase;
     }
 
-    public Datum__ withMoonPhase(double moonPhase) {
+    public Datum__ withMoonPhase(double moonPhase)
+    {
         this.moonPhase = moonPhase;
         return this;
     }
 
-    public double getPrecipIntensity() {
+    public double getPrecipIntensity()
+    {
         return precipIntensity;
     }
 
-    public void setPrecipIntensity(double precipIntensity) {
+    public void setPrecipIntensity(double precipIntensity)
+    {
         this.precipIntensity = precipIntensity;
     }
 
-    public Datum__ withPrecipIntensity(double precipIntensity) {
+    public Datum__ withPrecipIntensity(double precipIntensity)
+    {
         this.precipIntensity = precipIntensity;
         return this;
     }
 
-    public double getPrecipIntensityMax() {
+    public double getPrecipIntensityMax()
+    {
         return precipIntensityMax;
     }
 
-    public void setPrecipIntensityMax(double precipIntensityMax) {
+    public void setPrecipIntensityMax(double precipIntensityMax)
+    {
         this.precipIntensityMax = precipIntensityMax;
     }
 
-    public Datum__ withPrecipIntensityMax(double precipIntensityMax) {
+    public Datum__ withPrecipIntensityMax(double precipIntensityMax)
+    {
         this.precipIntensityMax = precipIntensityMax;
         return this;
     }
 
-    public double getPrecipIntensityMaxTime() {
+    public double getPrecipIntensityMaxTime()
+    {
         return precipIntensityMaxTime;
     }
 
-    public void setPrecipIntensityMaxTime(long precipIntensityMaxTime) {
+    public void setPrecipIntensityMaxTime(long precipIntensityMaxTime)
+    {
         this.precipIntensityMaxTime = precipIntensityMaxTime;
     }
 
-    public Datum__ withPrecipIntensityMaxTime(long precipIntensityMaxTime) {
+    public Datum__ withPrecipIntensityMaxTime(long precipIntensityMaxTime)
+    {
         this.precipIntensityMaxTime = precipIntensityMaxTime;
         return this;
     }
 
-    public double getPrecipProbability() {
+    public double getPrecipProbability()
+    {
         return precipProbability;
     }
 
-    public void setPrecipProbability(double precipProbability) {
+    public void setPrecipProbability(double precipProbability)
+    {
         this.precipProbability = precipProbability;
     }
 
-    public Datum__ withPrecipProbability(double precipProbability) {
+    public Datum__ withPrecipProbability(double precipProbability)
+    {
         this.precipProbability = precipProbability;
         return this;
     }
 
-    public String getPrecipType() {
+    public String getPrecipType()
+    {
         return precipType;
     }
 
-    public void setPrecipType(String precipType) {
+    public void setPrecipType(String precipType)
+    {
         this.precipType = precipType;
     }
 
-    public Datum__ withPrecipType(String precipType) {
+    public Datum__ withPrecipType(String precipType)
+    {
         this.precipType = precipType;
         return this;
     }
 
-    public double getTemperatureHigh() {
+    public double getTemperatureHigh()
+    {
         return temperatureHigh;
     }
 
-    public void setTemperatureHigh(double temperatureHigh) {
+    public void setTemperatureHigh(double temperatureHigh)
+    {
         this.temperatureHigh = temperatureHigh;
     }
 
-    public Datum__ withTemperatureHigh(double temperatureHigh) {
+    public Datum__ withTemperatureHigh(double temperatureHigh)
+    {
         this.temperatureHigh = temperatureHigh;
         return this;
     }
 
-    public double getTemperatureHighTime() {
+    public double getTemperatureHighTime()
+    {
         return temperatureHighTime;
     }
 
-    public void setTemperatureHighTime(long temperatureHighTime) {
+    public void setTemperatureHighTime(long temperatureHighTime)
+    {
         this.temperatureHighTime = temperatureHighTime;
     }
 
-    public Datum__ withTemperatureHighTime(long temperatureHighTime) {
+    public Datum__ withTemperatureHighTime(long temperatureHighTime)
+    {
         this.temperatureHighTime = temperatureHighTime;
         return this;
     }
 
-    public double getTemperatureLow() {
+    public double getTemperatureLow()
+    {
         return temperatureLow;
     }
 
-    public void setTemperatureLow(double temperatureLow) {
+    public void setTemperatureLow(double temperatureLow)
+    {
         this.temperatureLow = temperatureLow;
     }
 
-    public Datum__ withTemperatureLow(double temperatureLow) {
+    public Datum__ withTemperatureLow(double temperatureLow)
+    {
         this.temperatureLow = temperatureLow;
         return this;
     }
 
-    public double getTemperatureLowTime() {
+    public double getTemperatureLowTime()
+    {
         return temperatureLowTime;
     }
 
-    public void setTemperatureLowTime(long temperatureLowTime) {
+    public void setTemperatureLowTime(long temperatureLowTime)
+    {
         this.temperatureLowTime = temperatureLowTime;
     }
 
-    public Datum__ withTemperatureLowTime(long temperatureLowTime) {
+    public Datum__ withTemperatureLowTime(long temperatureLowTime)
+    {
         this.temperatureLowTime = temperatureLowTime;
         return this;
     }
 
-    public double getApparentTemperatureHigh() {
+    public double getApparentTemperatureHigh()
+    {
         return apparentTemperatureHigh;
     }
 
-    public void setApparentTemperatureHigh(double apparentTemperatureHigh) {
+    public void setApparentTemperatureHigh(double apparentTemperatureHigh)
+    {
         this.apparentTemperatureHigh = apparentTemperatureHigh;
     }
 
-    public Datum__ withApparentTemperatureHigh(double apparentTemperatureHigh) {
+    public Datum__ withApparentTemperatureHigh(double apparentTemperatureHigh)
+    {
         this.apparentTemperatureHigh = apparentTemperatureHigh;
         return this;
     }
 
-    public double getApparentTemperatureHighTime() {
+    public double getApparentTemperatureHighTime()
+    {
         return apparentTemperatureHighTime;
     }
 
-    public void setApparentTemperatureHighTime(long apparentTemperatureHighTime) {
+    public void setApparentTemperatureHighTime(long apparentTemperatureHighTime)
+    {
         this.apparentTemperatureHighTime = apparentTemperatureHighTime;
     }
 
-    public Datum__ withApparentTemperatureHighTime(long apparentTemperatureHighTime) {
+    public Datum__ withApparentTemperatureHighTime(long apparentTemperatureHighTime)
+    {
         this.apparentTemperatureHighTime = apparentTemperatureHighTime;
         return this;
     }
 
-    public double getApparentTemperatureLow() {
+    public double getApparentTemperatureLow()
+    {
         return apparentTemperatureLow;
     }
 
-    public void setApparentTemperatureLow(double apparentTemperatureLow) {
+    public void setApparentTemperatureLow(double apparentTemperatureLow)
+    {
         this.apparentTemperatureLow = apparentTemperatureLow;
     }
 
-    public Datum__ withApparentTemperatureLow(double apparentTemperatureLow) {
+    public Datum__ withApparentTemperatureLow(double apparentTemperatureLow)
+    {
         this.apparentTemperatureLow = apparentTemperatureLow;
         return this;
     }
 
-    public double getApparentTemperatureLowTime() {
+    public double getApparentTemperatureLowTime()
+    {
         return apparentTemperatureLowTime;
     }
 
-    public void setApparentTemperatureLowTime(long apparentTemperatureLowTime) {
+    public void setApparentTemperatureLowTime(long apparentTemperatureLowTime)
+    {
         this.apparentTemperatureLowTime = apparentTemperatureLowTime;
     }
 
-    public Datum__ withApparentTemperatureLowTime(long apparentTemperatureLowTime) {
+    public Datum__ withApparentTemperatureLowTime(long apparentTemperatureLowTime)
+    {
         this.apparentTemperatureLowTime = apparentTemperatureLowTime;
         return this;
     }
 
-    public double getDewPoint() {
+    public double getDewPoint()
+    {
         return dewPoint;
     }
 
-    public void setDewPoint(double dewPoint) {
+    public void setDewPoint(double dewPoint)
+    {
         this.dewPoint = dewPoint;
     }
 
-    public Datum__ withDewPoint(double dewPoint) {
+    public Datum__ withDewPoint(double dewPoint)
+    {
         this.dewPoint = dewPoint;
         return this;
     }
 
-    public double getHumidity() {
+    public double getHumidity()
+    {
         return humidity;
     }
 
-    public void setHumidity(double humidity) {
+    public void setHumidity(double humidity)
+    {
         this.humidity = humidity;
     }
 
-    public Datum__ withHumidity(double humidity) {
+    public Datum__ withHumidity(double humidity)
+    {
         this.humidity = humidity;
         return this;
     }
 
-    public double getPressure() {
+    public double getPressure()
+    {
         return pressure;
     }
 
-    public void setPressure(double pressure) {
+    public void setPressure(double pressure)
+    {
         this.pressure = pressure;
     }
 
-    public Datum__ withPressure(double pressure) {
+    public Datum__ withPressure(double pressure)
+    {
         this.pressure = pressure;
         return this;
     }
 
-    public double getWindSpeed() {
+    public double getWindSpeed()
+    {
         return windSpeed;
     }
 
-    public void setWindSpeed(double windSpeed) {
+    public void setWindSpeed(double windSpeed)
+    {
         this.windSpeed = windSpeed;
     }
 
-    public Datum__ withWindSpeed(double windSpeed) {
+    public Datum__ withWindSpeed(double windSpeed)
+    {
         this.windSpeed = windSpeed;
         return this;
     }
 
-    public double getWindGust() {
+    public double getWindGust()
+    {
         return windGust;
     }
 
-    public void setWindGust(double windGust) {
+    public void setWindGust(double windGust)
+    {
         this.windGust = windGust;
     }
 
-    public Datum__ withWindGust(double windGust) {
+    public Datum__ withWindGust(double windGust)
+    {
         this.windGust = windGust;
         return this;
     }
 
-    public double getWindGustTime() {
+    public double getWindGustTime()
+    {
         return windGustTime;
     }
 
-    public void setWindGustTime(long windGustTime) {
+    public void setWindGustTime(long windGustTime)
+    {
         this.windGustTime = windGustTime;
     }
 
-    public Datum__ withWindGustTime(long windGustTime) {
+    public Datum__ withWindGustTime(long windGustTime)
+    {
         this.windGustTime = windGustTime;
         return this;
     }
 
-    public double getWindBearing() {
+    public double getWindBearing()
+    {
         return windBearing;
     }
 
-    public void setWindBearing(long windBearing) {
+    public void setWindBearing(long windBearing)
+    {
         this.windBearing = windBearing;
     }
 
-    public Datum__ withWindBearing(long windBearing) {
+    public Datum__ withWindBearing(long windBearing)
+    {
         this.windBearing = windBearing;
         return this;
     }
 
-    public double getCloudCover() {
+    public double getCloudCover()
+    {
         return cloudCover;
     }
 
-    public void setCloudCover(double cloudCover) {
+    public void setCloudCover(double cloudCover)
+    {
         this.cloudCover = cloudCover;
     }
 
-    public Datum__ withCloudCover(double cloudCover) {
+    public Datum__ withCloudCover(double cloudCover)
+    {
         this.cloudCover = cloudCover;
         return this;
     }
 
-    public double getUvIndex() {
+    public double getUvIndex()
+    {
         return uvIndex;
     }
 
-    public void setUvIndex(long uvIndex) {
+    public void setUvIndex(long uvIndex)
+    {
         this.uvIndex = uvIndex;
     }
 
-    public Datum__ withUvIndex(long uvIndex) {
+    public Datum__ withUvIndex(long uvIndex)
+    {
         this.uvIndex = uvIndex;
         return this;
     }
 
-    public double getUvIndexTime() {
+    public double getUvIndexTime()
+    {
         return uvIndexTime;
     }
 
-    public void setUvIndexTime(long uvIndexTime) {
+    public void setUvIndexTime(long uvIndexTime)
+    {
         this.uvIndexTime = uvIndexTime;
     }
 
-    public Datum__ withUvIndexTime(long uvIndexTime) {
+    public Datum__ withUvIndexTime(long uvIndexTime)
+    {
         this.uvIndexTime = uvIndexTime;
         return this;
     }
 
-    public double getVisibility() {
+    public double getVisibility()
+    {
         return visibility;
     }
 
-    public void setVisibility(double visibility) {
+    public void setVisibility(double visibility)
+    {
         this.visibility = visibility;
     }
 
-    public Datum__ withVisibility(double visibility) {
+    public Datum__ withVisibility(double visibility)
+    {
         this.visibility = visibility;
         return this;
     }
 
-    public double getOzone() {
+    public double getOzone()
+    {
         return ozone;
     }
 
-    public void setOzone(double ozone) {
+    public void setOzone(double ozone)
+    {
         this.ozone = ozone;
     }
 
-    public Datum__ withOzone(double ozone) {
+    public Datum__ withOzone(double ozone)
+    {
         this.ozone = ozone;
         return this;
     }
 
-    public double getTemperatureMin() {
+    public double getTemperatureMin()
+    {
         return temperatureMin;
     }
 
-    public void setTemperatureMin(double temperatureMin) {
+    public void setTemperatureMin(double temperatureMin)
+    {
         this.temperatureMin = temperatureMin;
     }
 
-    public Datum__ withTemperatureMin(double temperatureMin) {
+    public Datum__ withTemperatureMin(double temperatureMin)
+    {
         this.temperatureMin = temperatureMin;
         return this;
     }
 
-    public double getTemperatureMinTime() {
+    public double getTemperatureMinTime()
+    {
         return temperatureMinTime;
     }
 
-    public void setTemperatureMinTime(long temperatureMinTime) {
+    public void setTemperatureMinTime(long temperatureMinTime)
+    {
         this.temperatureMinTime = temperatureMinTime;
     }
 
-    public Datum__ withTemperatureMinTime(long temperatureMinTime) {
+    public Datum__ withTemperatureMinTime(long temperatureMinTime)
+    {
         this.temperatureMinTime = temperatureMinTime;
         return this;
     }
 
-    public double getTemperatureMax() {
+    public double getTemperatureMax()
+    {
         return temperatureMax;
     }
 
-    public void setTemperatureMax(double temperatureMax) {
+    public void setTemperatureMax(double temperatureMax)
+    {
         this.temperatureMax = temperatureMax;
     }
 
-    public Datum__ withTemperatureMax(double temperatureMax) {
+    public Datum__ withTemperatureMax(double temperatureMax)
+    {
         this.temperatureMax = temperatureMax;
         return this;
     }
 
-    public double getTemperatureMaxTime() {
+    public double getTemperatureMaxTime()
+    {
         return temperatureMaxTime;
     }
 
-    public void setTemperatureMaxTime(long temperatureMaxTime) {
+    public void setTemperatureMaxTime(long temperatureMaxTime)
+    {
         this.temperatureMaxTime = temperatureMaxTime;
     }
 
-    public Datum__ withTemperatureMaxTime(long temperatureMaxTime) {
+    public Datum__ withTemperatureMaxTime(long temperatureMaxTime)
+    {
         this.temperatureMaxTime = temperatureMaxTime;
         return this;
     }
 
-    public double getApparentTemperatureMin() {
+    public double getApparentTemperatureMin()
+    {
         return apparentTemperatureMin;
     }
 
-    public void setApparentTemperatureMin(double apparentTemperatureMin) {
+    public void setApparentTemperatureMin(double apparentTemperatureMin)
+    {
         this.apparentTemperatureMin = apparentTemperatureMin;
     }
 
-    public Datum__ withApparentTemperatureMin(double apparentTemperatureMin) {
+    public Datum__ withApparentTemperatureMin(double apparentTemperatureMin)
+    {
         this.apparentTemperatureMin = apparentTemperatureMin;
         return this;
     }
 
-    public double getApparentTemperatureMinTime() {
+    public double getApparentTemperatureMinTime()
+    {
         return apparentTemperatureMinTime;
     }
 
-    public void setApparentTemperatureMinTime(long apparentTemperatureMinTime) {
+    public void setApparentTemperatureMinTime(long apparentTemperatureMinTime)
+    {
         this.apparentTemperatureMinTime = apparentTemperatureMinTime;
     }
 
-    public Datum__ withApparentTemperatureMinTime(long apparentTemperatureMinTime) {
+    public Datum__ withApparentTemperatureMinTime(long apparentTemperatureMinTime)
+    {
         this.apparentTemperatureMinTime = apparentTemperatureMinTime;
         return this;
     }
 
-    public double getApparentTemperatureMax() {
+    public double getApparentTemperatureMax()
+    {
         return apparentTemperatureMax;
     }
 
-    public void setApparentTemperatureMax(double apparentTemperatureMax) {
+    public void setApparentTemperatureMax(double apparentTemperatureMax)
+    {
         this.apparentTemperatureMax = apparentTemperatureMax;
     }
 
-    public Datum__ withApparentTemperatureMax(double apparentTemperatureMax) {
+    public Datum__ withApparentTemperatureMax(double apparentTemperatureMax)
+    {
         this.apparentTemperatureMax = apparentTemperatureMax;
         return this;
     }
 
-    public double getApparentTemperatureMaxTime() {
+    public double getApparentTemperatureMaxTime()
+    {
         return apparentTemperatureMaxTime;
     }
 
-    public void setApparentTemperatureMaxTime(long apparentTemperatureMaxTime) {
+    public void setApparentTemperatureMaxTime(long apparentTemperatureMaxTime)
+    {
         this.apparentTemperatureMaxTime = apparentTemperatureMaxTime;
     }
 
-    public Datum__ withApparentTemperatureMaxTime(long apparentTemperatureMaxTime) {
+    public Datum__ withApparentTemperatureMaxTime(long apparentTemperatureMaxTime)
+    {
         this.apparentTemperatureMaxTime = apparentTemperatureMaxTime;
         return this;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return new ToStringBuilder(this).append("time", time).append("summary", summary).append("icon", icon).append("sunriseTime", sunriseTime).append("sunsetTime", sunsetTime).append("moonPhase", moonPhase).append("precipIntensity", precipIntensity).append("precipIntensityMax", precipIntensityMax).append("precipIntensityMaxTime", precipIntensityMaxTime).append("precipProbability", precipProbability).append("precipType", precipType).append("temperatureHigh", temperatureHigh).append("temperatureHighTime", temperatureHighTime).append("temperatureLow", temperatureLow).append("temperatureLowTime", temperatureLowTime).append("apparentTemperatureHigh", apparentTemperatureHigh).append("apparentTemperatureHighTime", apparentTemperatureHighTime).append("apparentTemperatureLow", apparentTemperatureLow).append("apparentTemperatureLowTime", apparentTemperatureLowTime).append("dewPoint", dewPoint).append("humidity", humidity).append("pressure", pressure).append("windSpeed", windSpeed).append("windGust", windGust).append("windGustTime", windGustTime).append("windBearing", windBearing).append("cloudCover", cloudCover).append("uvIndex", uvIndex).append("uvIndexTime", uvIndexTime).append("visibility", visibility).append("ozone", ozone).append("temperatureMin", temperatureMin).append("temperatureMinTime", temperatureMinTime).append("temperatureMax", temperatureMax).append("temperatureMaxTime", temperatureMaxTime).append("apparentTemperatureMin", apparentTemperatureMin).append("apparentTemperatureMinTime", apparentTemperatureMinTime).append("apparentTemperatureMax", apparentTemperatureMax).append("apparentTemperatureMaxTime", apparentTemperatureMaxTime).toString();
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return new HashCodeBuilder().append(temperatureMinTime).append(sunsetTime).append(summary).append(precipIntensityMaxTime).append(visibility).append(temperatureLowTime).append(temperatureLow).append(temperatureHighTime).append(precipIntensity).append(precipIntensityMax).append(ozone).append(time).append(apparentTemperatureMaxTime).append(uvIndex).append(apparentTemperatureHighTime).append(temperatureHigh).append(windGust).append(icon).append(apparentTemperatureLowTime).append(temperatureMaxTime).append(pressure).append(cloudCover).append(apparentTemperatureMinTime).append(temperatureMin).append(precipType).append(apparentTemperatureLow).append(dewPoint).append(sunriseTime).append(windSpeed).append(humidity).append(apparentTemperatureMax).append(windBearing).append(moonPhase).append(precipProbability).append(windGustTime).append(apparentTemperatureMin).append(uvIndexTime).append(temperatureMax).append(apparentTemperatureHigh).toHashCode();
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (other == this) {
+    public boolean equals(Object other)
+    {
+        if (other == this)
+        {
             return true;
         }
-        if ((other instanceof Datum__) == false) {
+        if ((other instanceof Datum__) == false)
+        {
             return false;
         }
         Datum__ rhs = ((Datum__) other);
         return new EqualsBuilder().append(temperatureMinTime, rhs.temperatureMinTime).append(sunsetTime, rhs.sunsetTime).append(summary, rhs.summary).append(precipIntensityMaxTime, rhs.precipIntensityMaxTime).append(visibility, rhs.visibility).append(temperatureLowTime, rhs.temperatureLowTime).append(temperatureLow, rhs.temperatureLow).append(temperatureHighTime, rhs.temperatureHighTime).append(precipIntensity, rhs.precipIntensity).append(precipIntensityMax, rhs.precipIntensityMax).append(ozone, rhs.ozone).append(time, rhs.time).append(apparentTemperatureMaxTime, rhs.apparentTemperatureMaxTime).append(uvIndex, rhs.uvIndex).append(apparentTemperatureHighTime, rhs.apparentTemperatureHighTime).append(temperatureHigh, rhs.temperatureHigh).append(windGust, rhs.windGust).append(icon, rhs.icon).append(apparentTemperatureLowTime, rhs.apparentTemperatureLowTime).append(temperatureMaxTime, rhs.temperatureMaxTime).append(pressure, rhs.pressure).append(cloudCover, rhs.cloudCover).append(apparentTemperatureMinTime, rhs.apparentTemperatureMinTime).append(temperatureMin, rhs.temperatureMin).append(precipType, rhs.precipType).append(apparentTemperatureLow, rhs.apparentTemperatureLow).append(dewPoint, rhs.dewPoint).append(sunriseTime, rhs.sunriseTime).append(windSpeed, rhs.windSpeed).append(humidity, rhs.humidity).append(apparentTemperatureMax, rhs.apparentTemperatureMax).append(windBearing, rhs.windBearing).append(moonPhase, rhs.moonPhase).append(precipProbability, rhs.precipProbability).append(windGustTime, rhs.windGustTime).append(apparentTemperatureMin, rhs.apparentTemperatureMin).append(uvIndexTime, rhs.uvIndexTime).append(temperatureMax, rhs.temperatureMax).append(apparentTemperatureHigh, rhs.apparentTemperatureHigh).isEquals();
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeValue(time);
         dest.writeValue(summary);
         dest.writeValue(icon);
@@ -856,8 +982,9 @@ public class Datum__ implements Serializable, Parcelable
         dest.writeValue(apparentTemperatureMaxTime);
     }
 
-    public int describeContents() {
-        return  0;
+    public int describeContents()
+    {
+        return 0;
     }
 
 }

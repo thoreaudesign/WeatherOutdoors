@@ -42,25 +42,28 @@ public class Meta implements Serializable, Parcelable
     @SerializedName("start")
     @Expose
     private String start;
-    public final static Creator<Meta> CREATOR = new Creator<Meta>() {
+    public final static Creator<Meta> CREATOR = new Creator<Meta>()
+    {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
-        public Meta createFromParcel(Parcel in) {
+        public Meta createFromParcel(Parcel in)
+        {
             return new Meta(in);
         }
 
-        public Meta[] newArray(int size) {
+        public Meta[] newArray(int size)
+        {
             return (new Meta[size]);
         }
 
-    }
-    ;
+    };
     private final static long serialVersionUID = -531765890621137310L;
 
-    protected Meta(Parcel in) {
+    protected Meta(Parcel in)
+    {
         this.cost = ((long) in.readValue((long.class.getClassLoader())));
         this.dailyQuota = ((long) in.readValue((long.class.getClassLoader())));
         this.end = ((String) in.readValue((String.class.getClassLoader())));
@@ -74,13 +77,12 @@ public class Meta implements Serializable, Parcelable
 
     /**
      * No args constructor for use in serialization
-     * 
      */
-    public Meta() {
+    public Meta()
+    {
     }
 
     /**
-     * 
      * @param source
      * @param dailyQuota
      * @param start
@@ -91,7 +93,8 @@ public class Meta implements Serializable, Parcelable
      * @param lat
      * @param end
      */
-    public Meta(long cost, long dailyQuota, String end, double lat, double lng, List<String> params, long requestCount, String source, String start) {
+    public Meta(long cost, long dailyQuota, String end, double lat, double lng, List<String> params, long requestCount, String source, String start)
+    {
         super();
         this.cost = cost;
         this.dailyQuota = dailyQuota;
@@ -104,124 +107,152 @@ public class Meta implements Serializable, Parcelable
         this.start = start;
     }
 
-    public double getCost() {
+    public double getCost()
+    {
         return cost;
     }
 
-    public void setCost(long cost) {
+    public void setCost(long cost)
+    {
         this.cost = cost;
     }
 
-    public Meta withCost(long cost) {
+    public Meta withCost(long cost)
+    {
         this.cost = cost;
         return this;
     }
 
-    public double getDailyQuota() {
+    public double getDailyQuota()
+    {
         return dailyQuota;
     }
 
-    public void setDailyQuota(long dailyQuota) {
+    public void setDailyQuota(long dailyQuota)
+    {
         this.dailyQuota = dailyQuota;
     }
 
-    public Meta withDailyQuota(long dailyQuota) {
+    public Meta withDailyQuota(long dailyQuota)
+    {
         this.dailyQuota = dailyQuota;
         return this;
     }
 
-    public String getEnd() {
+    public String getEnd()
+    {
         return end;
     }
 
-    public void setEnd(String end) {
+    public void setEnd(String end)
+    {
         this.end = end;
     }
 
-    public Meta withEnd(String end) {
+    public Meta withEnd(String end)
+    {
         this.end = end;
         return this;
     }
 
-    public double getLat() {
+    public double getLat()
+    {
         return lat;
     }
 
-    public void setLat(double lat) {
+    public void setLat(double lat)
+    {
         this.lat = lat;
     }
 
-    public Meta withLat(double lat) {
+    public Meta withLat(double lat)
+    {
         this.lat = lat;
         return this;
     }
 
-    public double getLng() {
+    public double getLng()
+    {
         return lng;
     }
 
-    public void setLng(double lng) {
+    public void setLng(double lng)
+    {
         this.lng = lng;
     }
 
-    public Meta withLng(double lng) {
+    public Meta withLng(double lng)
+    {
         this.lng = lng;
         return this;
     }
 
-    public List<String> getParams() {
+    public List<String> getParams()
+    {
         return params;
     }
 
-    public void setParams(List<String> params) {
+    public void setParams(List<String> params)
+    {
         this.params = params;
     }
 
-    public Meta withParams(List<String> params) {
+    public Meta withParams(List<String> params)
+    {
         this.params = params;
         return this;
     }
 
-    public double getRequestCount() {
+    public double getRequestCount()
+    {
         return requestCount;
     }
 
-    public void setRequestCount(long requestCount) {
+    public void setRequestCount(long requestCount)
+    {
         this.requestCount = requestCount;
     }
 
-    public Meta withRequestCount(long requestCount) {
+    public Meta withRequestCount(long requestCount)
+    {
         this.requestCount = requestCount;
         return this;
     }
 
-    public String getSource() {
+    public String getSource()
+    {
         return source;
     }
 
-    public void setSource(String source) {
+    public void setSource(String source)
+    {
         this.source = source;
     }
 
-    public Meta withSource(String source) {
+    public Meta withSource(String source)
+    {
         this.source = source;
         return this;
     }
 
-    public String getStart() {
+    public String getStart()
+    {
         return start;
     }
 
-    public void setStart(String start) {
+    public void setStart(String start)
+    {
         this.start = start;
     }
 
-    public Meta withStart(String start) {
+    public Meta withStart(String start)
+    {
         this.start = start;
         return this;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeValue(cost);
         dest.writeValue(dailyQuota);
         dest.writeValue(end);
@@ -233,8 +264,9 @@ public class Meta implements Serializable, Parcelable
         dest.writeValue(start);
     }
 
-    public int describeContents() {
-        return  0;
+    public int describeContents()
+    {
+        return 0;
     }
 
 }

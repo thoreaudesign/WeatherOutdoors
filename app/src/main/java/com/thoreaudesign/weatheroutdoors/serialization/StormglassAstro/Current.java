@@ -21,25 +21,28 @@ public class Current implements Serializable, Parcelable
     @SerializedName("value")
     @Expose
     private double value;
-    public final static Creator<Current> CREATOR = new Creator<Current>() {
+    public final static Creator<Current> CREATOR = new Creator<Current>()
+    {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
-        public Current createFromParcel(Parcel in) {
+        public Current createFromParcel(Parcel in)
+        {
             return new Current(in);
         }
 
-        public Current[] newArray(int size) {
+        public Current[] newArray(int size)
+        {
             return (new Current[size]);
         }
 
-    }
-    ;
+    };
     private final static long serialVersionUID = -558107173778170073L;
 
-    protected Current(Parcel in) {
+    protected Current(Parcel in)
+    {
         this.text = ((String) in.readValue((String.class.getClassLoader())));
         this.time = ((String) in.readValue((String.class.getClassLoader())));
         this.value = ((double) in.readValue((double.class.getClassLoader())));
@@ -47,71 +50,82 @@ public class Current implements Serializable, Parcelable
 
     /**
      * No args constructor for use in serialization
-     * 
      */
-    public Current() {
+    public Current()
+    {
     }
 
     /**
-     * 
      * @param time
      * @param text
      * @param value
      */
-    public Current(String text, String time, double value) {
+    public Current(String text, String time, double value)
+    {
         super();
         this.text = text;
         this.time = time;
         this.value = value;
     }
 
-    public String getText() {
+    public String getText()
+    {
         return text;
     }
 
-    public void setText(String text) {
+    public void setText(String text)
+    {
         this.text = text;
     }
 
-    public Current withText(String text) {
+    public Current withText(String text)
+    {
         this.text = text;
         return this;
     }
 
-    public String getTime() {
+    public String getTime()
+    {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(String time)
+    {
         this.time = time;
     }
 
-    public Current withTime(String time) {
+    public Current withTime(String time)
+    {
         this.time = time;
         return this;
     }
 
-    public double getValue() {
+    public double getValue()
+    {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(double value)
+    {
         this.value = value;
     }
 
-    public Current withValue(double value) {
+    public Current withValue(double value)
+    {
         this.value = value;
         return this;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeValue(text);
         dest.writeValue(time);
         dest.writeValue(value);
     }
 
-    public int describeContents() {
-        return  0;
+    public int describeContents()
+    {
+        return 0;
     }
 
 }

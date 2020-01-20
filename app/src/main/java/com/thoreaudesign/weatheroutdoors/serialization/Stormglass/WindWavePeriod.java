@@ -18,80 +18,91 @@ public class WindWavePeriod implements Serializable, Parcelable
     @SerializedName("value")
     @Expose
     private double value;
-    public final static Creator<WindWavePeriod> CREATOR = new Creator<WindWavePeriod>() {
+    public final static Creator<WindWavePeriod> CREATOR = new Creator<WindWavePeriod>()
+    {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
-        public WindWavePeriod createFromParcel(Parcel in) {
+        public WindWavePeriod createFromParcel(Parcel in)
+        {
             return new WindWavePeriod(in);
         }
 
-        public WindWavePeriod[] newArray(int size) {
+        public WindWavePeriod[] newArray(int size)
+        {
             return (new WindWavePeriod[size]);
         }
 
-    }
-    ;
+    };
     private final static long serialVersionUID = -8086372796245972842L;
 
-    protected WindWavePeriod(Parcel in) {
+    protected WindWavePeriod(Parcel in)
+    {
         this.source = ((String) in.readValue((String.class.getClassLoader())));
         this.value = ((double) in.readValue((double.class.getClassLoader())));
     }
 
     /**
      * No args constructor for use in serialization
-     * 
      */
-    public WindWavePeriod() {
+    public WindWavePeriod()
+    {
     }
 
     /**
-     * 
      * @param source
      * @param value
      */
-    public WindWavePeriod(String source, double value) {
+    public WindWavePeriod(String source, double value)
+    {
         super();
         this.source = source;
         this.value = value;
     }
 
-    public String getSource() {
+    public String getSource()
+    {
         return source;
     }
 
-    public void setSource(String source) {
+    public void setSource(String source)
+    {
         this.source = source;
     }
 
-    public WindWavePeriod withSource(String source) {
+    public WindWavePeriod withSource(String source)
+    {
         this.source = source;
         return this;
     }
 
-    public double getValue() {
+    public double getValue()
+    {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(double value)
+    {
         this.value = value;
     }
 
-    public WindWavePeriod withValue(double value) {
+    public WindWavePeriod withValue(double value)
+    {
         this.value = value;
         return this;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeValue(source);
         dest.writeValue(value);
     }
 
-    public int describeContents() {
-        return  0;
+    public int describeContents()
+    {
+        return 0;
     }
 
 }

@@ -22,80 +22,91 @@ public class Stormglass implements Serializable, Parcelable
     @Expose
 
     private Meta meta;
-    public final static Creator<Stormglass> CREATOR = new Creator<Stormglass>() {
+    public final static Creator<Stormglass> CREATOR = new Creator<Stormglass>()
+    {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
-        public Stormglass createFromParcel(Parcel in) {
+        public Stormglass createFromParcel(Parcel in)
+        {
             return new Stormglass(in);
         }
 
-        public Stormglass[] newArray(int size) {
+        public Stormglass[] newArray(int size)
+        {
             return (new Stormglass[size]);
         }
 
-    }
-    ;
+    };
     private final static long serialVersionUID = -5313040634380428552L;
 
-    protected Stormglass(Parcel in) {
+    protected Stormglass(Parcel in)
+    {
         in.readList(this.hours, (Hour.class.getClassLoader()));
         this.meta = ((Meta) in.readValue((Meta.class.getClassLoader())));
     }
 
     /**
      * No args constructor for use in serialization
-     * 
      */
-    public Stormglass() {
+    public Stormglass()
+    {
     }
 
     /**
-     * 
      * @param hours
      * @param meta
      */
-    public Stormglass(List<Hour> hours, Meta meta) {
+    public Stormglass(List<Hour> hours, Meta meta)
+    {
         super();
         this.hours = hours;
         this.meta = meta;
     }
 
-    public List<Hour> getHours() {
+    public List<Hour> getHours()
+    {
         return hours;
     }
 
-    public void setHours(List<Hour> hours) {
+    public void setHours(List<Hour> hours)
+    {
         this.hours = hours;
     }
 
-    public Stormglass withHours(List<Hour> hours) {
+    public Stormglass withHours(List<Hour> hours)
+    {
         this.hours = hours;
         return this;
     }
 
-    public Meta getMeta() {
+    public Meta getMeta()
+    {
         return meta;
     }
 
-    public void setMeta(Meta meta) {
+    public void setMeta(Meta meta)
+    {
         this.meta = meta;
     }
 
-    public Stormglass withMeta(Meta meta) {
+    public Stormglass withMeta(Meta meta)
+    {
         this.meta = meta;
         return this;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeList(hours);
         dest.writeValue(meta);
     }
 
-    public int describeContents() {
-        return  0;
+    public int describeContents()
+    {
+        return 0;
     }
 
 }

@@ -39,8 +39,7 @@ public class Log
         if (packageNames.length > 0)
         {
             return prefix + packageNames[packageNames.length - 1] + "::" + t.getStackTrace()[2].getMethodName() + "()";
-        }
-        else
+        } else
         {
             return prefix + className + "::" + t.getStackTrace()[2].getMethodName() + "()";
         }

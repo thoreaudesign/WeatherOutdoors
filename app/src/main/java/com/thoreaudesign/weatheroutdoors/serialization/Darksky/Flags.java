@@ -28,25 +28,28 @@ public class Flags implements Serializable, Parcelable
     @SerializedName("units")
     @Expose
     private String units;
-    public final static Parcelable.Creator<Flags> CREATOR = new Creator<Flags>() {
+    public final static Parcelable.Creator<Flags> CREATOR = new Creator<Flags>()
+    {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
-        public Flags createFromParcel(Parcel in) {
+        public Flags createFromParcel(Parcel in)
+        {
             return new Flags(in);
         }
 
-        public Flags[] newArray(int size) {
+        public Flags[] newArray(int size)
+        {
             return (new Flags[size]);
         }
 
-    }
-    ;
+    };
     private final static long serialVersionUID = 7403893317410228892L;
 
-    protected Flags(Parcel in) {
+    protected Flags(Parcel in)
+    {
         in.readList(this.sources, (java.lang.String.class.getClassLoader()));
         this.nearestStation = ((double) in.readValue((double.class.getClassLoader())));
         this.units = ((String) in.readValue((String.class.getClassLoader())));
@@ -54,93 +57,109 @@ public class Flags implements Serializable, Parcelable
 
     /**
      * No args constructor for use in serialization
-     * 
      */
-    public Flags() {
+    public Flags()
+    {
     }
 
     /**
-     * 
      * @param units
      * @param nearestStation
      * @param sources
      */
-    public Flags(List<String> sources, double nearestStation, String units) {
+    public Flags(List<String> sources, double nearestStation, String units)
+    {
         super();
         this.sources = sources;
         this.nearestStation = nearestStation;
         this.units = units;
     }
 
-    public List<String> getSources() {
+    public List<String> getSources()
+    {
         return sources;
     }
 
-    public void setSources(List<String> sources) {
+    public void setSources(List<String> sources)
+    {
         this.sources = sources;
     }
 
-    public Flags withSources(List<String> sources) {
+    public Flags withSources(List<String> sources)
+    {
         this.sources = sources;
         return this;
     }
 
-    public double getNearestStation() {
+    public double getNearestStation()
+    {
         return nearestStation;
     }
 
-    public void setNearestStation(double nearestStation) {
+    public void setNearestStation(double nearestStation)
+    {
         this.nearestStation = nearestStation;
     }
 
-    public Flags withNearestStation(double nearestStation) {
+    public Flags withNearestStation(double nearestStation)
+    {
         this.nearestStation = nearestStation;
         return this;
     }
 
-    public String getUnits() {
+    public String getUnits()
+    {
         return units;
     }
 
-    public void setUnits(String units) {
+    public void setUnits(String units)
+    {
         this.units = units;
     }
 
-    public Flags withUnits(String units) {
+    public Flags withUnits(String units)
+    {
         this.units = units;
         return this;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return new ToStringBuilder(this).append("sources", sources).append("nearestStation", nearestStation).append("units", units).toString();
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return new HashCodeBuilder().append(units).append(nearestStation).append(sources).toHashCode();
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (other == this) {
+    public boolean equals(Object other)
+    {
+        if (other == this)
+        {
             return true;
         }
-        if ((other instanceof Flags) == false) {
+        if ((other instanceof Flags) == false)
+        {
             return false;
         }
         Flags rhs = ((Flags) other);
         return new EqualsBuilder().append(units, rhs.units).append(nearestStation, rhs.nearestStation).append(sources, rhs.sources).isEquals();
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeList(sources);
         dest.writeValue(nearestStation);
         dest.writeValue(units);
     }
 
-    public int describeContents() {
-        return  0;
+    public int describeContents()
+    {
+        return 0;
     }
 
 }

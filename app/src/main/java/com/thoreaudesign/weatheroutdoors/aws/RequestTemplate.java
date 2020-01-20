@@ -6,9 +6,9 @@ public class RequestTemplate
 {
     private LambdaInvokerFactory factory;
 
-    public RequestTemplate(LambdaInvokerFactory factory)
+    public RequestTemplate(LambdaInvokerFactory paramLambdaInvokerFactory)
     {
-        this.factory = factory;
+        this.factory = paramLambdaInvokerFactory;
     }
 
     public LambdaInvokerFactory getLambdaFactory()
@@ -16,8 +16,8 @@ public class RequestTemplate
         return this.factory;
     }
 
-    public Object getLambdaResponse(WeatherInterface weatherInterface, RequestParams... params) throws Exception
+    public Object getLambdaResponse(WeatherInterface paramWeatherInterface, RequestParams... paramVarArgs) throws Exception
     {
-        return weatherInterface.weatheroutdoors(params[0]);
+        return paramWeatherInterface.weatheroutdoors(paramVarArgs[0]);
     }
 }

@@ -81,25 +81,28 @@ public class Hour implements Serializable, Parcelable
     @Expose
 
     private List<WindWavePeriod> windWavePeriod = new ArrayList<WindWavePeriod>();
-    public final static Creator<Hour> CREATOR = new Creator<Hour>() {
+    public final static Creator<Hour> CREATOR = new Creator<Hour>()
+    {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
-        public Hour createFromParcel(Parcel in) {
+        public Hour createFromParcel(Parcel in)
+        {
             return new Hour(in);
         }
 
-        public Hour[] newArray(int size) {
+        public Hour[] newArray(int size)
+        {
             return (new Hour[size]);
         }
 
-    }
-    ;
+    };
     private final static long serialVersionUID = 1785991147217140134L;
 
-    protected Hour(Parcel in) {
+    protected Hour(Parcel in)
+    {
         in.readList(this.airTemperature, (com.thoreaudesign.weatheroutdoors.serialization.Stormglass.AirTemperature.class.getClassLoader()));
         in.readList(this.iceCover, (com.thoreaudesign.weatheroutdoors.serialization.Stormglass.IceCover.class.getClassLoader()));
         in.readList(this.seaLevel, (com.thoreaudesign.weatheroutdoors.serialization.Stormglass.SeaLevel.class.getClassLoader()));
@@ -121,13 +124,12 @@ public class Hour implements Serializable, Parcelable
 
     /**
      * No args constructor for use in serialization
-     * 
      */
-    public Hour() {
+    public Hour()
+    {
     }
 
     /**
-     * 
      * @param waveDirection
      * @param iceCover
      * @param windDirection
@@ -146,7 +148,8 @@ public class Hour implements Serializable, Parcelable
      * @param waterTemperature
      * @param swellDirection
      */
-    public Hour(List<AirTemperature> airTemperature, List<IceCover> iceCover, List<SeaLevel> seaLevel, List<SwellDirection> swellDirection, List<SwellHeight> swellHeight, List<SwellPeriod> swellPeriod, String time, List<Visibility> visibility, List<WaterTemperature> waterTemperature, List<WaveDirection> waveDirection, List<WaveHeight> waveHeight, List<WavePeriod> wavePeriod, List<WindDirection> windDirection, List<WindSpeed> windSpeed, List<WindWaveDirection> windWaveDirection, List<WindWaveHeight> windWaveHeight, List<WindWavePeriod> windWavePeriod) {
+    public Hour(List<AirTemperature> airTemperature, List<IceCover> iceCover, List<SeaLevel> seaLevel, List<SwellDirection> swellDirection, List<SwellHeight> swellHeight, List<SwellPeriod> swellPeriod, String time, List<Visibility> visibility, List<WaterTemperature> waterTemperature, List<WaveDirection> waveDirection, List<WaveHeight> waveHeight, List<WavePeriod> wavePeriod, List<WindDirection> windDirection, List<WindSpeed> windSpeed, List<WindWaveDirection> windWaveDirection, List<WindWaveHeight> windWaveHeight, List<WindWavePeriod> windWavePeriod)
+    {
         super();
         this.airTemperature = airTemperature;
         this.iceCover = iceCover;
@@ -167,228 +170,280 @@ public class Hour implements Serializable, Parcelable
         this.windWavePeriod = windWavePeriod;
     }
 
-    public List<AirTemperature> getAirTemperature() {
+    public List<AirTemperature> getAirTemperature()
+    {
         return airTemperature;
     }
 
-    public void setAirTemperature(List<AirTemperature> airTemperature) {
+    public void setAirTemperature(List<AirTemperature> airTemperature)
+    {
         this.airTemperature = airTemperature;
     }
 
-    public Hour withAirTemperature(List<AirTemperature> airTemperature) {
+    public Hour withAirTemperature(List<AirTemperature> airTemperature)
+    {
         this.airTemperature = airTemperature;
         return this;
     }
 
-    public List<IceCover> getIceCover() {
+    public List<IceCover> getIceCover()
+    {
         return iceCover;
     }
 
-    public void setIceCover(List<IceCover> iceCover) {
+    public void setIceCover(List<IceCover> iceCover)
+    {
         this.iceCover = iceCover;
     }
 
-    public Hour withIceCover(List<IceCover> iceCover) {
+    public Hour withIceCover(List<IceCover> iceCover)
+    {
         this.iceCover = iceCover;
         return this;
     }
 
-    public List<SeaLevel> getSeaLevel() {
+    public List<SeaLevel> getSeaLevel()
+    {
         return seaLevel;
     }
 
-    public void setSeaLevel(List<SeaLevel> seaLevel) {
+    public void setSeaLevel(List<SeaLevel> seaLevel)
+    {
         this.seaLevel = seaLevel;
     }
 
-    public Hour withSeaLevel(List<SeaLevel> seaLevel) {
+    public Hour withSeaLevel(List<SeaLevel> seaLevel)
+    {
         this.seaLevel = seaLevel;
         return this;
     }
 
-    public List<SwellDirection> getSwellDirection() {
+    public List<SwellDirection> getSwellDirection()
+    {
         return swellDirection;
     }
 
-    public void setSwellDirection(List<SwellDirection> swellDirection) {
+    public void setSwellDirection(List<SwellDirection> swellDirection)
+    {
         this.swellDirection = swellDirection;
     }
 
-    public Hour withSwellDirection(List<SwellDirection> swellDirection) {
+    public Hour withSwellDirection(List<SwellDirection> swellDirection)
+    {
         this.swellDirection = swellDirection;
         return this;
     }
 
-    public List<SwellHeight> getSwellHeight() {
+    public List<SwellHeight> getSwellHeight()
+    {
         return swellHeight;
     }
 
-    public void setSwellHeight(List<SwellHeight> swellHeight) {
+    public void setSwellHeight(List<SwellHeight> swellHeight)
+    {
         this.swellHeight = swellHeight;
     }
 
-    public Hour withSwellHeight(List<SwellHeight> swellHeight) {
+    public Hour withSwellHeight(List<SwellHeight> swellHeight)
+    {
         this.swellHeight = swellHeight;
         return this;
     }
 
-    public List<SwellPeriod> getSwellPeriod() {
+    public List<SwellPeriod> getSwellPeriod()
+    {
         return swellPeriod;
     }
 
-    public void setSwellPeriod(List<SwellPeriod> swellPeriod) {
+    public void setSwellPeriod(List<SwellPeriod> swellPeriod)
+    {
         this.swellPeriod = swellPeriod;
     }
 
-    public Hour withSwellPeriod(List<SwellPeriod> swellPeriod) {
+    public Hour withSwellPeriod(List<SwellPeriod> swellPeriod)
+    {
         this.swellPeriod = swellPeriod;
         return this;
     }
 
-    public String getTime() {
+    public String getTime()
+    {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(String time)
+    {
         this.time = time;
     }
 
-    public Hour withTime(String time) {
+    public Hour withTime(String time)
+    {
         this.time = time;
         return this;
     }
 
-    public List<Visibility> getVisibility() {
+    public List<Visibility> getVisibility()
+    {
         return visibility;
     }
 
-    public void setVisibility(List<Visibility> visibility) {
+    public void setVisibility(List<Visibility> visibility)
+    {
         this.visibility = visibility;
     }
 
-    public Hour withVisibility(List<Visibility> visibility) {
+    public Hour withVisibility(List<Visibility> visibility)
+    {
         this.visibility = visibility;
         return this;
     }
 
-    public List<WaterTemperature> getWaterTemperature() {
+    public List<WaterTemperature> getWaterTemperature()
+    {
         return waterTemperature;
     }
 
-    public void setWaterTemperature(List<WaterTemperature> waterTemperature) {
+    public void setWaterTemperature(List<WaterTemperature> waterTemperature)
+    {
         this.waterTemperature = waterTemperature;
     }
 
-    public Hour withWaterTemperature(List<WaterTemperature> waterTemperature) {
+    public Hour withWaterTemperature(List<WaterTemperature> waterTemperature)
+    {
         this.waterTemperature = waterTemperature;
         return this;
     }
 
-    public List<WaveDirection> getWaveDirection() {
+    public List<WaveDirection> getWaveDirection()
+    {
         return waveDirection;
     }
 
-    public void setWaveDirection(List<WaveDirection> waveDirection) {
+    public void setWaveDirection(List<WaveDirection> waveDirection)
+    {
         this.waveDirection = waveDirection;
     }
 
-    public Hour withWaveDirection(List<WaveDirection> waveDirection) {
+    public Hour withWaveDirection(List<WaveDirection> waveDirection)
+    {
         this.waveDirection = waveDirection;
         return this;
     }
 
-    public List<WaveHeight> getWaveHeight() {
+    public List<WaveHeight> getWaveHeight()
+    {
         return waveHeight;
     }
 
-    public void setWaveHeight(List<WaveHeight> waveHeight) {
+    public void setWaveHeight(List<WaveHeight> waveHeight)
+    {
         this.waveHeight = waveHeight;
     }
 
-    public Hour withWaveHeight(List<WaveHeight> waveHeight) {
+    public Hour withWaveHeight(List<WaveHeight> waveHeight)
+    {
         this.waveHeight = waveHeight;
         return this;
     }
 
-    public List<WavePeriod> getWavePeriod() {
+    public List<WavePeriod> getWavePeriod()
+    {
         return wavePeriod;
     }
 
-    public void setWavePeriod(List<WavePeriod> wavePeriod) {
+    public void setWavePeriod(List<WavePeriod> wavePeriod)
+    {
         this.wavePeriod = wavePeriod;
     }
 
-    public Hour withWavePeriod(List<WavePeriod> wavePeriod) {
+    public Hour withWavePeriod(List<WavePeriod> wavePeriod)
+    {
         this.wavePeriod = wavePeriod;
         return this;
     }
 
-    public List<WindDirection> getWindDirection() {
+    public List<WindDirection> getWindDirection()
+    {
         return windDirection;
     }
 
-    public void setWindDirection(List<WindDirection> windDirection) {
+    public void setWindDirection(List<WindDirection> windDirection)
+    {
         this.windDirection = windDirection;
     }
 
-    public Hour withWindDirection(List<WindDirection> windDirection) {
+    public Hour withWindDirection(List<WindDirection> windDirection)
+    {
         this.windDirection = windDirection;
         return this;
     }
 
-    public List<WindSpeed> getWindSpeed() {
+    public List<WindSpeed> getWindSpeed()
+    {
         return windSpeed;
     }
 
-    public void setWindSpeed(List<WindSpeed> windSpeed) {
+    public void setWindSpeed(List<WindSpeed> windSpeed)
+    {
         this.windSpeed = windSpeed;
     }
 
-    public Hour withWindSpeed(List<WindSpeed> windSpeed) {
+    public Hour withWindSpeed(List<WindSpeed> windSpeed)
+    {
         this.windSpeed = windSpeed;
         return this;
     }
 
-    public List<WindWaveDirection> getWindWaveDirection() {
+    public List<WindWaveDirection> getWindWaveDirection()
+    {
         return windWaveDirection;
     }
 
-    public void setWindWaveDirection(List<WindWaveDirection> windWaveDirection) {
+    public void setWindWaveDirection(List<WindWaveDirection> windWaveDirection)
+    {
         this.windWaveDirection = windWaveDirection;
     }
 
-    public Hour withWindWaveDirection(List<WindWaveDirection> windWaveDirection) {
+    public Hour withWindWaveDirection(List<WindWaveDirection> windWaveDirection)
+    {
         this.windWaveDirection = windWaveDirection;
         return this;
     }
 
-    public List<WindWaveHeight> getWindWaveHeight() {
+    public List<WindWaveHeight> getWindWaveHeight()
+    {
         return windWaveHeight;
     }
 
-    public void setWindWaveHeight(List<WindWaveHeight> windWaveHeight) {
+    public void setWindWaveHeight(List<WindWaveHeight> windWaveHeight)
+    {
         this.windWaveHeight = windWaveHeight;
     }
 
-    public Hour withWindWaveHeight(List<WindWaveHeight> windWaveHeight) {
+    public Hour withWindWaveHeight(List<WindWaveHeight> windWaveHeight)
+    {
         this.windWaveHeight = windWaveHeight;
         return this;
     }
 
-    public List<WindWavePeriod> getWindWavePeriod() {
+    public List<WindWavePeriod> getWindWavePeriod()
+    {
         return windWavePeriod;
     }
 
-    public void setWindWavePeriod(List<WindWavePeriod> windWavePeriod) {
+    public void setWindWavePeriod(List<WindWavePeriod> windWavePeriod)
+    {
         this.windWavePeriod = windWavePeriod;
     }
 
-    public Hour withWindWavePeriod(List<WindWavePeriod> windWavePeriod) {
+    public Hour withWindWavePeriod(List<WindWavePeriod> windWavePeriod)
+    {
         this.windWavePeriod = windWavePeriod;
         return this;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeList(airTemperature);
         dest.writeList(iceCover);
         dest.writeList(seaLevel);
@@ -408,8 +463,9 @@ public class Hour implements Serializable, Parcelable
         dest.writeList(windWavePeriod);
     }
 
-    public int describeContents() {
-        return  0;
+    public int describeContents()
+    {
+        return 0;
     }
 
 }

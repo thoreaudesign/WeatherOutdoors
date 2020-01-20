@@ -48,25 +48,28 @@ public class Darksky implements Serializable, Parcelable
     @SerializedName("offset")
     @Expose
     private double offset;
-    public final static Parcelable.Creator<Darksky> CREATOR = new Creator<Darksky>() {
+    public final static Parcelable.Creator<Darksky> CREATOR = new Creator<Darksky>()
+    {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
-        public Darksky createFromParcel(Parcel in) {
+        public Darksky createFromParcel(Parcel in)
+        {
             return new Darksky(in);
         }
 
-        public Darksky[] newArray(int size) {
+        public Darksky[] newArray(int size)
+        {
             return (new Darksky[size]);
         }
 
-    }
-    ;
+    };
     private final static long serialVersionUID = 1165632754801542554L;
 
-    protected Darksky(Parcel in) {
+    protected Darksky(Parcel in)
+    {
         this.latitude = ((double) in.readValue((double.class.getClassLoader())));
         this.longitude = ((double) in.readValue((double.class.getClassLoader())));
         this.timezone = ((String) in.readValue((String.class.getClassLoader())));
@@ -80,13 +83,12 @@ public class Darksky implements Serializable, Parcelable
 
     /**
      * No args constructor for use in serialization
-     * 
      */
-    public Darksky() {
+    public Darksky()
+    {
     }
 
     /**
-     * 
      * @param timezone
      * @param flags
      * @param currently
@@ -97,7 +99,8 @@ public class Darksky implements Serializable, Parcelable
      * @param daily
      * @param minutely
      */
-    public Darksky(double latitude, double longitude, String timezone, Currently currently, Minutely minutely, Hourly hourly, Daily daily, Flags flags, long offset) {
+    public Darksky(double latitude, double longitude, String timezone, Currently currently, Minutely minutely, Hourly hourly, Daily daily, Flags flags, long offset)
+    {
         super();
         this.latitude = latitude;
         this.longitude = longitude;
@@ -110,146 +113,179 @@ public class Darksky implements Serializable, Parcelable
         this.offset = offset;
     }
 
-    public double getLatitude() {
+    public double getLatitude()
+    {
         return latitude;
     }
 
-    public void setLatitude(double latitude) {
+    public void setLatitude(double latitude)
+    {
         this.latitude = latitude;
     }
 
-    public Darksky withLatitude(double latitude) {
+    public Darksky withLatitude(double latitude)
+    {
         this.latitude = latitude;
         return this;
     }
 
-    public double getLongitude() {
+    public double getLongitude()
+    {
         return longitude;
     }
 
-    public void setLongitude(double longitude) {
+    public void setLongitude(double longitude)
+    {
         this.longitude = longitude;
     }
 
-    public Darksky withLongitude(double longitude) {
+    public Darksky withLongitude(double longitude)
+    {
         this.longitude = longitude;
         return this;
     }
 
-    public String getTimezone() {
+    public String getTimezone()
+    {
         return timezone;
     }
 
-    public void setTimezone(String timezone) {
+    public void setTimezone(String timezone)
+    {
         this.timezone = timezone;
     }
 
-    public Darksky withTimezone(String timezone) {
+    public Darksky withTimezone(String timezone)
+    {
         this.timezone = timezone;
         return this;
     }
 
-    public Currently getCurrently() {
+    public Currently getCurrently()
+    {
         return currently;
     }
 
-    public void setCurrently(Currently currently) {
+    public void setCurrently(Currently currently)
+    {
         this.currently = currently;
     }
 
-    public Darksky withCurrently(Currently currently) {
+    public Darksky withCurrently(Currently currently)
+    {
         this.currently = currently;
         return this;
     }
 
-    public Minutely getMinutely() {
+    public Minutely getMinutely()
+    {
         return minutely;
     }
 
-    public void setMinutely(Minutely minutely) {
+    public void setMinutely(Minutely minutely)
+    {
         this.minutely = minutely;
     }
 
-    public Darksky withMinutely(Minutely minutely) {
+    public Darksky withMinutely(Minutely minutely)
+    {
         this.minutely = minutely;
         return this;
     }
 
-    public Hourly getHourly() {
+    public Hourly getHourly()
+    {
         return hourly;
     }
 
-    public void setHourly(Hourly hourly) {
+    public void setHourly(Hourly hourly)
+    {
         this.hourly = hourly;
     }
 
-    public Darksky withHourly(Hourly hourly) {
+    public Darksky withHourly(Hourly hourly)
+    {
         this.hourly = hourly;
         return this;
     }
 
-    public Daily getDaily() {
+    public Daily getDaily()
+    {
         return daily;
     }
 
-    public void setDaily(Daily daily) {
+    public void setDaily(Daily daily)
+    {
         this.daily = daily;
     }
 
-    public Darksky withDaily(Daily daily) {
+    public Darksky withDaily(Daily daily)
+    {
         this.daily = daily;
         return this;
     }
 
-    public Flags getFlags() {
+    public Flags getFlags()
+    {
         return flags;
     }
 
-    public void setFlags(Flags flags) {
+    public void setFlags(Flags flags)
+    {
         this.flags = flags;
     }
 
-    public Darksky withFlags(Flags flags) {
+    public Darksky withFlags(Flags flags)
+    {
         this.flags = flags;
         return this;
     }
 
-    public double getOffset() {
+    public double getOffset()
+    {
         return offset;
     }
 
-    public void setOffset(long offset) {
+    public void setOffset(long offset)
+    {
         this.offset = offset;
     }
 
-    public Darksky withOffset(long offset) {
+    public Darksky withOffset(long offset)
+    {
         this.offset = offset;
         return this;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return new ToStringBuilder(this).append("latitude", latitude).append("longitude", longitude).append("timezone", timezone).append("currently", currently).append("minutely", minutely).append("hourly", hourly).append("daily", daily).append("flags", flags).append("offset", offset).toString();
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return new HashCodeBuilder().append(timezone).append(flags).append(currently).append(longitude).append(latitude).append(offset).append(hourly).append(daily).append(minutely).toHashCode();
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (other == this) {
+    public boolean equals(Object other)
+    {
+        if (other == this)
+        {
             return true;
         }
-        if ((other instanceof Darksky) == false) {
+        if ((other instanceof Darksky) == false)
+        {
             return false;
         }
         Darksky rhs = ((Darksky) other);
         return new EqualsBuilder().append(timezone, rhs.timezone).append(flags, rhs.flags).append(currently, rhs.currently).append(longitude, rhs.longitude).append(latitude, rhs.latitude).append(offset, rhs.offset).append(hourly, rhs.hourly).append(daily, rhs.daily).append(minutely, rhs.minutely).isEquals();
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeValue(latitude);
         dest.writeValue(longitude);
         dest.writeValue(timezone);
@@ -261,8 +297,9 @@ public class Darksky implements Serializable, Parcelable
         dest.writeValue(offset);
     }
 
-    public int describeContents() {
-        return  0;
+    public int describeContents()
+    {
+        return 0;
     }
 
 }

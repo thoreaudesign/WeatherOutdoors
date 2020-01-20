@@ -21,25 +21,28 @@ public class Closest implements Serializable, Parcelable
     @SerializedName("value")
     @Expose
     private double value;
-    public final static Creator<Closest> CREATOR = new Creator<Closest>() {
+    public final static Creator<Closest> CREATOR = new Creator<Closest>()
+    {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
-        public Closest createFromParcel(Parcel in) {
+        public Closest createFromParcel(Parcel in)
+        {
             return new Closest(in);
         }
 
-        public Closest[] newArray(int size) {
+        public Closest[] newArray(int size)
+        {
             return (new Closest[size]);
         }
 
-    }
-    ;
+    };
     private final static long serialVersionUID = 6362122781963025627L;
 
-    protected Closest(Parcel in) {
+    protected Closest(Parcel in)
+    {
         this.text = ((String) in.readValue((String.class.getClassLoader())));
         this.time = ((String) in.readValue((String.class.getClassLoader())));
         this.value = ((double) in.readValue((double.class.getClassLoader())));
@@ -47,71 +50,82 @@ public class Closest implements Serializable, Parcelable
 
     /**
      * No args constructor for use in serialization
-     * 
      */
-    public Closest() {
+    public Closest()
+    {
     }
 
     /**
-     * 
      * @param time
      * @param text
      * @param value
      */
-    public Closest(String text, String time, double value) {
+    public Closest(String text, String time, double value)
+    {
         super();
         this.text = text;
         this.time = time;
         this.value = value;
     }
 
-    public String getText() {
+    public String getText()
+    {
         return text;
     }
 
-    public void setText(String text) {
+    public void setText(String text)
+    {
         this.text = text;
     }
 
-    public Closest withText(String text) {
+    public Closest withText(String text)
+    {
         this.text = text;
         return this;
     }
 
-    public String getTime() {
+    public String getTime()
+    {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(String time)
+    {
         this.time = time;
     }
 
-    public Closest withTime(String time) {
+    public Closest withTime(String time)
+    {
         this.time = time;
         return this;
     }
 
-    public double getValue() {
+    public double getValue()
+    {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(double value)
+    {
         this.value = value;
     }
 
-    public Closest withValue(double value) {
+    public Closest withValue(double value)
+    {
         this.value = value;
         return this;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeValue(text);
         dest.writeValue(time);
         dest.writeValue(value);
     }
 
-    public int describeContents() {
-        return  0;
+    public int describeContents()
+    {
+        return 0;
     }
 
 }

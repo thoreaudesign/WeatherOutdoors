@@ -18,80 +18,91 @@ public class WavePeriod implements Serializable, Parcelable
     @SerializedName("value")
     @Expose
     private double value;
-    public final static Creator<WavePeriod> CREATOR = new Creator<WavePeriod>() {
+    public final static Creator<WavePeriod> CREATOR = new Creator<WavePeriod>()
+    {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
-        public WavePeriod createFromParcel(Parcel in) {
+        public WavePeriod createFromParcel(Parcel in)
+        {
             return new WavePeriod(in);
         }
 
-        public WavePeriod[] newArray(int size) {
+        public WavePeriod[] newArray(int size)
+        {
             return (new WavePeriod[size]);
         }
 
-    }
-    ;
+    };
     private final static long serialVersionUID = 2913884179861227318L;
 
-    protected WavePeriod(Parcel in) {
+    protected WavePeriod(Parcel in)
+    {
         this.source = ((String) in.readValue((String.class.getClassLoader())));
         this.value = ((double) in.readValue((double.class.getClassLoader())));
     }
 
     /**
      * No args constructor for use in serialization
-     * 
      */
-    public WavePeriod() {
+    public WavePeriod()
+    {
     }
 
     /**
-     * 
      * @param source
      * @param value
      */
-    public WavePeriod(String source, double value) {
+    public WavePeriod(String source, double value)
+    {
         super();
         this.source = source;
         this.value = value;
     }
 
-    public String getSource() {
+    public String getSource()
+    {
         return source;
     }
 
-    public void setSource(String source) {
+    public void setSource(String source)
+    {
         this.source = source;
     }
 
-    public WavePeriod withSource(String source) {
+    public WavePeriod withSource(String source)
+    {
         this.source = source;
         return this;
     }
 
-    public double getValue() {
+    public double getValue()
+    {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(double value)
+    {
         this.value = value;
     }
 
-    public WavePeriod withValue(double value) {
+    public WavePeriod withValue(double value)
+    {
         this.value = value;
         return this;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeValue(source);
         dest.writeValue(value);
     }
 
-    public int describeContents() {
-        return  0;
+    public int describeContents()
+    {
+        return 0;
     }
 
 }

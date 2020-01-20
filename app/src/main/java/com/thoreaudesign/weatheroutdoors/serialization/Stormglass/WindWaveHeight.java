@@ -18,80 +18,91 @@ public class WindWaveHeight implements Serializable, Parcelable
     @SerializedName("value")
     @Expose
     private double value;
-    public final static Creator<WindWaveHeight> CREATOR = new Creator<WindWaveHeight>() {
+    public final static Creator<WindWaveHeight> CREATOR = new Creator<WindWaveHeight>()
+    {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
-        public WindWaveHeight createFromParcel(Parcel in) {
+        public WindWaveHeight createFromParcel(Parcel in)
+        {
             return new WindWaveHeight(in);
         }
 
-        public WindWaveHeight[] newArray(int size) {
+        public WindWaveHeight[] newArray(int size)
+        {
             return (new WindWaveHeight[size]);
         }
 
-    }
-    ;
+    };
     private final static long serialVersionUID = -3457519161248023373L;
 
-    protected WindWaveHeight(Parcel in) {
+    protected WindWaveHeight(Parcel in)
+    {
         this.source = ((String) in.readValue((String.class.getClassLoader())));
         this.value = ((double) in.readValue((double.class.getClassLoader())));
     }
 
     /**
      * No args constructor for use in serialization
-     * 
      */
-    public WindWaveHeight() {
+    public WindWaveHeight()
+    {
     }
 
     /**
-     * 
      * @param source
      * @param value
      */
-    public WindWaveHeight(String source, double value) {
+    public WindWaveHeight(String source, double value)
+    {
         super();
         this.source = source;
         this.value = value;
     }
 
-    public String getSource() {
+    public String getSource()
+    {
         return source;
     }
 
-    public void setSource(String source) {
+    public void setSource(String source)
+    {
         this.source = source;
     }
 
-    public WindWaveHeight withSource(String source) {
+    public WindWaveHeight withSource(String source)
+    {
         this.source = source;
         return this;
     }
 
-    public double getValue() {
+    public double getValue()
+    {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(double value)
+    {
         this.value = value;
     }
 
-    public WindWaveHeight withValue(double value) {
+    public WindWaveHeight withValue(double value)
+    {
         this.value = value;
         return this;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeValue(source);
         dest.writeValue(value);
     }
 
-    public int describeContents() {
-        return  0;
+    public int describeContents()
+    {
+        return 0;
     }
 
 }

@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">WeatherOutdoors</string>
     <string name="action_settings">Settings</string>
-    <string name="title">Welcome to WeatherOutdoors!\nFragmentId: %1$d</string>
+    <string name="title">Welcome to WeatherOutdoors!</string>
 </resources>

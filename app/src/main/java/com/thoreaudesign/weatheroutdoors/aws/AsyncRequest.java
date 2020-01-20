@@ -4,32 +4,23 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.amazonaws.mobileconnectors.lambdainvoker.LambdaFunctionException;
 import com.thoreaudesign.weatheroutdoors.Log;
 
 public class AsyncRequest extends AsyncTask<RequestParams, Integer, Object>
 {
-    private RequestTemplate requestTemplate;
     private String cacheDir;
-    private ProgressBar progress;
-
-    public interface Listener
-    {
-        void onTaskResult(Object response);
-    }
 
     private Listener listener;
 
-    public void setListener(Listener listener)
-    {
-        this.listener = listener;
-    }
+    private ProgressBar progress;
 
-    public AsyncRequest(RequestTemplate requestTemplate, String cacheDir, ProgressBar progress)
+    private RequestTemplate requestTemplate;
+
+    public AsyncRequest(RequestTemplate paramRequestTemplate, String paramString, ProgressBar paramProgressBar)
     {
-        this.requestTemplate = requestTemplate;
-        this.cacheDir = cacheDir;
-        this.progress = progress;
+        this.requestTemplate = paramRequestTemplate;
+        this.cacheDir = paramString;
+        this.progress = paramProgressBar;
     }
 
     private RequestTemplate getRequestTemplate()
@@ -37,46 +28,44 @@ public class AsyncRequest extends AsyncTask<RequestParams, Integer, Object>
         return this.requestTemplate;
     }
 
-
-    @Override
     protected Object doInBackground(RequestParams... params)
     {
-        WeatherInterface weatherInterface =
-            this.getRequestTemplate().getLambdaFactory().build(WeatherInterface.class);
+        WeatherInterface weatherInterface = (WeatherInterface) getRequestTemplate().getLambdaFactory().build(WeatherInterface.class);
 
         try
         {
-            return this.getRequestTemplate().getLambdaResponse(weatherInterface, params);
-        }
-        catch (LambdaFunctionException lfe)
-        {
-            String exception = lfe.getMessage();
-            Log.d(exception);
-            Log.v(lfe.getStackTrace().toString());
-            return exception;
+            return getRequestTemplate().getLambdaResponse(weatherInterface, params);
         }
         catch (Exception e)
         {
-            Log.e(e.getMessage());
+            Log.v(e.getStackTrace().toString());
             return e.getMessage();
         }
     }
 
-    @Override
-    protected void onPostExecute(Object response)
+    protected void onPostExecute(Object paramObject)
     {
-        if(listener != null)
+        Listener listener = this.listener;
+
+        if (listener != null)
         {
-            listener.onTaskResult(response);
+            listener.onTaskResult(paramObject);
         }
-
-        progress.setVisibility(View.GONE);
-
+        this.progress.setVisibility(View.GONE);
     }
 
-    @Override
     protected void onPreExecute()
     {
-        progress.setVisibility(View.VISIBLE);
+        this.progress.setVisibility(View.VISIBLE);
+    }
+
+    public void setListener(Listener paramListener)
+    {
+        this.listener = paramListener;
+    }
+
+    public interface Listener
+    {
+        void onTaskResult(Object param1Object);
     }
 }

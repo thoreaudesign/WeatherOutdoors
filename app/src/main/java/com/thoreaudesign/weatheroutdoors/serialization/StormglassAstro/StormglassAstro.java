@@ -22,80 +22,91 @@ public class StormglassAstro implements Serializable, Parcelable
     @Expose
 
     private Meta meta;
-    public final static Creator<StormglassAstro> CREATOR = new Creator<StormglassAstro>() {
+    public final static Creator<StormglassAstro> CREATOR = new Creator<StormglassAstro>()
+    {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
-        public StormglassAstro createFromParcel(Parcel in) {
+        public StormglassAstro createFromParcel(Parcel in)
+        {
             return new StormglassAstro(in);
         }
 
-        public StormglassAstro[] newArray(int size) {
+        public StormglassAstro[] newArray(int size)
+        {
             return (new StormglassAstro[size]);
         }
 
-    }
-    ;
+    };
     private final static long serialVersionUID = -5102637044457432646L;
 
-    protected StormglassAstro(Parcel in) {
+    protected StormglassAstro(Parcel in)
+    {
         in.readList(this.days, (Day.class.getClassLoader()));
         this.meta = ((Meta) in.readValue((Meta.class.getClassLoader())));
     }
 
     /**
      * No args constructor for use in serialization
-     * 
      */
-    public StormglassAstro() {
+    public StormglassAstro()
+    {
     }
 
     /**
-     * 
      * @param days
      * @param meta
      */
-    public StormglassAstro(List<Day> days, Meta meta) {
+    public StormglassAstro(List<Day> days, Meta meta)
+    {
         super();
         this.days = days;
         this.meta = meta;
     }
 
-    public List<Day> getDays() {
+    public List<Day> getDays()
+    {
         return days;
     }
 
-    public void setDays(List<Day> days) {
+    public void setDays(List<Day> days)
+    {
         this.days = days;
     }
 
-    public StormglassAstro withDays(List<Day> days) {
+    public StormglassAstro withDays(List<Day> days)
+    {
         this.days = days;
         return this;
     }
 
-    public Meta getMeta() {
+    public Meta getMeta()
+    {
         return meta;
     }
 
-    public void setMeta(Meta meta) {
+    public void setMeta(Meta meta)
+    {
         this.meta = meta;
     }
 
-    public StormglassAstro withMeta(Meta meta) {
+    public StormglassAstro withMeta(Meta meta)
+    {
         this.meta = meta;
         return this;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeList(days);
         dest.writeValue(meta);
     }
 
-    public int describeContents() {
-        return  0;
+    public int describeContents()
+    {
+        return 0;
     }
 
 }

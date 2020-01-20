@@ -6,17 +6,17 @@ import android.widget.TextView;
 public class DataFragmentOnClickListener implements View.OnClickListener
 {
     private String data;
+
     private TextView displayData;
 
-    public DataFragmentOnClickListener(String data, TextView displayData)
+    public DataFragmentOnClickListener(String paramString, TextView paramTextView)
     {
-        this.displayData = displayData;
-        this.data = data;
+        this.displayData = paramTextView;
+        this.data = paramString;
     }
 
-    @Override
-    public void onClick(View view)
+    public void onClick(View paramView)
     {
-        displayData.setText(this.data);
+        this.displayData.setText(this.data);
     }
 }

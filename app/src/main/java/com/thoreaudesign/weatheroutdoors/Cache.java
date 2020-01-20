@@ -10,54 +10,69 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-//public class Cache implements Parcelable
 public class Cache
 {
-    private File file;
-    private File dir;
-    private String name = Weather.CACHE_NAME;
     private String data;
 
-    public Cache(String dir)
-    {
-        this.dir = new File(dir);
-        this.file = new File(dir, name);
-    }
+    private File dir;
 
-    public Cache(File dir)
+    private File file;
+
+    private String name = "weatheroutdoors";
+
+    public Cache(File paramFile)
     {
-        this.dir =  dir;
-        this.file = new File(dir, name);
+        this.dir = paramFile;
+        this.file = new File(paramFile, this.name);
         this.data = null;
     }
 
-    public String getSection(String name)
+    public Cache(String paramString)
     {
-        String section = null;
-
-        if(this.exists())
-        {
-            this.read();
-
-            try
-            {
-                JSONObject json = new JSONObject(this.getData());
-
-                section = json.getString(name);
-            }
-            catch (JSONException e)
-            {
-                Log.e("Failed to parse section '" + name + "' from JSON cache.");
-                throw new RuntimeException(e);
-            }
-        }
-
-        return section;
+        this.dir = new File(paramString);
+        this.file = new File(paramString, this.name);
     }
 
-    public File getFile()
+    public boolean delete()
     {
-        return this.file;
+        String str = getFile().getAbsolutePath();
+        if (getFile().exists())
+        {
+            if (getFile().delete())
+            {
+                StringBuilder stringBuilder2 = new StringBuilder();
+                stringBuilder2.append("'");
+                stringBuilder2.append(getName());
+                stringBuilder2.append("' file deleted: ");
+                stringBuilder2.append(str);
+                Log.i(stringBuilder2.toString());
+                return true;
+            }
+            StringBuilder stringBuilder1 = new StringBuilder();
+            stringBuilder1.append("Failed to delete '");
+            stringBuilder1.append(getName());
+            stringBuilder1.append("' file: ");
+            stringBuilder1.append(str);
+            Log.i(stringBuilder1.toString());
+            return false;
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Unable to delete '");
+        stringBuilder.append(getName());
+        stringBuilder.append("' file - does not exist: ");
+        stringBuilder.append(str);
+        Log.i(stringBuilder.toString());
+        return false;
+    }
+
+    public boolean exists()
+    {
+        return getFile().exists();
+    }
+
+    public String getData()
+    {
+        return this.data;
     }
 
     public File getDir()
@@ -65,116 +80,105 @@ public class Cache
         return this.dir;
     }
 
+    public File getFile()
+    {
+        return this.file;
+    }
+
     public String getName()
     {
-        return name;
+        return this.name;
     }
 
-    public String getData()
+    public String getSection(String paramString)
     {
-        return data;
+        if (exists())
+        {
+            read();
+            try
+            {
+                return (new JSONObject(getData())).getString(paramString);
+            } catch (JSONException jSONException)
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append("Failed to parse section '");
+                stringBuilder.append(paramString);
+                stringBuilder.append("' from JSON cache.");
+                Log.e(stringBuilder.toString());
+                throw new RuntimeException(jSONException);
+            }
+        }
+        return null;
     }
 
-    public void setDir(File dir)
+    public boolean read()
     {
-        this.dir = dir;
+        StringBuilder stringBuilder = new StringBuilder();
+        try
+        {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(getFile()));
+            for (String str = bufferedReader.readLine(); str != null; str = bufferedReader.readLine())
+            {
+                stringBuilder.append(str);
+                stringBuilder.append("\n");
+            }
+            StringBuilder stringBuilder1 = new StringBuilder();
+            stringBuilder1.append("'");
+            stringBuilder1.append(getName());
+            stringBuilder1.append("' file read: ");
+            stringBuilder1.append(getFile().getAbsolutePath());
+            Log.i(stringBuilder1.toString());
+            setData(stringBuilder.toString());
+            return true;
+        } catch (FileNotFoundException fileNotFoundException)
+        {
+            Log.e(fileNotFoundException.toString());
+            return false;
+        } catch (IOException iOException)
+        {
+            Log.e(iOException.toString());
+            return false;
+        }
     }
 
-    public void setName(String name)
+    public void setData(String paramString)
     {
-        this.name = name;
+        this.data = paramString;
     }
 
-    public void setData(String data)
+    public void setDir(File paramFile)
     {
-        this.data = data;
+        this.dir = paramFile;
     }
 
-    public boolean exists()
+    public void setName(String paramString)
     {
-        return this.getFile().exists();
+        this.name = paramString;
+    }
+
+    public String toString()
+    {
+        return getData();
     }
 
     public boolean write()
     {
         try
         {
-            FileWriter writer = new FileWriter(this.getFile());
-            writer.write(this.getData());
-            writer.close();
-
-            Log.i("'" + this.getName() + "' file written: " + this.getFile().getAbsolutePath());
-
+            FileWriter fileWriter = new FileWriter(getFile());
+            fileWriter.write(getData());
+            fileWriter.close();
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("'");
+            stringBuilder.append(getName());
+            stringBuilder.append("' file written: ");
+            stringBuilder.append(getFile().getAbsolutePath());
+            Log.i(stringBuilder.toString());
             return true;
-        }
-        catch (IOException e)
+        } catch (IOException iOException)
         {
-            Log.e(e.toString());
+            Log.e(iOException.toString());
             return false;
         }
     }
-
-    public boolean read()
-    {
-        StringBuilder builder = new StringBuilder();
-
-        try
-        {
-            BufferedReader buffer = new BufferedReader(new FileReader(this.getFile()));
-
-            String line = buffer.readLine();
-
-            while (line != null)
-            {
-                 builder.append(line).append("\n");
-                 line = buffer.readLine();
-            }
-
-            Log.i("'" + this.getName() + "' file read: " + this.getFile().getAbsolutePath());
-
-            this.setData(builder.toString());
-
-            return true;
-        }
-        catch (FileNotFoundException e)
-        {
-            Log.e(e.toString());
-            return false;
-        }
-        catch (IOException e)
-        {
-            Log.e(e.toString());
-            return false;
-        }
-    }
-
-    public boolean delete()
-    {
-        String path = this.getFile().getAbsolutePath();
-
-        if(this.getFile().exists())
-        {
-            if (this.getFile().delete())
-            {
-                Log.i("'" + this.getName() + "' file deleted: " + path);
-                return true;
-            }
-            else
-            {
-                Log.i("Failed to delete '" + this.getName() + "' file: " + path);
-                return false;
-            }
-        }
-        else
-        {
-            Log.i("Unable to delete '" + this.getName() + "' file - does not exist: " + path);
-            return false;
-        }
-    }
-
-    public String toString()
-    {
-        return this.getData();
-    }
-
 }

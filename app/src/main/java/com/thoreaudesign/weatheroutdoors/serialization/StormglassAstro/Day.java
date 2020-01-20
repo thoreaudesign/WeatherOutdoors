@@ -52,25 +52,28 @@ public class Day implements Serializable, Parcelable
     @SerializedName("time")
     @Expose
     private String time;
-    public final static Creator<Day> CREATOR = new Creator<Day>() {
+    public final static Creator<Day> CREATOR = new Creator<Day>()
+    {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
-        public Day createFromParcel(Parcel in) {
+        public Day createFromParcel(Parcel in)
+        {
             return new Day(in);
         }
 
-        public Day[] newArray(int size) {
+        public Day[] newArray(int size)
+        {
             return (new Day[size]);
         }
 
-    }
-    ;
+    };
     private final static long serialVersionUID = 5181719811195715000L;
 
-    protected Day(Parcel in) {
+    protected Day(Parcel in)
+    {
         this.astronomicalDawn = ((String) in.readValue((String.class.getClassLoader())));
         this.astronomicalDusk = ((String) in.readValue((String.class.getClassLoader())));
         this.civilDawn = ((String) in.readValue((String.class.getClassLoader())));
@@ -88,13 +91,12 @@ public class Day implements Serializable, Parcelable
 
     /**
      * No args constructor for use in serialization
-     * 
      */
-    public Day() {
+    public Day()
+    {
     }
 
     /**
-     * 
      * @param moonset
      * @param astronomicalDusk
      * @param astronomicalDawn
@@ -109,7 +111,8 @@ public class Day implements Serializable, Parcelable
      * @param civilDusk
      * @param sunrise
      */
-    public Day(String astronomicalDawn, String astronomicalDusk, String civilDawn, String civilDusk, double moonFraction, MoonPhase moonPhase, String moonrise, String moonset, String nauticalDawn, String nauticalDusk, String sunrise, String sunset, String time) {
+    public Day(String astronomicalDawn, String astronomicalDusk, String civilDawn, String civilDusk, double moonFraction, MoonPhase moonPhase, String moonrise, String moonset, String nauticalDawn, String nauticalDusk, String sunrise, String sunset, String time)
+    {
         super();
         this.astronomicalDawn = astronomicalDawn;
         this.astronomicalDusk = astronomicalDusk;
@@ -126,176 +129,216 @@ public class Day implements Serializable, Parcelable
         this.time = time;
     }
 
-    public String getAstronomicalDawn() {
+    public String getAstronomicalDawn()
+    {
         return astronomicalDawn;
     }
 
-    public void setAstronomicalDawn(String astronomicalDawn) {
+    public void setAstronomicalDawn(String astronomicalDawn)
+    {
         this.astronomicalDawn = astronomicalDawn;
     }
 
-    public Day withAstronomicalDawn(String astronomicalDawn) {
+    public Day withAstronomicalDawn(String astronomicalDawn)
+    {
         this.astronomicalDawn = astronomicalDawn;
         return this;
     }
 
-    public String getAstronomicalDusk() {
+    public String getAstronomicalDusk()
+    {
         return astronomicalDusk;
     }
 
-    public void setAstronomicalDusk(String astronomicalDusk) {
+    public void setAstronomicalDusk(String astronomicalDusk)
+    {
         this.astronomicalDusk = astronomicalDusk;
     }
 
-    public Day withAstronomicalDusk(String astronomicalDusk) {
+    public Day withAstronomicalDusk(String astronomicalDusk)
+    {
         this.astronomicalDusk = astronomicalDusk;
         return this;
     }
 
-    public String getCivilDawn() {
+    public String getCivilDawn()
+    {
         return civilDawn;
     }
 
-    public void setCivilDawn(String civilDawn) {
+    public void setCivilDawn(String civilDawn)
+    {
         this.civilDawn = civilDawn;
     }
 
-    public Day withCivilDawn(String civilDawn) {
+    public Day withCivilDawn(String civilDawn)
+    {
         this.civilDawn = civilDawn;
         return this;
     }
 
-    public String getCivilDusk() {
+    public String getCivilDusk()
+    {
         return civilDusk;
     }
 
-    public void setCivilDusk(String civilDusk) {
+    public void setCivilDusk(String civilDusk)
+    {
         this.civilDusk = civilDusk;
     }
 
-    public Day withCivilDusk(String civilDusk) {
+    public Day withCivilDusk(String civilDusk)
+    {
         this.civilDusk = civilDusk;
         return this;
     }
 
-    public double getMoonFraction() {
+    public double getMoonFraction()
+    {
         return moonFraction;
     }
 
-    public void setMoonFraction(double moonFraction) {
+    public void setMoonFraction(double moonFraction)
+    {
         this.moonFraction = moonFraction;
     }
 
-    public Day withMoonFraction(double moonFraction) {
+    public Day withMoonFraction(double moonFraction)
+    {
         this.moonFraction = moonFraction;
         return this;
     }
 
-    public MoonPhase getMoonPhase() {
+    public MoonPhase getMoonPhase()
+    {
         return moonPhase;
     }
 
-    public void setMoonPhase(MoonPhase moonPhase) {
+    public void setMoonPhase(MoonPhase moonPhase)
+    {
         this.moonPhase = moonPhase;
     }
 
-    public Day withMoonPhase(MoonPhase moonPhase) {
+    public Day withMoonPhase(MoonPhase moonPhase)
+    {
         this.moonPhase = moonPhase;
         return this;
     }
 
-    public String getMoonrise() {
+    public String getMoonrise()
+    {
         return moonrise;
     }
 
-    public void setMoonrise(String moonrise) {
+    public void setMoonrise(String moonrise)
+    {
         this.moonrise = moonrise;
     }
 
-    public Day withMoonrise(String moonrise) {
+    public Day withMoonrise(String moonrise)
+    {
         this.moonrise = moonrise;
         return this;
     }
 
-    public String getMoonset() {
+    public String getMoonset()
+    {
         return moonset;
     }
 
-    public void setMoonset(String moonset) {
+    public void setMoonset(String moonset)
+    {
         this.moonset = moonset;
     }
 
-    public Day withMoonset(String moonset) {
+    public Day withMoonset(String moonset)
+    {
         this.moonset = moonset;
         return this;
     }
 
-    public String getNauticalDawn() {
+    public String getNauticalDawn()
+    {
         return nauticalDawn;
     }
 
-    public void setNauticalDawn(String nauticalDawn) {
+    public void setNauticalDawn(String nauticalDawn)
+    {
         this.nauticalDawn = nauticalDawn;
     }
 
-    public Day withNauticalDawn(String nauticalDawn) {
+    public Day withNauticalDawn(String nauticalDawn)
+    {
         this.nauticalDawn = nauticalDawn;
         return this;
     }
 
-    public String getNauticalDusk() {
+    public String getNauticalDusk()
+    {
         return nauticalDusk;
     }
 
-    public void setNauticalDusk(String nauticalDusk) {
+    public void setNauticalDusk(String nauticalDusk)
+    {
         this.nauticalDusk = nauticalDusk;
     }
 
-    public Day withNauticalDusk(String nauticalDusk) {
+    public Day withNauticalDusk(String nauticalDusk)
+    {
         this.nauticalDusk = nauticalDusk;
         return this;
     }
 
-    public String getSunrise() {
+    public String getSunrise()
+    {
         return sunrise;
     }
 
-    public void setSunrise(String sunrise) {
+    public void setSunrise(String sunrise)
+    {
         this.sunrise = sunrise;
     }
 
-    public Day withSunrise(String sunrise) {
+    public Day withSunrise(String sunrise)
+    {
         this.sunrise = sunrise;
         return this;
     }
 
-    public String getSunset() {
+    public String getSunset()
+    {
         return sunset;
     }
 
-    public void setSunset(String sunset) {
+    public void setSunset(String sunset)
+    {
         this.sunset = sunset;
     }
 
-    public Day withSunset(String sunset) {
+    public Day withSunset(String sunset)
+    {
         this.sunset = sunset;
         return this;
     }
 
-    public String getTime() {
+    public String getTime()
+    {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(String time)
+    {
         this.time = time;
     }
 
-    public Day withTime(String time) {
+    public Day withTime(String time)
+    {
         this.time = time;
         return this;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeValue(astronomicalDawn);
         dest.writeValue(astronomicalDusk);
         dest.writeValue(civilDawn);
@@ -311,8 +354,9 @@ public class Day implements Serializable, Parcelable
         dest.writeValue(time);
     }
 
-    public int describeContents() {
-        return  0;
+    public int describeContents()
+    {
+        return 0;
     }
 
 }

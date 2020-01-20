@@ -18,80 +18,91 @@ public class WaveDirection implements Serializable, Parcelable
     @SerializedName("value")
     @Expose
     private double value;
-    public final static Creator<WaveDirection> CREATOR = new Creator<WaveDirection>() {
+    public final static Creator<WaveDirection> CREATOR = new Creator<WaveDirection>()
+    {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
-        public WaveDirection createFromParcel(Parcel in) {
+        public WaveDirection createFromParcel(Parcel in)
+        {
             return new WaveDirection(in);
         }
 
-        public WaveDirection[] newArray(int size) {
+        public WaveDirection[] newArray(int size)
+        {
             return (new WaveDirection[size]);
         }
 
-    }
-    ;
+    };
     private final static long serialVersionUID = 1066352422859557835L;
 
-    protected WaveDirection(Parcel in) {
+    protected WaveDirection(Parcel in)
+    {
         this.source = ((String) in.readValue((String.class.getClassLoader())));
         this.value = ((double) in.readValue((double.class.getClassLoader())));
     }
 
     /**
      * No args constructor for use in serialization
-     * 
      */
-    public WaveDirection() {
+    public WaveDirection()
+    {
     }
 
     /**
-     * 
      * @param source
      * @param value
      */
-    public WaveDirection(String source, double value) {
+    public WaveDirection(String source, double value)
+    {
         super();
         this.source = source;
         this.value = value;
     }
 
-    public String getSource() {
+    public String getSource()
+    {
         return source;
     }
 
-    public void setSource(String source) {
+    public void setSource(String source)
+    {
         this.source = source;
     }
 
-    public WaveDirection withSource(String source) {
+    public WaveDirection withSource(String source)
+    {
         this.source = source;
         return this;
     }
 
-    public double getValue() {
+    public double getValue()
+    {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(double value)
+    {
         this.value = value;
     }
 
-    public WaveDirection withValue(double value) {
+    public WaveDirection withValue(double value)
+    {
         this.value = value;
         return this;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeValue(source);
         dest.writeValue(value);
     }
 
-    public int describeContents() {
-        return  0;
+    public int describeContents()
+    {
+        return 0;
     }
 
 }

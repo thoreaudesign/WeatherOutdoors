@@ -20,80 +20,91 @@ public class MoonPhase implements Serializable, Parcelable
     @Expose
 
     private Current current;
-    public final static Creator<MoonPhase> CREATOR = new Creator<MoonPhase>() {
+    public final static Creator<MoonPhase> CREATOR = new Creator<MoonPhase>()
+    {
 
 
         @SuppressWarnings({
-            "unchecked"
+                "unchecked"
         })
-        public MoonPhase createFromParcel(Parcel in) {
+        public MoonPhase createFromParcel(Parcel in)
+        {
             return new MoonPhase(in);
         }
 
-        public MoonPhase[] newArray(int size) {
+        public MoonPhase[] newArray(int size)
+        {
             return (new MoonPhase[size]);
         }
 
-    }
-    ;
+    };
     private final static long serialVersionUID = -682166310672365912L;
 
-    protected MoonPhase(Parcel in) {
+    protected MoonPhase(Parcel in)
+    {
         this.closest = ((Closest) in.readValue((Closest.class.getClassLoader())));
         this.current = ((Current) in.readValue((Current.class.getClassLoader())));
     }
 
     /**
      * No args constructor for use in serialization
-     * 
      */
-    public MoonPhase() {
+    public MoonPhase()
+    {
     }
 
     /**
-     * 
      * @param current
      * @param closest
      */
-    public MoonPhase(Closest closest, Current current) {
+    public MoonPhase(Closest closest, Current current)
+    {
         super();
         this.closest = closest;
         this.current = current;
     }
 
-    public Closest getClosest() {
+    public Closest getClosest()
+    {
         return closest;
     }
 
-    public void setClosest(Closest closest) {
+    public void setClosest(Closest closest)
+    {
         this.closest = closest;
     }
 
-    public MoonPhase withClosest(Closest closest) {
+    public MoonPhase withClosest(Closest closest)
+    {
         this.closest = closest;
         return this;
     }
 
-    public Current getCurrent() {
+    public Current getCurrent()
+    {
         return current;
     }
 
-    public void setCurrent(Current current) {
+    public void setCurrent(Current current)
+    {
         this.current = current;
     }
 
-    public MoonPhase withCurrent(Current current) {
+    public MoonPhase withCurrent(Current current)
+    {
         this.current = current;
         return this;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeValue(closest);
         dest.writeValue(current);
     }
 
-    public int describeContents() {
-        return  0;
+    public int describeContents()
+    {
+        return 0;
     }
 
 }

@@ -24,7 +24,7 @@ import com.thoreaudesign.weatheroutdoors.aws.ServiceName;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Darksky;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class DailyForecastFragment extends Fragment implements WeatherFragment
@@ -134,7 +134,7 @@ public class DailyForecastFragment extends Fragment implements WeatherFragment
     private void generateForecast()
     {
         ExpandableListView expandableListView = this.layout.findViewById(R.id.forecast_list_view);
-        final HashMap<String, List<String>> forecastData = ForecastDataPump.getData();
+        final LinkedHashMap<String, List<String>> forecastData = ForecastDataPump.getData();
         final List<String> expandableListTitle = new ArrayList<String>(forecastData.keySet());
         ExpandableListAdapter expandableListAdapter = new ForecastExpandableListAdapter(this.getContext(), expandableListTitle, forecastData);
         expandableListView.setAdapter(expandableListAdapter);

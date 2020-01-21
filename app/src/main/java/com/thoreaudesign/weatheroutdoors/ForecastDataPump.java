@@ -1,14 +1,14 @@
 package com.thoreaudesign.weatheroutdoors;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class ForecastDataPump
 {
-    public static HashMap<String, List<String>> getData()
+    public static LinkedHashMap<String, List<String>> getData()
     {
-        HashMap<String, List<String>> forecastData = new HashMap<String, List<String>>();
+        LinkedHashMap<String, List<String>> forecastData = new LinkedHashMap<String, List<String>>();
 
         List<String> hourly = new ArrayList<String>();
         for (Integer i = 1; i <= 24; i++)

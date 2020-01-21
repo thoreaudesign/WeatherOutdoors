@@ -10,23 +10,23 @@
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_begin="10.0dp" />
+        app:layout_constraintGuide_begin="10.0sp" />
 
     <android.support.constraint.Guideline
         android:orientation="vertical"
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_begin="10.0dp" />
+        app:layout_constraintGuide_begin="10.0sp" />
 
     <TextView
-        android:textSize="18.0dp"
-        android:textColor="#ffffffff"
+        android:textSize="18.0sp"
+        android:textColor="@color/colorText"
         android:id="@+id/current_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8.0dp"
-        android:layout_marginStart="8.0dp"
+        android:layout_marginTop="8.0sp"
+        android:layout_marginStart="8.0sp"
         app:layout_constraintStart_toStartOf="@+id/current_icon"
         app:layout_constraintTop_toBottomOf="@+id/current_icon" />
 
@@ -35,60 +35,60 @@
         android:id="@+id/current_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8.0dp"
-        android:layout_marginStart="8.0dp"
+        android:layout_marginTop="8.0sp"
+        android:layout_marginStart="8.0sp"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
 
     <TextView
-        android:textSize="25.0dp"
-        android:textColor="#ffffffff"
+        android:textSize="25.0sp"
+        android:textColor="@color/colorText"
         android:id="@+id/current_degrees"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8.0dp"
-        android:layout_marginStart="8.0dp"
+        android:layout_marginTop="8.0sp"
+        android:layout_marginStart="8.0sp"
         app:layout_constraintStart_toEndOf="@+id/current_icon"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
 
     <TextView
-        android:textSize="12.0dp"
-        android:textColor="#ffffffff"
+        android:textSize="12.0sp"
+        android:textColor="@color/colorText"
         android:id="@+id/current_humidity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2.0dp"
+        android:layout_marginTop="2.0sp"
         app:layout_constraintStart_toStartOf="@+id/current_degrees"
         app:layout_constraintTop_toBottomOf="@+id/current_apparent_temp" />
 
     <TextView
-        android:textSize="12.0dp"
+        android:textSize="12.0sp"
         android:textStyle="italic"
-        android:textColor="#ffffffff"
+        android:textColor="@color/colorText"
         android:id="@+id/current_apparent_temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2.0dp"
+        android:layout_marginTop="2.0sp"
         app:layout_constraintStart_toStartOf="@+id/current_humidity"
         app:layout_constraintTop_toBottomOf="@+id/current_degrees" />
 
     <TextView
-        android:textSize="12.0dp"
-        android:textColor="#ffffffff"
+        android:textSize="12.0sp"
+        android:textColor="@color/colorText"
         android:id="@+id/current_wind"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2.0dp"
+        android:layout_marginTop="2.0sp"
         app:layout_constraintStart_toStartOf="@+id/current_humidity"
         app:layout_constraintTop_toBottomOf="@+id/current_humidity" />
 
     <TextView
-        android:textSize="12.0dp"
-        android:textColor="#ffffffff"
+        android:textSize="12.0sp"
+        android:textColor="@color/colorText"
         android:id="@+id/current_dewpoint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2.0dp"
+        android:layout_marginTop="2.0sp"
         app:layout_constraintStart_toStartOf="@+id/current_wind"
         app:layout_constraintTop_toBottomOf="@+id/current_wind" />
 
@@ -97,13 +97,13 @@
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintGuide_begin="170.0dp" />
+        app:layout_constraintGuide_begin="170.0sp" />
 
     <ExpandableListView
         android:id="@+id/forecast_list_view"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8.0dp"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="180sp"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
 

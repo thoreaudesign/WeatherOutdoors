@@ -13,7 +13,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 
-public class Datum_ implements Serializable, Parcelable
+public class DatumHourly implements Serializable, Parcelable
 {
 
     @SerializedName("time")
@@ -67,27 +67,27 @@ public class Datum_ implements Serializable, Parcelable
     @SerializedName("ozone")
     @Expose
     private double ozone;
-    public final static Parcelable.Creator<Datum_> CREATOR = new Creator<Datum_>()
+    public final static Parcelable.Creator<DatumHourly> CREATOR = new Creator<DatumHourly>()
     {
 
 
         @SuppressWarnings({
                 "unchecked"
         })
-        public Datum_ createFromParcel(Parcel in)
+        public DatumHourly createFromParcel(Parcel in)
         {
-            return new Datum_(in);
+            return new DatumHourly(in);
         }
 
-        public Datum_[] newArray(int size)
+        public DatumHourly[] newArray(int size)
         {
-            return (new Datum_[size]);
+            return (new DatumHourly[size]);
         }
 
     };
     private final static long serialVersionUID = -4476947800460489619L;
 
-    protected Datum_(Parcel in)
+    protected DatumHourly(Parcel in)
     {
         this.time = ((long) in.readValue((long.class.getClassLoader())));
         this.summary = ((String) in.readValue((String.class.getClassLoader())));
@@ -111,7 +111,7 @@ public class Datum_ implements Serializable, Parcelable
     /**
      * No args constructor for use in serialization
      */
-    public Datum_()
+    public DatumHourly()
     {
     }
 
@@ -134,7 +134,7 @@ public class Datum_ implements Serializable, Parcelable
      * @param uvIndex
      * @param precipProbability
      */
-    public Datum_(long time, String summary, String icon, long precipIntensity, long precipProbability, double temperature, double apparentTemperature, double dewPoint, double humidity, double pressure, double windSpeed, double windGust, long windBearing, double cloudCover, long uvIndex, double visibility, double ozone)
+    public DatumHourly(long time, String summary, String icon, long precipIntensity, long precipProbability, double temperature, double apparentTemperature, double dewPoint, double humidity, double pressure, double windSpeed, double windGust, long windBearing, double cloudCover, long uvIndex, double visibility, double ozone)
     {
         super();
         this.time = time;
@@ -166,7 +166,7 @@ public class Datum_ implements Serializable, Parcelable
         this.time = time;
     }
 
-    public Datum_ withTime(long time)
+    public DatumHourly withTime(long time)
     {
         this.time = time;
         return this;
@@ -182,7 +182,7 @@ public class Datum_ implements Serializable, Parcelable
         this.summary = summary;
     }
 
-    public Datum_ withSummary(String summary)
+    public DatumHourly withSummary(String summary)
     {
         this.summary = summary;
         return this;
@@ -198,7 +198,7 @@ public class Datum_ implements Serializable, Parcelable
         this.icon = icon;
     }
 
-    public Datum_ withIcon(String icon)
+    public DatumHourly withIcon(String icon)
     {
         this.icon = icon;
         return this;
@@ -214,7 +214,7 @@ public class Datum_ implements Serializable, Parcelable
         this.precipIntensity = precipIntensity;
     }
 
-    public Datum_ withPrecipIntensity(long precipIntensity)
+    public DatumHourly withPrecipIntensity(long precipIntensity)
     {
         this.precipIntensity = precipIntensity;
         return this;
@@ -230,7 +230,7 @@ public class Datum_ implements Serializable, Parcelable
         this.precipProbability = precipProbability;
     }
 
-    public Datum_ withPrecipProbability(long precipProbability)
+    public DatumHourly withPrecipProbability(long precipProbability)
     {
         this.precipProbability = precipProbability;
         return this;
@@ -246,7 +246,7 @@ public class Datum_ implements Serializable, Parcelable
         this.temperature = temperature;
     }
 
-    public Datum_ withTemperature(double temperature)
+    public DatumHourly withTemperature(double temperature)
     {
         this.temperature = temperature;
         return this;
@@ -262,7 +262,7 @@ public class Datum_ implements Serializable, Parcelable
         this.apparentTemperature = apparentTemperature;
     }
 
-    public Datum_ withApparentTemperature(double apparentTemperature)
+    public DatumHourly withApparentTemperature(double apparentTemperature)
     {
         this.apparentTemperature = apparentTemperature;
         return this;
@@ -278,7 +278,7 @@ public class Datum_ implements Serializable, Parcelable
         this.dewPoint = dewPoint;
     }
 
-    public Datum_ withDewPoint(double dewPoint)
+    public DatumHourly withDewPoint(double dewPoint)
     {
         this.dewPoint = dewPoint;
         return this;
@@ -294,7 +294,7 @@ public class Datum_ implements Serializable, Parcelable
         this.humidity = humidity;
     }
 
-    public Datum_ withHumidity(double humidity)
+    public DatumHourly withHumidity(double humidity)
     {
         this.humidity = humidity;
         return this;
@@ -310,7 +310,7 @@ public class Datum_ implements Serializable, Parcelable
         this.pressure = pressure;
     }
 
-    public Datum_ withPressure(double pressure)
+    public DatumHourly withPressure(double pressure)
     {
         this.pressure = pressure;
         return this;
@@ -326,7 +326,7 @@ public class Datum_ implements Serializable, Parcelable
         this.windSpeed = windSpeed;
     }
 
-    public Datum_ withWindSpeed(double windSpeed)
+    public DatumHourly withWindSpeed(double windSpeed)
     {
         this.windSpeed = windSpeed;
         return this;
@@ -342,7 +342,7 @@ public class Datum_ implements Serializable, Parcelable
         this.windGust = windGust;
     }
 
-    public Datum_ withWindGust(double windGust)
+    public DatumHourly withWindGust(double windGust)
     {
         this.windGust = windGust;
         return this;
@@ -358,7 +358,7 @@ public class Datum_ implements Serializable, Parcelable
         this.windBearing = windBearing;
     }
 
-    public Datum_ withWindBearing(long windBearing)
+    public DatumHourly withWindBearing(long windBearing)
     {
         this.windBearing = windBearing;
         return this;
@@ -374,7 +374,7 @@ public class Datum_ implements Serializable, Parcelable
         this.cloudCover = cloudCover;
     }
 
-    public Datum_ withCloudCover(double cloudCover)
+    public DatumHourly withCloudCover(double cloudCover)
     {
         this.cloudCover = cloudCover;
         return this;
@@ -390,7 +390,7 @@ public class Datum_ implements Serializable, Parcelable
         this.uvIndex = uvIndex;
     }
 
-    public Datum_ withUvIndex(long uvIndex)
+    public DatumHourly withUvIndex(long uvIndex)
     {
         this.uvIndex = uvIndex;
         return this;
@@ -406,7 +406,7 @@ public class Datum_ implements Serializable, Parcelable
         this.visibility = visibility;
     }
 
-    public Datum_ withVisibility(double visibility)
+    public DatumHourly withVisibility(double visibility)
     {
         this.visibility = visibility;
         return this;
@@ -422,7 +422,7 @@ public class Datum_ implements Serializable, Parcelable
         this.ozone = ozone;
     }
 
-    public Datum_ withOzone(double ozone)
+    public DatumHourly withOzone(double ozone)
     {
         this.ozone = ozone;
         return this;
@@ -447,11 +447,11 @@ public class Datum_ implements Serializable, Parcelable
         {
             return true;
         }
-        if ((other instanceof Datum_) == false)
+        if ((other instanceof DatumHourly) == false)
         {
             return false;
         }
-        Datum_ rhs = ((Datum_) other);
+        DatumHourly rhs = ((DatumHourly) other);
         return new EqualsBuilder().append(summary, rhs.summary).append(windGust, rhs.windGust).append(icon, rhs.icon).append(pressure, rhs.pressure).append(visibility, rhs.visibility).append(cloudCover, rhs.cloudCover).append(apparentTemperature, rhs.apparentTemperature).append(precipIntensity, rhs.precipIntensity).append(dewPoint, rhs.dewPoint).append(temperature, rhs.temperature).append(ozone, rhs.ozone).append(windSpeed, rhs.windSpeed).append(time, rhs.time).append(humidity, rhs.humidity).append(windBearing, rhs.windBearing).append(uvIndex, rhs.uvIndex).append(precipProbability, rhs.precipProbability).isEquals();
     }
 

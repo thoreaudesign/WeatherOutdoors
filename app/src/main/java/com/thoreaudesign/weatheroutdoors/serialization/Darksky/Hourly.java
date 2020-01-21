@@ -27,7 +27,7 @@ public class Hourly implements Serializable, Parcelable
     @SerializedName("data")
     @Expose
 
-    private List<Datum_> data = new ArrayList<Datum_>();
+    private List<DatumHourly> data = new ArrayList<DatumHourly>();
     public final static Parcelable.Creator<Hourly> CREATOR = new Creator<Hourly>()
     {
 
@@ -52,7 +52,7 @@ public class Hourly implements Serializable, Parcelable
     {
         this.summary = ((String) in.readValue((String.class.getClassLoader())));
         this.icon = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.data, (com.thoreaudesign.weatheroutdoors.serialization.Darksky.Datum_.class.getClassLoader()));
+        in.readList(this.data, (DatumHourly.class.getClassLoader()));
     }
 
     /**
@@ -67,7 +67,7 @@ public class Hourly implements Serializable, Parcelable
      * @param icon
      * @param data
      */
-    public Hourly(String summary, String icon, List<Datum_> data)
+    public Hourly(String summary, String icon, List<DatumHourly> data)
     {
         super();
         this.summary = summary;
@@ -107,17 +107,17 @@ public class Hourly implements Serializable, Parcelable
         return this;
     }
 
-    public List<Datum_> getData()
+    public List<DatumHourly> getData()
     {
         return data;
     }
 
-    public void setData(List<Datum_> data)
+    public void setData(List<DatumHourly> data)
     {
         this.data = data;
     }
 
-    public Hourly withData(List<Datum_> data)
+    public Hourly withData(List<DatumHourly> data)
     {
         this.data = data;
         return this;

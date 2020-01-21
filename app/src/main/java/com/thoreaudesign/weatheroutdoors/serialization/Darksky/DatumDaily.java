@@ -13,7 +13,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 
-public class Datum__ implements Serializable, Parcelable
+public class DatumDaily implements Serializable, Parcelable
 {
 
     @SerializedName("time")
@@ -133,27 +133,27 @@ public class Datum__ implements Serializable, Parcelable
     @SerializedName("apparentTemperatureMaxTime")
     @Expose
     private double apparentTemperatureMaxTime;
-    public final static Parcelable.Creator<Datum__> CREATOR = new Creator<Datum__>()
+    public final static Parcelable.Creator<DatumDaily> CREATOR = new Creator<DatumDaily>()
     {
 
 
         @SuppressWarnings({
                 "unchecked"
         })
-        public Datum__ createFromParcel(Parcel in)
+        public DatumDaily createFromParcel(Parcel in)
         {
-            return new Datum__(in);
+            return new DatumDaily(in);
         }
 
-        public Datum__[] newArray(int size)
+        public DatumDaily[] newArray(int size)
         {
-            return (new Datum__[size]);
+            return (new DatumDaily[size]);
         }
 
     };
     private final static long serialVersionUID = 157983865386105425L;
 
-    protected Datum__(Parcel in)
+    protected DatumDaily(Parcel in)
     {
         this.time = ((long) in.readValue((long.class.getClassLoader())));
         this.summary = ((String) in.readValue((String.class.getClassLoader())));
@@ -199,7 +199,7 @@ public class Datum__ implements Serializable, Parcelable
     /**
      * No args constructor for use in serialization
      */
-    public Datum__()
+    public DatumDaily()
     {
     }
 
@@ -244,7 +244,7 @@ public class Datum__ implements Serializable, Parcelable
      * @param temperatureMax
      * @param apparentTemperatureHigh
      */
-    public Datum__(long time, String summary, String icon, long sunriseTime, long sunsetTime, double moonPhase, double precipIntensity, double precipIntensityMax, long precipIntensityMaxTime, double precipProbability, String precipType, double temperatureHigh, long temperatureHighTime, double temperatureLow, long temperatureLowTime, double apparentTemperatureHigh, long apparentTemperatureHighTime, double apparentTemperatureLow, long apparentTemperatureLowTime, double dewPoint, double humidity, double pressure, double windSpeed, double windGust, long windGustTime, long windBearing, double cloudCover, long uvIndex, long uvIndexTime, double visibility, double ozone, double temperatureMin, long temperatureMinTime, double temperatureMax, long temperatureMaxTime, double apparentTemperatureMin, long apparentTemperatureMinTime, double apparentTemperatureMax, long apparentTemperatureMaxTime)
+    public DatumDaily(long time, String summary, String icon, long sunriseTime, long sunsetTime, double moonPhase, double precipIntensity, double precipIntensityMax, long precipIntensityMaxTime, double precipProbability, String precipType, double temperatureHigh, long temperatureHighTime, double temperatureLow, long temperatureLowTime, double apparentTemperatureHigh, long apparentTemperatureHighTime, double apparentTemperatureLow, long apparentTemperatureLowTime, double dewPoint, double humidity, double pressure, double windSpeed, double windGust, long windGustTime, long windBearing, double cloudCover, long uvIndex, long uvIndexTime, double visibility, double ozone, double temperatureMin, long temperatureMinTime, double temperatureMax, long temperatureMaxTime, double apparentTemperatureMin, long apparentTemperatureMinTime, double apparentTemperatureMax, long apparentTemperatureMaxTime)
     {
         super();
         this.time = time;
@@ -298,7 +298,7 @@ public class Datum__ implements Serializable, Parcelable
         this.time = time;
     }
 
-    public Datum__ withTime(long time)
+    public DatumDaily withTime(long time)
     {
         this.time = time;
         return this;
@@ -314,7 +314,7 @@ public class Datum__ implements Serializable, Parcelable
         this.summary = summary;
     }
 
-    public Datum__ withSummary(String summary)
+    public DatumDaily withSummary(String summary)
     {
         this.summary = summary;
         return this;
@@ -330,7 +330,7 @@ public class Datum__ implements Serializable, Parcelable
         this.icon = icon;
     }
 
-    public Datum__ withIcon(String icon)
+    public DatumDaily withIcon(String icon)
     {
         this.icon = icon;
         return this;
@@ -346,7 +346,7 @@ public class Datum__ implements Serializable, Parcelable
         this.sunriseTime = sunriseTime;
     }
 
-    public Datum__ withSunriseTime(long sunriseTime)
+    public DatumDaily withSunriseTime(long sunriseTime)
     {
         this.sunriseTime = sunriseTime;
         return this;
@@ -362,7 +362,7 @@ public class Datum__ implements Serializable, Parcelable
         this.sunsetTime = sunsetTime;
     }
 
-    public Datum__ withSunsetTime(long sunsetTime)
+    public DatumDaily withSunsetTime(long sunsetTime)
     {
         this.sunsetTime = sunsetTime;
         return this;
@@ -378,7 +378,7 @@ public class Datum__ implements Serializable, Parcelable
         this.moonPhase = moonPhase;
     }
 
-    public Datum__ withMoonPhase(double moonPhase)
+    public DatumDaily withMoonPhase(double moonPhase)
     {
         this.moonPhase = moonPhase;
         return this;
@@ -394,7 +394,7 @@ public class Datum__ implements Serializable, Parcelable
         this.precipIntensity = precipIntensity;
     }
 
-    public Datum__ withPrecipIntensity(double precipIntensity)
+    public DatumDaily withPrecipIntensity(double precipIntensity)
     {
         this.precipIntensity = precipIntensity;
         return this;
@@ -410,7 +410,7 @@ public class Datum__ implements Serializable, Parcelable
         this.precipIntensityMax = precipIntensityMax;
     }
 
-    public Datum__ withPrecipIntensityMax(double precipIntensityMax)
+    public DatumDaily withPrecipIntensityMax(double precipIntensityMax)
     {
         this.precipIntensityMax = precipIntensityMax;
         return this;
@@ -426,7 +426,7 @@ public class Datum__ implements Serializable, Parcelable
         this.precipIntensityMaxTime = precipIntensityMaxTime;
     }
 
-    public Datum__ withPrecipIntensityMaxTime(long precipIntensityMaxTime)
+    public DatumDaily withPrecipIntensityMaxTime(long precipIntensityMaxTime)
     {
         this.precipIntensityMaxTime = precipIntensityMaxTime;
         return this;
@@ -442,7 +442,7 @@ public class Datum__ implements Serializable, Parcelable
         this.precipProbability = precipProbability;
     }
 
-    public Datum__ withPrecipProbability(double precipProbability)
+    public DatumDaily withPrecipProbability(double precipProbability)
     {
         this.precipProbability = precipProbability;
         return this;
@@ -458,7 +458,7 @@ public class Datum__ implements Serializable, Parcelable
         this.precipType = precipType;
     }
 
-    public Datum__ withPrecipType(String precipType)
+    public DatumDaily withPrecipType(String precipType)
     {
         this.precipType = precipType;
         return this;
@@ -474,7 +474,7 @@ public class Datum__ implements Serializable, Parcelable
         this.temperatureHigh = temperatureHigh;
     }
 
-    public Datum__ withTemperatureHigh(double temperatureHigh)
+    public DatumDaily withTemperatureHigh(double temperatureHigh)
     {
         this.temperatureHigh = temperatureHigh;
         return this;
@@ -490,7 +490,7 @@ public class Datum__ implements Serializable, Parcelable
         this.temperatureHighTime = temperatureHighTime;
     }
 
-    public Datum__ withTemperatureHighTime(long temperatureHighTime)
+    public DatumDaily withTemperatureHighTime(long temperatureHighTime)
     {
         this.temperatureHighTime = temperatureHighTime;
         return this;
@@ -506,7 +506,7 @@ public class Datum__ implements Serializable, Parcelable
         this.temperatureLow = temperatureLow;
     }
 
-    public Datum__ withTemperatureLow(double temperatureLow)
+    public DatumDaily withTemperatureLow(double temperatureLow)
     {
         this.temperatureLow = temperatureLow;
         return this;
@@ -522,7 +522,7 @@ public class Datum__ implements Serializable, Parcelable
         this.temperatureLowTime = temperatureLowTime;
     }
 
-    public Datum__ withTemperatureLowTime(long temperatureLowTime)
+    public DatumDaily withTemperatureLowTime(long temperatureLowTime)
     {
         this.temperatureLowTime = temperatureLowTime;
         return this;
@@ -538,7 +538,7 @@ public class Datum__ implements Serializable, Parcelable
         this.apparentTemperatureHigh = apparentTemperatureHigh;
     }
 
-    public Datum__ withApparentTemperatureHigh(double apparentTemperatureHigh)
+    public DatumDaily withApparentTemperatureHigh(double apparentTemperatureHigh)
     {
         this.apparentTemperatureHigh = apparentTemperatureHigh;
         return this;
@@ -554,7 +554,7 @@ public class Datum__ implements Serializable, Parcelable
         this.apparentTemperatureHighTime = apparentTemperatureHighTime;
     }
 
-    public Datum__ withApparentTemperatureHighTime(long apparentTemperatureHighTime)
+    public DatumDaily withApparentTemperatureHighTime(long apparentTemperatureHighTime)
     {
         this.apparentTemperatureHighTime = apparentTemperatureHighTime;
         return this;
@@ -570,7 +570,7 @@ public class Datum__ implements Serializable, Parcelable
         this.apparentTemperatureLow = apparentTemperatureLow;
     }
 
-    public Datum__ withApparentTemperatureLow(double apparentTemperatureLow)
+    public DatumDaily withApparentTemperatureLow(double apparentTemperatureLow)
     {
         this.apparentTemperatureLow = apparentTemperatureLow;
         return this;
@@ -586,7 +586,7 @@ public class Datum__ implements Serializable, Parcelable
         this.apparentTemperatureLowTime = apparentTemperatureLowTime;
     }
 
-    public Datum__ withApparentTemperatureLowTime(long apparentTemperatureLowTime)
+    public DatumDaily withApparentTemperatureLowTime(long apparentTemperatureLowTime)
     {
         this.apparentTemperatureLowTime = apparentTemperatureLowTime;
         return this;
@@ -602,7 +602,7 @@ public class Datum__ implements Serializable, Parcelable
         this.dewPoint = dewPoint;
     }
 
-    public Datum__ withDewPoint(double dewPoint)
+    public DatumDaily withDewPoint(double dewPoint)
     {
         this.dewPoint = dewPoint;
         return this;
@@ -618,7 +618,7 @@ public class Datum__ implements Serializable, Parcelable
         this.humidity = humidity;
     }
 
-    public Datum__ withHumidity(double humidity)
+    public DatumDaily withHumidity(double humidity)
     {
         this.humidity = humidity;
         return this;
@@ -634,7 +634,7 @@ public class Datum__ implements Serializable, Parcelable
         this.pressure = pressure;
     }
 
-    public Datum__ withPressure(double pressure)
+    public DatumDaily withPressure(double pressure)
     {
         this.pressure = pressure;
         return this;
@@ -650,7 +650,7 @@ public class Datum__ implements Serializable, Parcelable
         this.windSpeed = windSpeed;
     }
 
-    public Datum__ withWindSpeed(double windSpeed)
+    public DatumDaily withWindSpeed(double windSpeed)
     {
         this.windSpeed = windSpeed;
         return this;
@@ -666,7 +666,7 @@ public class Datum__ implements Serializable, Parcelable
         this.windGust = windGust;
     }
 
-    public Datum__ withWindGust(double windGust)
+    public DatumDaily withWindGust(double windGust)
     {
         this.windGust = windGust;
         return this;
@@ -682,7 +682,7 @@ public class Datum__ implements Serializable, Parcelable
         this.windGustTime = windGustTime;
     }
 
-    public Datum__ withWindGustTime(long windGustTime)
+    public DatumDaily withWindGustTime(long windGustTime)
     {
         this.windGustTime = windGustTime;
         return this;
@@ -698,7 +698,7 @@ public class Datum__ implements Serializable, Parcelable
         this.windBearing = windBearing;
     }
 
-    public Datum__ withWindBearing(long windBearing)
+    public DatumDaily withWindBearing(long windBearing)
     {
         this.windBearing = windBearing;
         return this;
@@ -714,7 +714,7 @@ public class Datum__ implements Serializable, Parcelable
         this.cloudCover = cloudCover;
     }
 
-    public Datum__ withCloudCover(double cloudCover)
+    public DatumDaily withCloudCover(double cloudCover)
     {
         this.cloudCover = cloudCover;
         return this;
@@ -730,7 +730,7 @@ public class Datum__ implements Serializable, Parcelable
         this.uvIndex = uvIndex;
     }
 
-    public Datum__ withUvIndex(long uvIndex)
+    public DatumDaily withUvIndex(long uvIndex)
     {
         this.uvIndex = uvIndex;
         return this;
@@ -746,7 +746,7 @@ public class Datum__ implements Serializable, Parcelable
         this.uvIndexTime = uvIndexTime;
     }
 
-    public Datum__ withUvIndexTime(long uvIndexTime)
+    public DatumDaily withUvIndexTime(long uvIndexTime)
     {
         this.uvIndexTime = uvIndexTime;
         return this;
@@ -762,7 +762,7 @@ public class Datum__ implements Serializable, Parcelable
         this.visibility = visibility;
     }
 
-    public Datum__ withVisibility(double visibility)
+    public DatumDaily withVisibility(double visibility)
     {
         this.visibility = visibility;
         return this;
@@ -778,7 +778,7 @@ public class Datum__ implements Serializable, Parcelable
         this.ozone = ozone;
     }
 
-    public Datum__ withOzone(double ozone)
+    public DatumDaily withOzone(double ozone)
     {
         this.ozone = ozone;
         return this;
@@ -794,7 +794,7 @@ public class Datum__ implements Serializable, Parcelable
         this.temperatureMin = temperatureMin;
     }
 
-    public Datum__ withTemperatureMin(double temperatureMin)
+    public DatumDaily withTemperatureMin(double temperatureMin)
     {
         this.temperatureMin = temperatureMin;
         return this;
@@ -810,7 +810,7 @@ public class Datum__ implements Serializable, Parcelable
         this.temperatureMinTime = temperatureMinTime;
     }
 
-    public Datum__ withTemperatureMinTime(long temperatureMinTime)
+    public DatumDaily withTemperatureMinTime(long temperatureMinTime)
     {
         this.temperatureMinTime = temperatureMinTime;
         return this;
@@ -826,7 +826,7 @@ public class Datum__ implements Serializable, Parcelable
         this.temperatureMax = temperatureMax;
     }
 
-    public Datum__ withTemperatureMax(double temperatureMax)
+    public DatumDaily withTemperatureMax(double temperatureMax)
     {
         this.temperatureMax = temperatureMax;
         return this;
@@ -842,7 +842,7 @@ public class Datum__ implements Serializable, Parcelable
         this.temperatureMaxTime = temperatureMaxTime;
     }
 
-    public Datum__ withTemperatureMaxTime(long temperatureMaxTime)
+    public DatumDaily withTemperatureMaxTime(long temperatureMaxTime)
     {
         this.temperatureMaxTime = temperatureMaxTime;
         return this;
@@ -858,7 +858,7 @@ public class Datum__ implements Serializable, Parcelable
         this.apparentTemperatureMin = apparentTemperatureMin;
     }
 
-    public Datum__ withApparentTemperatureMin(double apparentTemperatureMin)
+    public DatumDaily withApparentTemperatureMin(double apparentTemperatureMin)
     {
         this.apparentTemperatureMin = apparentTemperatureMin;
         return this;
@@ -874,7 +874,7 @@ public class Datum__ implements Serializable, Parcelable
         this.apparentTemperatureMinTime = apparentTemperatureMinTime;
     }
 
-    public Datum__ withApparentTemperatureMinTime(long apparentTemperatureMinTime)
+    public DatumDaily withApparentTemperatureMinTime(long apparentTemperatureMinTime)
     {
         this.apparentTemperatureMinTime = apparentTemperatureMinTime;
         return this;
@@ -890,7 +890,7 @@ public class Datum__ implements Serializable, Parcelable
         this.apparentTemperatureMax = apparentTemperatureMax;
     }
 
-    public Datum__ withApparentTemperatureMax(double apparentTemperatureMax)
+    public DatumDaily withApparentTemperatureMax(double apparentTemperatureMax)
     {
         this.apparentTemperatureMax = apparentTemperatureMax;
         return this;
@@ -906,7 +906,7 @@ public class Datum__ implements Serializable, Parcelable
         this.apparentTemperatureMaxTime = apparentTemperatureMaxTime;
     }
 
-    public Datum__ withApparentTemperatureMaxTime(long apparentTemperatureMaxTime)
+    public DatumDaily withApparentTemperatureMaxTime(long apparentTemperatureMaxTime)
     {
         this.apparentTemperatureMaxTime = apparentTemperatureMaxTime;
         return this;
@@ -931,11 +931,11 @@ public class Datum__ implements Serializable, Parcelable
         {
             return true;
         }
-        if ((other instanceof Datum__) == false)
+        if ((other instanceof DatumDaily) == false)
         {
             return false;
         }
-        Datum__ rhs = ((Datum__) other);
+        DatumDaily rhs = ((DatumDaily) other);
         return new EqualsBuilder().append(temperatureMinTime, rhs.temperatureMinTime).append(sunsetTime, rhs.sunsetTime).append(summary, rhs.summary).append(precipIntensityMaxTime, rhs.precipIntensityMaxTime).append(visibility, rhs.visibility).append(temperatureLowTime, rhs.temperatureLowTime).append(temperatureLow, rhs.temperatureLow).append(temperatureHighTime, rhs.temperatureHighTime).append(precipIntensity, rhs.precipIntensity).append(precipIntensityMax, rhs.precipIntensityMax).append(ozone, rhs.ozone).append(time, rhs.time).append(apparentTemperatureMaxTime, rhs.apparentTemperatureMaxTime).append(uvIndex, rhs.uvIndex).append(apparentTemperatureHighTime, rhs.apparentTemperatureHighTime).append(temperatureHigh, rhs.temperatureHigh).append(windGust, rhs.windGust).append(icon, rhs.icon).append(apparentTemperatureLowTime, rhs.apparentTemperatureLowTime).append(temperatureMaxTime, rhs.temperatureMaxTime).append(pressure, rhs.pressure).append(cloudCover, rhs.cloudCover).append(apparentTemperatureMinTime, rhs.apparentTemperatureMinTime).append(temperatureMin, rhs.temperatureMin).append(precipType, rhs.precipType).append(apparentTemperatureLow, rhs.apparentTemperatureLow).append(dewPoint, rhs.dewPoint).append(sunriseTime, rhs.sunriseTime).append(windSpeed, rhs.windSpeed).append(humidity, rhs.humidity).append(apparentTemperatureMax, rhs.apparentTemperatureMax).append(windBearing, rhs.windBearing).append(moonPhase, rhs.moonPhase).append(precipProbability, rhs.precipProbability).append(windGustTime, rhs.windGustTime).append(apparentTemperatureMin, rhs.apparentTemperatureMin).append(uvIndexTime, rhs.uvIndexTime).append(temperatureMax, rhs.temperatureMax).append(apparentTemperatureHigh, rhs.apparentTemperatureHigh).isEquals();
     }
 

@@ -27,7 +27,7 @@ public class Minutely implements Serializable, Parcelable
     @SerializedName("data")
     @Expose
 
-    private List<Datum> data = new ArrayList<Datum>();
+    private List<DatumMinutely> data = new ArrayList<DatumMinutely>();
     public final static Parcelable.Creator<Minutely> CREATOR = new Creator<Minutely>()
     {
 
@@ -52,7 +52,7 @@ public class Minutely implements Serializable, Parcelable
     {
         this.summary = ((String) in.readValue((String.class.getClassLoader())));
         this.icon = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.data, (com.thoreaudesign.weatheroutdoors.serialization.Darksky.Datum.class.getClassLoader()));
+        in.readList(this.data, (DatumMinutely.class.getClassLoader()));
     }
 
     /**
@@ -67,7 +67,7 @@ public class Minutely implements Serializable, Parcelable
      * @param icon
      * @param data
      */
-    public Minutely(String summary, String icon, List<Datum> data)
+    public Minutely(String summary, String icon, List<DatumMinutely> data)
     {
         super();
         this.summary = summary;
@@ -107,17 +107,17 @@ public class Minutely implements Serializable, Parcelable
         return this;
     }
 
-    public List<Datum> getData()
+    public List<DatumMinutely> getData()
     {
         return data;
     }
 
-    public void setData(List<Datum> data)
+    public void setData(List<DatumMinutely> data)
     {
         this.data = data;
     }
 
-    public Minutely withData(List<Datum> data)
+    public Minutely withData(List<DatumMinutely> data)
     {
         this.data = data;
         return this;

@@ -15,13 +15,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.thoreaudesign.weatheroutdoors.Cache;
 import com.thoreaudesign.weatheroutdoors.Compass;
-import com.thoreaudesign.weatheroutdoors.ForecastDataPump;
+import com.thoreaudesign.weatheroutdoors.ForecastData;
 import com.thoreaudesign.weatheroutdoors.ForecastExpandableListAdapter;
 import com.thoreaudesign.weatheroutdoors.Log;
 import com.thoreaudesign.weatheroutdoors.R;
 import com.thoreaudesign.weatheroutdoors.WeatherIcon;
 import com.thoreaudesign.weatheroutdoors.aws.ServiceName;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Darksky;
+import com.thoreaudesign.weatheroutdoors.serialization.Darksky.DatumHourly;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -133,10 +134,11 @@ public class DailyForecastFragment extends Fragment implements WeatherFragment
 
     private void generateForecast()
     {
+        ForecastData forecastData = new ForecastData(this.data);
         ExpandableListView expandableListView = this.layout.findViewById(R.id.forecast_list_view);
-        final LinkedHashMap<String, List<String>> forecastData = ForecastDataPump.getData();
-        final List<String> expandableListTitle = new ArrayList<String>(forecastData.keySet());
-        ExpandableListAdapter expandableListAdapter = new ForecastExpandableListAdapter(this.getContext(), expandableListTitle, forecastData);
+        final LinkedHashMap<String, List<DatumHourly>> forecastDataList = forecastData.getData();
+        final List<String> expandableListTitle = new ArrayList<String>(forecastDataList.keySet());
+        ExpandableListAdapter expandableListAdapter = new ForecastExpandableListAdapter(this.getContext(), expandableListTitle, forecastDataList);
         expandableListView.setAdapter(expandableListAdapter);
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
@@ -167,7 +169,7 @@ public class DailyForecastFragment extends Fragment implements WeatherFragment
                         DailyForecastFragment.this.getContext(),
                         expandableListTitle.get(groupPosition)
                                 + " -> "
-                                + forecastData.get(
+                                + forecastDataList.get(
                                 expandableListTitle.get(groupPosition)).get(
                                 childPosition), Toast.LENGTH_SHORT
                 ).show();

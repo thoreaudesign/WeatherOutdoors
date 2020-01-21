@@ -5,18 +5,27 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.thoreaudesign.weatheroutdoors.Cache;
 import com.thoreaudesign.weatheroutdoors.Compass;
+import com.thoreaudesign.weatheroutdoors.ForecastDataPump;
+import com.thoreaudesign.weatheroutdoors.ForecastExpandableListAdapter;
 import com.thoreaudesign.weatheroutdoors.Log;
 import com.thoreaudesign.weatheroutdoors.R;
 import com.thoreaudesign.weatheroutdoors.WeatherIcon;
 import com.thoreaudesign.weatheroutdoors.aws.ServiceName;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Darksky;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class DailyForecastFragment extends Fragment implements WeatherFragment
 {
@@ -66,11 +75,8 @@ public class DailyForecastFragment extends Fragment implements WeatherFragment
             return;
         }
 
-        setCurrentWeather();
-
-        //Hourly hourly = this.data.getHourly();
-
-        //((ExpandableListView) this.layout.findViewById(2131230819)).setAdapter((ExpandableListAdapter) new HourlyForecastExpandableListAdapter(getContext(), hourly));
+        this.setCurrentWeather();
+        this.generateForecast();
     }
 
     public static DailyForecastFragment newInstance(String cacheDir)
@@ -123,6 +129,51 @@ public class DailyForecastFragment extends Fragment implements WeatherFragment
         weatherImage.setImageResource(WeatherIcon.get(this.data.getCurrently().getIcon()));
 
         Log.v("--- End ---");
+    }
+
+    private void generateForecast()
+    {
+        ExpandableListView expandableListView = this.layout.findViewById(R.id.forecast_list_view);
+        final HashMap<String, List<String>> forecastData = ForecastDataPump.getData();
+        final List<String> expandableListTitle = new ArrayList<String>(forecastData.keySet());
+        ExpandableListAdapter expandableListAdapter = new ForecastExpandableListAdapter(this.getContext(), expandableListTitle, forecastData);
+        expandableListView.setAdapter(expandableListAdapter);
+        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                Toast.makeText(DailyForecastFragment.this.getContext(),
+                        expandableListTitle.get(groupPosition) + " List Expanded.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+                Toast.makeText(DailyForecastFragment.this.getContext(),
+                        expandableListTitle.get(groupPosition) + " List Collapsed.",
+                        Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
+                Toast.makeText(
+                        DailyForecastFragment.this.getContext(),
+                        expandableListTitle.get(groupPosition)
+                                + " -> "
+                                + forecastData.get(
+                                expandableListTitle.get(groupPosition)).get(
+                                childPosition), Toast.LENGTH_SHORT
+                ).show();
+                return false;
+            }
+        });
     }
 
     public void onActivityCreated(Bundle savedInstanceState)

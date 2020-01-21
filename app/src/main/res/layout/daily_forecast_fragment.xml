@@ -100,7 +100,7 @@
         app:layout_constraintGuide_begin="170.0dp" />
 
     <ExpandableListView
-        android:id="@+id/hourly_forecast"
+        android:id="@+id/forecast_list_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8.0dp"

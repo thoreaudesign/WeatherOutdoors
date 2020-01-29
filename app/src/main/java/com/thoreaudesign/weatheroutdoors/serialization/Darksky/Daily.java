@@ -27,7 +27,7 @@ public class Daily implements Serializable, Parcelable
     @SerializedName("data")
     @Expose
 
-    private List<Datum__> data = new ArrayList<Datum__>();
+    private List<DatumDaily> data = new ArrayList<DatumDaily>();
     public final static Parcelable.Creator<Daily> CREATOR = new Creator<Daily>()
     {
 
@@ -52,7 +52,7 @@ public class Daily implements Serializable, Parcelable
     {
         this.summary = ((String) in.readValue((String.class.getClassLoader())));
         this.icon = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.data, (com.thoreaudesign.weatheroutdoors.serialization.Darksky.Datum__.class.getClassLoader()));
+        in.readList(this.data, (DatumDaily.class.getClassLoader()));
     }
 
     /**
@@ -67,7 +67,7 @@ public class Daily implements Serializable, Parcelable
      * @param icon
      * @param data
      */
-    public Daily(String summary, String icon, List<Datum__> data)
+    public Daily(String summary, String icon, List<DatumDaily> data)
     {
         super();
         this.summary = summary;
@@ -107,17 +107,17 @@ public class Daily implements Serializable, Parcelable
         return this;
     }
 
-    public List<Datum__> getData()
+    public List<DatumDaily> getData()
     {
         return data;
     }
 
-    public void setData(List<Datum__> data)
+    public void setData(List<DatumDaily> data)
     {
         this.data = data;
     }
 
-    public Daily withData(List<Datum__> data)
+    public Daily withData(List<DatumDaily> data)
     {
         this.data = data;
         return this;

@@ -13,7 +13,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 
-public class Datum implements Serializable, Parcelable
+public class DatumMinutely implements Serializable, Parcelable
 {
 
     @SerializedName("time")
@@ -25,27 +25,27 @@ public class Datum implements Serializable, Parcelable
     @SerializedName("precipProbability")
     @Expose
     private double precipProbability;
-    public final static Parcelable.Creator<Datum> CREATOR = new Creator<Datum>()
+    public final static Parcelable.Creator<DatumMinutely> CREATOR = new Creator<DatumMinutely>()
     {
 
 
         @SuppressWarnings({
                 "unchecked"
         })
-        public Datum createFromParcel(Parcel in)
+        public DatumMinutely createFromParcel(Parcel in)
         {
-            return new Datum(in);
+            return new DatumMinutely(in);
         }
 
-        public Datum[] newArray(int size)
+        public DatumMinutely[] newArray(int size)
         {
-            return (new Datum[size]);
+            return (new DatumMinutely[size]);
         }
 
     };
     private final static long serialVersionUID = 2654249221104049013L;
 
-    protected Datum(Parcel in)
+    protected DatumMinutely(Parcel in)
     {
         this.time = ((long) in.readValue((long.class.getClassLoader())));
         this.precipIntensity = ((long) in.readValue((long.class.getClassLoader())));
@@ -55,7 +55,7 @@ public class Datum implements Serializable, Parcelable
     /**
      * No args constructor for use in serialization
      */
-    public Datum()
+    public DatumMinutely()
     {
     }
 
@@ -64,7 +64,7 @@ public class Datum implements Serializable, Parcelable
      * @param precipProbability
      * @param precipIntensity
      */
-    public Datum(long time, long precipIntensity, long precipProbability)
+    public DatumMinutely(long time, long precipIntensity, long precipProbability)
     {
         super();
         this.time = time;
@@ -82,7 +82,7 @@ public class Datum implements Serializable, Parcelable
         this.time = time;
     }
 
-    public Datum withTime(long time)
+    public DatumMinutely withTime(long time)
     {
         this.time = time;
         return this;
@@ -98,7 +98,7 @@ public class Datum implements Serializable, Parcelable
         this.precipIntensity = precipIntensity;
     }
 
-    public Datum withPrecipIntensity(long precipIntensity)
+    public DatumMinutely withPrecipIntensity(long precipIntensity)
     {
         this.precipIntensity = precipIntensity;
         return this;
@@ -114,7 +114,7 @@ public class Datum implements Serializable, Parcelable
         this.precipProbability = precipProbability;
     }
 
-    public Datum withPrecipProbability(long precipProbability)
+    public DatumMinutely withPrecipProbability(long precipProbability)
     {
         this.precipProbability = precipProbability;
         return this;
@@ -139,11 +139,11 @@ public class Datum implements Serializable, Parcelable
         {
             return true;
         }
-        if ((other instanceof Datum) == false)
+        if ((other instanceof DatumMinutely) == false)
         {
             return false;
         }
-        Datum rhs = ((Datum) other);
+        DatumMinutely rhs = ((DatumMinutely) other);
         return new EqualsBuilder().append(time, rhs.time).append(precipProbability, rhs.precipProbability).append(precipIntensity, rhs.precipIntensity).isEquals();
     }
 

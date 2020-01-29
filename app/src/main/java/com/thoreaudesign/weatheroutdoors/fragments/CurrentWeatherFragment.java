@@ -18,7 +18,7 @@ import com.thoreaudesign.weatheroutdoors.WeatherIcon;
 import com.thoreaudesign.weatheroutdoors.aws.ServiceName;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Darksky;
 
-public class DailyForecastFragment extends Fragment implements WeatherFragment
+public class CurrentWeatherFragment extends Fragment implements WeatherFragment
 {
     private Darksky data;
 
@@ -66,27 +66,23 @@ public class DailyForecastFragment extends Fragment implements WeatherFragment
             return;
         }
 
-        setCurrentWeather();
-
-        //Hourly hourly = this.data.getHourly();
-
-        //((ExpandableListView) this.layout.findViewById(2131230819)).setAdapter((ExpandableListAdapter) new HourlyForecastExpandableListAdapter(getContext(), hourly));
+        this.setCurrentWeather();
     }
 
-    public static DailyForecastFragment newInstance(String cacheDir)
+    public static CurrentWeatherFragment newInstance(String cacheDir)
     {
         Log.v("--- Begin ---");
 
-        DailyForecastFragment dailyForecastFragment = new DailyForecastFragment();
+        CurrentWeatherFragment currentWeatherFragment = new CurrentWeatherFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString("cacheDir", cacheDir);
 
-        dailyForecastFragment.setArguments(bundle);
+        currentWeatherFragment.setArguments(bundle);
 
         Log.v("--- End ---");
 
-        return dailyForecastFragment;
+        return currentWeatherFragment;
     }
 
     private void setCurrentWeather()

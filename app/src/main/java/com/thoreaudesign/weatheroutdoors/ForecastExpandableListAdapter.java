@@ -76,7 +76,6 @@ public class ForecastExpandableListAdapter extends BaseExpandableListAdapter
 
                 for (Field field : fields)
                 {
-
                     String fieldName = field.getName();
                     Log.v("Current Field: " + fieldName);
 

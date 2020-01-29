@@ -18,7 +18,7 @@ import com.thoreaudesign.weatheroutdoors.aws.AsyncRequest;
 import com.thoreaudesign.weatheroutdoors.aws.RequestParams;
 import com.thoreaudesign.weatheroutdoors.aws.RequestTemplate;
 import com.thoreaudesign.weatheroutdoors.aws.ServiceName;
-import com.thoreaudesign.weatheroutdoors.fragments.DailyForecastFragment;
+import com.thoreaudesign.weatheroutdoors.fragments.CurrentWeatherFragment;
 import com.thoreaudesign.weatheroutdoors.fragments.WeatherFragment;
 
 import org.json.JSONObject;
@@ -308,7 +308,7 @@ public class Weather extends FragmentActivity
             {
                 case 0:
                 default:
-                    return DailyForecastFragment.newInstance(this.weather.getCacheDir().toString());
+                    return CurrentWeatherFragment.newInstance(this.weather.getCacheDir().toString());
 /*
                 case 1:
                     return MarineForecastFragment.newInstance();

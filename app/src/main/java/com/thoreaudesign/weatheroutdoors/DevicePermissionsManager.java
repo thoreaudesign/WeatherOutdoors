@@ -1,8 +1,9 @@
 package com.thoreaudesign.weatheroutdoors;
 
 import android.app.Activity;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class DevicePermissionsManager
 {

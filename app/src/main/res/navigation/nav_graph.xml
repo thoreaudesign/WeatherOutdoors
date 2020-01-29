@@ -1,5 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/currentWeatherFragment">
 
+    <fragment
+        android:id="@+id/currentWeatherFragment"
+        android:name="com.thoreaudesign.weatheroutdoors.fragments.CurrentWeatherFragment"
+        android:label="fragment_current_weather"
+        tools:layout="@layout/fragment_current_weather" >
+        <action
+            android:id="@+id/action_currentWeatherFragment_to_minutelyForecastFragment"
+            app:destination="@id/minutelyForecastFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/minutelyForecastFragment"
+            app:popUpToInclusive="true"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:launchSingleTop="true" />
+        <action
+            android:id="@+id/action_currentWeatherFragment_to_placeholder"
+            app:destination="@id/placeholder" />
+        <action
+            android:id="@+id/action_currentWeatherFragment_to_placeholder2"
+            app:destination="@id/placeholder2" />
+    </fragment>
+    <fragment
+        android:id="@+id/minutelyForecastFragment"
+        android:name="com.thoreaudesign.weatheroutdoors.fragments.MinutelyForecastFragment"
+        android:label="fragment_minutely_forecast"
+        tools:layout="@layout/fragment_minutely_forecast" />
+    <navigation
+        android:id="@+id/navigation"
+        app:startDestination="@id/currentWeatherFragment" >
+        <action
+            android:id="@+id/action_global_currentWeatherFragment"
+            app:destination="@id/currentWeatherFragment" />
+        <action
+            android:id="@+id/action_global_placeholder3"
+            app:destination="@id/placeholder3" />
+    </navigation>
+    <fragment android:id="@+id/placeholder" />
+    <fragment android:id="@+id/placeholder2" />
+    <fragment android:id="@+id/placeholder3" >
+        <action
+            android:id="@+id/action_placeholder3_to_placeholder4"
+            app:destination="@id/placeholder4" />
+        <action
+            android:id="@+id/action_placeholder3_to_placeholder5"
+            app:destination="@id/placeholder5" />
+    </fragment>
+    <fragment android:id="@+id/placeholder4" />
+    <fragment android:id="@+id/placeholder5" />
 </navigation>

@@ -1,12 +1,13 @@
 package com.thoreaudesign.weatheroutdoors.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -139,7 +140,7 @@ public class CurrentWeatherFragment extends Fragment implements WeatherFragment
     public View onCreateView(LayoutInflater paramLayoutInflater, ViewGroup container, Bundle savedInstanceState)
     {
         Log.v("--- Begin ---");
-        this.layout = paramLayoutInflater.inflate(R.layout.daily_forecast_fragment, container, false);
+        this.layout = paramLayoutInflater.inflate(R.layout.fragment_current_weather, container, false);
         Log.v("--- End ---");
         return this.layout;
     }

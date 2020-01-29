@@ -99,12 +99,4 @@
         android:layout_height="wrap_content"
         app:layout_constraintGuide_begin="170.0sp" />
 
-    <ExpandableListView
-        android:id="@+id/forecast_list_view"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="180sp"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
-
 </android.support.constraint.ConstraintLayout>

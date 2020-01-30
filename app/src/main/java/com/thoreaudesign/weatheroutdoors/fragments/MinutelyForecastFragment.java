@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class MinutelyForecastFragment extends Fragment implements WeatherFragment
+public class MinutelyForecastFragment extends Fragment implements IWeatherFragment
 {
     private Darksky data;
     public View layout;

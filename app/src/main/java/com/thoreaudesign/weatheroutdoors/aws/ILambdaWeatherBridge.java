@@ -2,7 +2,7 @@ package com.thoreaudesign.weatheroutdoors.aws;
 
 import com.amazonaws.mobileconnectors.lambdainvoker.LambdaFunction;
 
-public interface WeatherInterface
+public interface ILambdaWeatherBridge
 {
     @LambdaFunction
     Object weatheroutdoors(RequestParams paramRequestParams);

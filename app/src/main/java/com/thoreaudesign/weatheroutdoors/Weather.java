@@ -19,12 +19,14 @@ import com.thoreaudesign.weatheroutdoors.aws.AsyncRequest;
 import com.thoreaudesign.weatheroutdoors.aws.RequestParams;
 import com.thoreaudesign.weatheroutdoors.aws.RequestTemplate;
 import com.thoreaudesign.weatheroutdoors.aws.ServiceName;
+import com.thoreaudesign.weatheroutdoors.aws.WeatherFragmentDecorator;
 import com.thoreaudesign.weatheroutdoors.fragments.CurrentWeatherFragment;
-import com.thoreaudesign.weatheroutdoors.fragments.WeatherFragment;
 
 import org.json.JSONObject;
 
 import java.util.List;
+
+import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
 public class Weather extends FragmentActivity
 {
@@ -103,7 +105,6 @@ public class Weather extends FragmentActivity
             }
         }
 
-        Log.i("Cache not set. Retrieving weather data from source.");
         return isCurrent;
     }
 
@@ -232,8 +233,9 @@ public class Weather extends FragmentActivity
         Log.v("--- Begin ---");
 
         ViewPager mViewPager = findViewById(R.id.viewPager);
-        mViewPager.setAdapter(new WeatherPagerAdapter(this, getSupportFragmentManager()));
-
+        WeatherPagerAdapter weatherPagerAdapter  = new WeatherPagerAdapter(getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        weatherPagerAdapter.setWeather(this);
+        mViewPager.setAdapter(weatherPagerAdapter);
         super.onResume();
 
         if (this.permissionsManager.permissionRequired())
@@ -246,6 +248,7 @@ public class Weather extends FragmentActivity
         }
         else
         {
+            Log.i("Cache not set. Retrieving weather data from source.");
             getWeatherData();
         }
 
@@ -282,7 +285,9 @@ public class Weather extends FragmentActivity
             {
                 if (fragment.isVisible())
                 {
-                    ((WeatherFragment) fragment).update();
+                    WeatherFragmentDecorator decorator = new WeatherFragmentDecorator(fragment);
+
+                    decorator.updateFragment();
                 }
             }
         }
@@ -292,9 +297,13 @@ public class Weather extends FragmentActivity
     {
         Weather weather;
 
-        public WeatherPagerAdapter(Weather weather, FragmentManager fragmentManager)
+        public WeatherPagerAdapter(@NonNull FragmentManager fm, int behavior)
         {
-            super(fragmentManager);
+            super(fm, behavior);
+        }
+
+        public void setWeather(Weather weather)
+        {
             this.weather = weather;
         }
 

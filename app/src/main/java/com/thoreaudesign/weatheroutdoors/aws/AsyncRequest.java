@@ -30,7 +30,7 @@ public class AsyncRequest extends AsyncTask<RequestParams, Integer, Object>
 
     protected Object doInBackground(RequestParams... params)
     {
-        WeatherInterface weatherInterface = (WeatherInterface) getRequestTemplate().getLambdaFactory().build(WeatherInterface.class);
+        ILambdaWeatherBridge weatherInterface = (ILambdaWeatherBridge) getRequestTemplate().getLambdaFactory().build(ILambdaWeatherBridge.class);
 
         try
         {

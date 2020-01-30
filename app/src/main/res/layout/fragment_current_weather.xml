@@ -1,18 +1,18 @@
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/current_summary"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:orientation="horizontal"
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintGuide_begin="10.0sp" />
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:orientation="vertical"
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
@@ -92,11 +92,11 @@
         app:layout_constraintStart_toStartOf="@+id/current_wind"
         app:layout_constraintTop_toBottomOf="@+id/current_wind" />
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:orientation="horizontal"
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintGuide_begin="170.0sp" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,19 +7,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.thoreaudesign.weatheroutdoors.Cache;
 import com.thoreaudesign.weatheroutdoors.Compass;
 import com.thoreaudesign.weatheroutdoors.Log;
+import com.thoreaudesign.weatheroutdoors.NavigationHost;
 import com.thoreaudesign.weatheroutdoors.R;
 import com.thoreaudesign.weatheroutdoors.WeatherIcon;
 import com.thoreaudesign.weatheroutdoors.aws.ServiceName;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Darksky;
 
-public class CurrentWeatherFragment extends Fragment implements WeatherFragment
+public class CurrentWeatherFragment extends NavigationHost implements IWeatherFragment
 {
     private Darksky data;
 
@@ -30,50 +29,10 @@ public class CurrentWeatherFragment extends Fragment implements WeatherFragment
         return (int)Math.round(paramDouble);
     }
 
-    private Darksky hydrate(Bundle bundle)
-    {
-        Log.v("--- Begin ---");
-
-        Cache cache = new Cache(bundle.getString("cacheDir"));
-
-        GsonBuilder gsonBuilder = new GsonBuilder();
-
-        Gson gson = gsonBuilder.create();
-
-        String json = null;
-
-        try
-        {
-            json = cache.getSection(ServiceName.DARKSKY.toLower());
-        }
-        catch (RuntimeException runtimeException)
-        {
-            cache.delete();
-            Log.e("An error occurred retrieving cache data... Deleted existing cache.");
-        }
-
-        Log.v("--- End ---");
-
-        return gson.fromJson(json, Darksky.class);
-    }
-
-    private void loadFragment()
-    {
-        this.data = hydrate(getArguments());
-
-        if (this.data == null)
-        {
-            Log.w("Failed to update fragment. Cache data null.");
-            return;
-        }
-
-        this.setCurrentWeather();
-    }
-
     public static CurrentWeatherFragment newInstance(String cacheDir)
     {
         Log.v("--- Begin ---");
-
+        Log.v("Recieved value of cachDir: " + cacheDir);
         CurrentWeatherFragment currentWeatherFragment = new CurrentWeatherFragment();
 
         Bundle bundle = new Bundle();
@@ -126,8 +85,64 @@ public class CurrentWeatherFragment extends Fragment implements WeatherFragment
     {
         Log.v("--- Begin ---");
         super.onActivityCreated(savedInstanceState);
-        loadFragment();
+        try
+        {
+            loadFragment();
+        }
+        catch (Exception e)
+        {
+            Log.e(e.getMessage());
+        }
         Log.v("--- End ---");
+    }
+
+    private void loadFragment() throws Exception
+    {
+        Object args = this.getArguments();
+
+        if(args == null)
+        {
+            throw new Exception("Unable to retrieve cache - missing arguments from bundle.");
+        }
+        else
+        {
+            this.data = hydrate(getArguments());
+
+            if (this.data == null)
+            {
+                Log.w("Failed to update fragment. Cache data null.");
+                return;
+            }
+
+            this.setCurrentWeather();
+        }
+    }
+
+    private Darksky hydrate(Bundle bundle)
+    {
+        Log.v("--- Begin ---");
+
+        Cache cache = new Cache(bundle.getString("cacheDir"));
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+
+        Gson gson = gsonBuilder.create();
+
+        String json = null;
+
+        try
+        {
+            json = cache.getSection(ServiceName.DARKSKY.toLower());
+        }
+        catch (RuntimeException runtimeException)
+        {
+            cache.delete();
+            Log.e("An error occurred retrieving cache data... Deleted existing cache.");
+        }
+
+        Log.v("--- End ---");
+
+        return gson.fromJson(json, Darksky.class);
     }
 
     public void onCreate(Bundle savedInstanceState)
@@ -148,7 +163,14 @@ public class CurrentWeatherFragment extends Fragment implements WeatherFragment
     public void update()
     {
         Log.v("--- Begin ---");
-        loadFragment();
+        try
+        {
+            loadFragment();
+        }
+        catch (Exception e)
+        {
+            Log.e(e.getMessage());
+        }
         Log.v("--- End ---");
     }
 }

@@ -1,5 +1,7 @@
 package com.thoreaudesign.weatheroutdoors;
 
+import androidx.lifecycle.ViewModel;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,14 +12,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Cache
+public class Cache extends ViewModel
 {
+    public static final String BUNDLE_KEY_DIR = "cacheDir";
     private String data;
-
     private File dir;
-
     private File file;
-
     private String name = "weatheroutdoors";
 
     public Cache(File paramFile)

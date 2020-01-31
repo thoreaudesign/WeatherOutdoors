@@ -8,28 +8,23 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
-                  <entry key="currentWeatherFragment">
+                  <entry key="homeSummaryFragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-306" />
-                            <option name="y" value="101" />
+                            <option name="x" value="-740" />
+                            <option name="y" value="605" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_currentWeatherFragment_to_minutelyForecastFragment">
+                            <entry key="action_homeSummaryFragment_to_placeholder3">
                               <value>
                                 <LayoutPositions />
                               </value>
                             </entry>
-                            <entry key="action_currentWeatherFragment_to_placeholder">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_currentWeatherFragment_to_placeholder2">
+                            <entry key="action_homeSummaryFragment_to_placeholder6">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -56,18 +51,13 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="-679" />
-                            <option name="y" value="640" />
+                            <option name="x" value="-1061" />
+                            <option name="y" value="656" />
                           </Point>
                         </option>
                         <option name="myPositions">
                           <map>
-                            <entry key="action_global_currentWeatherFragment">
-                              <value>
-                                <LayoutPositions />
-                              </value>
-                            </entry>
-                            <entry key="action_global_placeholder3">
+                            <entry key="action_global_homeSummaryFragment">
                               <value>
                                 <LayoutPositions />
                               </value>
@@ -82,8 +72,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="97" />
-                            <option name="y" value="169" />
+                            <option name="x" value="111" />
+                            <option name="y" value="201" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -94,8 +84,8 @@
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="25" />
-                            <option name="y" value="436" />
+                            <option name="x" value="-39" />
+                            <option name="y" value="482" />
                           </Point>
                         </option>
                       </LayoutPositions>
@@ -147,6 +137,37 @@
                             <option name="x" value="47" />
                             <option name="y" value="1118" />
                           </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
+                  <entry key="placeholder6">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="-384" />
+                            <option name="y" value="212" />
+                          </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_placeholder6_to_minutelyForecastFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_placeholder6_to_placeholder">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                            <entry key="action_placeholder6_to_placeholder2">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>

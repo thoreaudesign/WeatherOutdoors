@@ -18,4 +18,16 @@ public enum ServiceName
             return this.toString().toLowerCase();
         }
     }
+
+    public static boolean contains(String value)
+    {
+        for (ServiceName serviceName : ServiceName.values())
+        {
+            if (serviceName.name().equals(value))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

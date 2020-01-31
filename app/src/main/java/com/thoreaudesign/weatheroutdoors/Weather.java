@@ -19,8 +19,11 @@ import com.thoreaudesign.weatheroutdoors.aws.AsyncRequest;
 import com.thoreaudesign.weatheroutdoors.aws.RequestParams;
 import com.thoreaudesign.weatheroutdoors.aws.RequestTemplate;
 import com.thoreaudesign.weatheroutdoors.aws.ServiceName;
-import com.thoreaudesign.weatheroutdoors.aws.WeatherFragmentDecorator;
-import com.thoreaudesign.weatheroutdoors.fragments.CurrentWeatherFragment;
+import com.thoreaudesign.weatheroutdoors.fragments.DailyForecastFragment;
+import com.thoreaudesign.weatheroutdoors.fragments.HomeSummaryFragment;
+import com.thoreaudesign.weatheroutdoors.fragments.HourlyForecastFragment;
+import com.thoreaudesign.weatheroutdoors.fragments.MinutelyForecastFragment;
+import com.thoreaudesign.weatheroutdoors.fragments.WeatherFragmentBase;
 
 import org.json.JSONObject;
 
@@ -285,9 +288,7 @@ public class Weather extends FragmentActivity
             {
                 if (fragment.isVisible())
                 {
-                    WeatherFragmentDecorator decorator = new WeatherFragmentDecorator(fragment);
-
-                    decorator.updateFragment();
+                    ((WeatherFragmentBase)fragment).updateWeatherData();
                 }
             }
         }
@@ -309,36 +310,25 @@ public class Weather extends FragmentActivity
 
         public int getCount()
         {
-            return 1;
+            return 4;
         }
 
         public Fragment getItem(int pos)
         {
+            String cacheDir = this.weather.getCacheDir().toString();
+            Log.v("Cache directory: " + cacheDir);
+
             switch(pos)
             {
                 case 0:
                 default:
-                    return CurrentWeatherFragment.newInstance(this.weather.getCacheDir().toString());
-/*
+                    return HomeSummaryFragment.newInstance(cacheDir);
                 case 1:
-                    return MarineForecastFragment.newInstance();
+                    return MinutelyForecastFragment.newInstance(cacheDir);
                 case 2:
-                    return LunarForecastFragment.newInstance();
-                    String data;
-                    Cache cache = this.weather.getFile();
-                    if(cache.exists() && cache.getData() != null)
-                    {
-                        Log.v("Cache good");
-                        Darksky darksky = new Darksky();
-                        data = darksky.getSummaryData(cache);
-                        Log.v("Darksky data:" + data);
-                    }
-                    else
-                    {
-                        data = "Loading weather data...";
-                    }
-                    return SummaryFragment.newInstance(data);
-*/
+                    return HourlyForecastFragment.newInstance(cacheDir);
+                case 3:
+                    return DailyForecastFragment.newInstance(cacheDir);
             }
         }
     }

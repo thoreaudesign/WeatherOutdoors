@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 import com.google.gson.GsonBuilder;
-import com.thoreaudesign.weatheroutdoors.Cache;
+import com.thoreaudesign.weatheroutdoors.cache.Cache;
 import com.thoreaudesign.weatheroutdoors.aws.ServiceName;
 import com.thoreaudesign.weatheroutdoors.serialization.StormglassAstro.StormglassAstro;
 

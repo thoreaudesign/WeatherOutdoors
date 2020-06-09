@@ -8,7 +8,8 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
-import com.thoreaudesign.weatheroutdoors.Cache;
+import com.thoreaudesign.weatheroutdoors.aws.ServiceName;
+import com.thoreaudesign.weatheroutdoors.cache.Cache;
 import com.thoreaudesign.weatheroutdoors.ForecastData;
 import com.thoreaudesign.weatheroutdoors.ForecastExpandableListAdapter;
 import com.thoreaudesign.weatheroutdoors.Log;
@@ -23,21 +24,19 @@ public class MinutelyForecastFragment extends WeatherFragmentBase
 {
     private View layout;
 
-    public static MinutelyForecastFragment newInstance(String cacheDir)
+    public static MinutelyForecastFragment newInstance(String cacheData)
     {
         Log.v("--- Begin ---");
-
-        Log.v("Recieved value of cachDir: " + cacheDir);
-        MinutelyForecastFragment minutelyForecastFragment = new MinutelyForecastFragment();
+        MinutelyForecastFragment currentWeatherFragment = new MinutelyForecastFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putString(Cache.BUNDLE_KEY_DIR, cacheDir);
+        bundle.putString(Cache.BUNDLE_KEY_DATA, cacheData);
 
-        minutelyForecastFragment.setArguments(bundle);
+        currentWeatherFragment.setArguments(bundle);
 
         Log.v("--- End ---");
 
-        return minutelyForecastFragment;
+        return currentWeatherFragment;
     }
 
     public void onCreate(Bundle savedInstanceState)
@@ -61,7 +60,10 @@ public class MinutelyForecastFragment extends WeatherFragmentBase
         Log.v("--- Begin ---");
 
         super.onActivityCreated(savedInstanceState);
-        this.updateWeatherData();
+        Bundle newBundle = getArguments();
+        String cacheData = newBundle.getString(Cache.BUNDLE_KEY_DATA);
+        data = parseDarkskyCacheData(ServiceName.DARKSKY, cacheData);
+        populateLayoutWithData();
 
         Log.v("--- End ---");
     }

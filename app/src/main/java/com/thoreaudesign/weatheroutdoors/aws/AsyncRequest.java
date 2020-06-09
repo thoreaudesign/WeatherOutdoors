@@ -6,20 +6,19 @@ import android.widget.ProgressBar;
 
 import com.thoreaudesign.weatheroutdoors.Log;
 
+import org.json.JSONObject;
+
 public class AsyncRequest extends AsyncTask<RequestParams, Integer, Object>
 {
-    private String cacheDir;
-
     private Listener listener;
 
     private ProgressBar progress;
 
     private RequestTemplate requestTemplate;
 
-    public AsyncRequest(RequestTemplate paramRequestTemplate, String paramString, ProgressBar paramProgressBar)
+    public AsyncRequest(RequestTemplate paramRequestTemplate, ProgressBar paramProgressBar)
     {
         this.requestTemplate = paramRequestTemplate;
-        this.cacheDir = paramString;
         this.progress = paramProgressBar;
     }
 
@@ -30,10 +29,11 @@ public class AsyncRequest extends AsyncTask<RequestParams, Integer, Object>
 
     protected Object doInBackground(RequestParams... params)
     {
-        ILambdaWeatherBridge weatherInterface = (ILambdaWeatherBridge) getRequestTemplate().getLambdaFactory().build(ILambdaWeatherBridge.class);
+        ILambdaWeatherBridge weatherInterface = getRequestTemplate().getLambdaFactory().build(ILambdaWeatherBridge.class);
 
         try
         {
+            Log.d("Querying AWS Lambda for weather data...");
             return getRequestTemplate().getLambdaResponse(weatherInterface, params);
         }
         catch (Exception e)
@@ -45,6 +45,7 @@ public class AsyncRequest extends AsyncTask<RequestParams, Integer, Object>
 
     protected void onPostExecute(Object paramObject)
     {
+        Log.v("AsyncTask completed.");
         Listener listener = this.listener;
 
         if (listener != null)
@@ -67,5 +68,37 @@ public class AsyncRequest extends AsyncTask<RequestParams, Integer, Object>
     public interface Listener
     {
         void onTaskResult(Object param1Object);
+    }
+
+    public boolean isResponseValid(String response)
+    {
+        boolean responseValid = false;
+
+        try
+        {
+            JSONObject responseJson = new JSONObject(response);
+            ServiceName[] serviceNames = ServiceName.values();
+
+            for(int i = 0; i < serviceNames.length; i++)
+            {
+                ServiceName serviceName = serviceNames[i];
+
+                if (responseJson.has(serviceName.toLower()))
+                {
+                    responseValid = true;
+                }
+                else
+                {
+                    Log.v("Lambda function returned invalid data from service '" + serviceName.toLower() + ".'");
+                }
+            }
+        }
+        catch (Exception exception)
+        {
+            Log.e(exception.getMessage());
+            Log.v(response);
+        }
+
+        return responseValid;
     }
 }

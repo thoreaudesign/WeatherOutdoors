@@ -1,9 +1,9 @@
 package com.thoreaudesign.weatheroutdoors.fragments;
 
-import com.thoreaudesign.weatheroutdoors.CacheAdapter;
+import com.thoreaudesign.weatheroutdoors.cache.CacheSingleton;
 
 public interface IWeatherFragment
 {
     void update();
-    void setWeatherCacheHandler(CacheAdapter cacheAdapter);
+    void setWeatherCacheHandler(CacheSingleton cacheSingleton);
 }

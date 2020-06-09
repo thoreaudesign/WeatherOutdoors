@@ -40,10 +40,10 @@ public class Cache
         this.data = null;
     }
 
-    public Cache(String paramString)
+    public Cache(String cacheDirPath)
     {
-        this.dir = new File(paramString);
-        this.file = new File(paramString, this.CACHE_NAME);
+        this.dir = new File(cacheDirPath);
+        this.file = new File(cacheDirPath, this.CACHE_NAME);
     }
 
     public boolean exists()
@@ -84,7 +84,7 @@ public class Cache
 
     public String getName()
     {
-        return this.CACHE_NAME;
+        return Cache.CACHE_NAME;
     }
     //</editor-fold>
 
@@ -141,7 +141,8 @@ public class Cache
             fileWriter.write(getData());
             fileWriter.close();
 
-            Log.i("'" + getName() + "' file writte: " + getFile().getAbsolutePath());
+            Log.i("'" + getName() + "' file written: " + getFile().getAbsolutePath());
+            Log.v("Wrote cache data: " + getData());
 
             return true;
 
@@ -165,13 +166,13 @@ public class Cache
             }
             else
             {
-                Log.i("Failed to delete '" + getName() + "' file: " + str);
+                Log.w("Failed to delete '" + getName() + "' file: " + str);
                 return false;
             }
         }
         else
         {
-            Log.i("Unable to delete '" + getName() + "' file - does not exist: ");
+            Log.w("Unable to delete '" + getName() + "' file - does not exist: ");
             return false;
         }
     }

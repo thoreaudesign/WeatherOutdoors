@@ -5,8 +5,18 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.thoreaudesign.weatheroutdoors.Log;
+import com.thoreaudesign.weatheroutdoors.Weather;
 
 import org.json.JSONObject;
+
+/**
+ * AsyncTask is deprecated.
+ * By adding the activity to this class, it is leaking Context.
+ * This entire class needs to be written using FutureTask or
+ * Executor directly:
+ *
+ * https://developer.android.com/reference/android/os/AsyncTask
+ */
 
 public class AsyncRequest extends AsyncTask<RequestParams, Integer, Object>
 {
@@ -16,10 +26,13 @@ public class AsyncRequest extends AsyncTask<RequestParams, Integer, Object>
 
     private RequestTemplate requestTemplate;
 
-    public AsyncRequest(RequestTemplate paramRequestTemplate, ProgressBar paramProgressBar)
+    private Weather weatherActivity;
+
+    public AsyncRequest(RequestTemplate paramRequestTemplate, ProgressBar paramProgressBar, Weather weatherActivity)
     {
         this.requestTemplate = paramRequestTemplate;
         this.progress = paramProgressBar;
+        this.weatherActivity = weatherActivity;
     }
 
     private RequestTemplate getRequestTemplate()
@@ -53,6 +66,7 @@ public class AsyncRequest extends AsyncTask<RequestParams, Integer, Object>
             listener.onTaskResult(paramObject);
         }
         this.progress.setVisibility(View.GONE);
+        weatherActivity.updateFragments();
     }
 
     protected void onPreExecute()

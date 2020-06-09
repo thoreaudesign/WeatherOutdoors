@@ -13,14 +13,22 @@ public class CacheManager
         this.cache = cache;
     }
 
+    public void initializeCache()
+    {
+        cache.read();
+    }
     private boolean isCacheEmpty()
     {
-        boolean isEmpty = true;
+        boolean isEmpty = false;
 
-        if(this.cache.getData() != null)
+        if(this.cache.getData() == null)
         {
-            Log.v("Cache is empty.");
-            isEmpty = false;
+            Log.i("Cache is empty.");
+            isEmpty = true;
+        }
+        else
+        {
+            Log.i("Cache is populated.");
         }
 
         return isEmpty;
@@ -54,11 +62,18 @@ public class CacheManager
     {
         boolean isOutdated = false;
 
+        Log.i("Validating cache file...");
+        Log.v("Cache file: " + this.cache.getFile().toString());
+
         if(this.cache.getFile().exists())
         {
             if (this.isCacheEmpty() || this.isCacheExpired())
             {
                 isOutdated = true;
+            }
+            else
+            {
+                Log.i("Cache is up-to-date.");
             }
         }
         else
@@ -91,6 +106,11 @@ public class CacheManager
     public String getCacheData()
     {
         return this.cache.getData();
+    }
+
+    public void deleteCache()
+    {
+        cache.delete();
     }
 }
 

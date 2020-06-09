@@ -18,9 +18,11 @@ import com.google.gson.Gson;
 import com.thoreaudesign.weatheroutdoors.aws.AsyncRequest;
 import com.thoreaudesign.weatheroutdoors.aws.RequestParams;
 import com.thoreaudesign.weatheroutdoors.aws.RequestTemplate;
-import com.thoreaudesign.weatheroutdoors.cache.CacheSingleton;
+import com.thoreaudesign.weatheroutdoors.cache.Cache;
+import com.thoreaudesign.weatheroutdoors.cache.CacheManager;
 import com.thoreaudesign.weatheroutdoors.fragments.HomeSummaryFragment;
 import com.thoreaudesign.weatheroutdoors.fragments.HourlyForecastFragment;
+import com.thoreaudesign.weatheroutdoors.fragments.MinutelyForecastFragment;
 import com.thoreaudesign.weatheroutdoors.fragments.WeatherFragmentBase;
 
 import java.util.List;
@@ -31,15 +33,9 @@ public class Weather extends FragmentActivity
 {
     protected AsyncRequest asyncRequest;
 
-    private CacheSingleton cacheSingleton;
+    private CacheManager cacheManager;
 
     private DevicePermissionsManager permissionsManager;
-
-    public void killAsyncRequest()
-    {
-        if (asyncRequest != null)
-            asyncRequest.cancel(true);
-    }
 
     //<editor-fold desc="/** AWS Lambda Plumbing **/">
 
@@ -112,35 +108,7 @@ public class Weather extends FragmentActivity
 
     //</editor-fold>
 
-    private void populateCache(ProgressBar progressBar, RequestParams requestParams, RequestTemplate requestTemplate)
-    {
-        asyncRequest = new AsyncRequest(requestTemplate, progressBar);
-
-        asyncRequest.setListener(new AsyncRequest.Listener()
-        {
-            public void onTaskResult(Object lambdaResult)
-            {
-                String response = new Gson().toJson(lambdaResult);
-
-                Log.v(response);
-
-                if (asyncRequest.isResponseValid(response))
-                {
-                    cacheSingleton.getCacheManager().populateCache(response);
-
-                    Weather.this.updateFragments();
-                }
-                else
-                {
-                    cacheSingleton.getCacheManager().setLastModified(System.currentTimeMillis());
-
-                    Log.e("Lambda response failed validation. Updated lastModified date of cache. Data not updated.");
-                }
-            }
-        });
-
-        asyncRequest.execute(requestParams);
-    }
+    //<editor-fold desc="/** Android Activity Lifecycle **/">
 
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -159,17 +127,10 @@ public class Weather extends FragmentActivity
         Log.v("--- End ---");
     }
 
-    protected void onDestroy()
+    protected void onStart()
     {
         Log.v("--- Begin ---");
-        super.onDestroy();
-        Log.v("--- End ---");
-    }
-
-    protected void onPause()
-    {
-        Log.v("--- Begin ---");
-        super.onPause();
+        super.onStart();
         Log.v("--- End ---");
     }
 
@@ -183,11 +144,14 @@ public class Weather extends FragmentActivity
         mViewPager.setAdapter(weatherPagerAdapter);
         super.onResume();
 
+        cacheManager = new CacheManager(new Cache(getCacheDir()));
+        cacheManager.initializeCache();
+
         if (this.permissionsManager.permissionRequired())
         {
             Log.v("Permission denied.");
         }
-        else if (cacheSingleton.getCacheManager().isCacheOutdated())
+        else if (cacheManager.isCacheOutdated())
         {
             ProgressBar progressBar = findViewById(R.id.progress);
             populateCache(progressBar, getGPSParams(), getRequestTemplate());
@@ -200,10 +164,10 @@ public class Weather extends FragmentActivity
         Log.v("--- End ---");
     }
 
-    protected void onStart()
+    protected void onPause()
     {
         Log.v("--- Begin ---");
-        super.onStart();
+        super.onPause();
         Log.v("--- End ---");
     }
 
@@ -213,6 +177,49 @@ public class Weather extends FragmentActivity
         killAsyncRequest();
         super.onStop();
         Log.v("--- End ---");
+    }
+
+    protected void onDestroy()
+    {
+        Log.v("--- Begin ---");
+        super.onDestroy();
+        Log.v("--- End ---");
+    }
+
+    //</editor-fold>
+
+    public void killAsyncRequest()
+    {
+        if (asyncRequest != null)
+            asyncRequest.cancel(true);
+    }
+
+    private void populateCache(ProgressBar progressBar, RequestParams requestParams, RequestTemplate requestTemplate)
+    {
+        asyncRequest = new AsyncRequest(requestTemplate, progressBar, this);
+
+        asyncRequest.setListener(new AsyncRequest.Listener()
+        {
+            public void onTaskResult(Object lambdaResult)
+            {
+                String response = new Gson().toJson(lambdaResult);
+
+                Log.v(response);
+
+                if (asyncRequest.isResponseValid(response))
+                {
+                    cacheManager.populateCache(response);
+                }
+                else
+                {
+                    cacheManager.setLastModified(System.currentTimeMillis());
+
+                    Log.e("Lambda response failed validation. Updated lastModified date of cache. Data not updated.");
+                }
+            }
+        });
+
+        asyncRequest.execute(requestParams);
     }
 
     public void updateFragments()
@@ -250,24 +257,22 @@ public class Weather extends FragmentActivity
 
         public int getCount()
         {
-            return 4;
+            return 3;
         }
 
         public Fragment getItem(int pos)
         {
-            String cacheData = cacheSingleton.getCacheManager().getCacheData();
+            String cacheData = cacheManager.getCacheData();
 
             switch(pos)
             {
-                case 0:
                 default:
+                case 0:
                     return HomeSummaryFragment.newInstance(cacheData);
-//                case 1:
-//                    return MinutelyForecastFragment.newInstance(cacheDir);
+                case 1:
+                    return MinutelyForecastFragment.newInstance(cacheData);
                 case 2:
                     return HourlyForecastFragment.newInstance(cacheData);
-//                case 3:
-//                    return DailyForecastFragment.newInstance(cacheDir);
             }
         }
     }

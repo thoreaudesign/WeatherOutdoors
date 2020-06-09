@@ -8,12 +8,12 @@ import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
-import com.thoreaudesign.weatheroutdoors.aws.ServiceName;
-import com.thoreaudesign.weatheroutdoors.cache.Cache;
 import com.thoreaudesign.weatheroutdoors.ForecastData;
 import com.thoreaudesign.weatheroutdoors.ForecastExpandableListAdapter;
 import com.thoreaudesign.weatheroutdoors.Log;
 import com.thoreaudesign.weatheroutdoors.R;
+import com.thoreaudesign.weatheroutdoors.aws.ServiceName;
+import com.thoreaudesign.weatheroutdoors.cache.Cache;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.DatumHourly;
 
 import java.util.ArrayList;
@@ -62,8 +62,25 @@ public class MinutelyForecastFragment extends WeatherFragmentBase
         super.onActivityCreated(savedInstanceState);
         Bundle newBundle = getArguments();
         String cacheData = newBundle.getString(Cache.BUNDLE_KEY_DATA);
-        data = parseDarkskyCacheData(ServiceName.DARKSKY, cacheData);
-        populateLayoutWithData();
+
+        try
+        {
+            this.data = parseDarkskyCacheData(ServiceName.DARKSKY, cacheData);
+
+            if(this.data == null)
+            {
+                throw new NullPointerException("Darksky cache is empty.");
+            }
+            else
+            {
+                updateWeatherData();
+            }
+        }
+        catch (Throwable exception)
+        {
+            Log.e("Failed to parse Darksky data from cache.");
+            Log.e(exception.getMessage());
+        }
 
         Log.v("--- End ---");
     }

@@ -62,8 +62,25 @@ public class HomeSummaryFragment extends WeatherFragmentBase
 
         Bundle newBundle = getArguments();
         String cacheData = newBundle.getString(Cache.BUNDLE_KEY_DATA);
-        data = parseDarkskyCacheData(ServiceName.DARKSKY, cacheData);
-        populateLayoutWithData();
+
+        try
+        {
+            this.data = parseDarkskyCacheData(ServiceName.DARKSKY, cacheData);
+
+            if(this.data == null)
+            {
+                throw new NullPointerException("Darksky cache is empty.");
+            }
+            else
+            {
+                updateWeatherData();
+            }
+        }
+        catch (Throwable exception)
+        {
+            Log.e("Failed to parse Darksky data from cache.");
+            Log.e(exception.getMessage());
+        }
 
         Log.v("--- End ---");
     }

@@ -17,7 +17,7 @@ public abstract class WeatherFragmentBase extends Fragment
 
     abstract void populateLayoutWithData();
 
-    private String getCacheSection(String cacheData, String sectionName)
+    private String getCacheSection(String cacheData, String sectionName) throws Throwable
     {
         try
         {
@@ -26,34 +26,29 @@ public abstract class WeatherFragmentBase extends Fragment
         catch (JSONException jSONException)
         {
             Log.e("Failed to parse section '" + sectionName + "' from JSON cache.");
-            /** TO-DO - Change this to a different type of exception. */
-            throw new RuntimeException(jSONException);
+            throw jSONException;
         }
     }
 
-    public Darksky parseDarkskyCacheData(ServiceName serviceName, String cacheData)
+    protected Darksky parseDarkskyCacheData(ServiceName serviceName, String cacheData) throws Throwable
     {
         Log.v("--- Begin ---");
 
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
-        String json = null;
+        String json;
 
         try
         {
-            try
-            {
-                json = getCacheSection(cacheData, serviceName.toLower());
-            }
-            catch (RuntimeException runtimeException)
-            {
-                /** TO-DO - Implement exception that can be caught by activity */
-                Log.e("An error occurred retrieving cache data... Deleted existing cache.");
-            }
+            json = getCacheSection(cacheData, serviceName.toLower());
         }
-        catch (NullPointerException e)
+        catch (NullPointerException nullPointerException)
         {
-            Log.e(e.getMessage());
+            throw nullPointerException;
+        }
+        catch (JSONException jSONException)
+        {
+            throw jSONException;
         }
 
         Log.v("--- End ---");

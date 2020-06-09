@@ -7,24 +7,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.thoreaudesign.weatheroutdoors.Cache;
 import com.thoreaudesign.weatheroutdoors.Compass;
 import com.thoreaudesign.weatheroutdoors.Log;
 import com.thoreaudesign.weatheroutdoors.R;
 import com.thoreaudesign.weatheroutdoors.WeatherIcon;
+import com.thoreaudesign.weatheroutdoors.aws.ServiceName;
+import com.thoreaudesign.weatheroutdoors.cache.Cache;
+import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Darksky;
 
 public class HomeSummaryFragment extends WeatherFragmentBase
 {
     private View layout;
+    private Darksky data;
 
-    public static HomeSummaryFragment newInstance(String cacheDir)
+    public static HomeSummaryFragment newInstance(String cacheData)
     {
         Log.v("--- Begin ---");
-        Log.v("Recieved value of cachDir: " + cacheDir);
         HomeSummaryFragment currentWeatherFragment = new HomeSummaryFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putString(Cache.BUNDLE_KEY_DIR, cacheDir);
+        bundle.putString(Cache.BUNDLE_KEY_DATA, cacheData);
 
         currentWeatherFragment.setArguments(bundle);
 
@@ -57,7 +59,29 @@ public class HomeSummaryFragment extends WeatherFragmentBase
     {
         Log.v("--- Begin ---");
         super.onActivityCreated(savedInstanceState);
-        this.updateWeatherData();
+
+        Bundle newBundle = getArguments();
+        String cacheData = newBundle.getString(Cache.BUNDLE_KEY_DATA);
+
+        try
+        {
+            this.data = parseDarkskyCacheData(ServiceName.DARKSKY, cacheData);
+
+            if(this.data == null)
+            {
+                throw new NullPointerException("Darksky cache is empty.");
+            }
+            else
+            {
+                updateWeatherData();
+            }
+        }
+        catch (Throwable exception)
+        {
+            Log.e("Failed to parse Darksky data from cache.");
+            Log.e(exception.getMessage());
+        }
+
         Log.v("--- End ---");
     }
 

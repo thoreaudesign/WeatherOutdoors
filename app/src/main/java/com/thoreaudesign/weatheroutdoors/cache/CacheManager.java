@@ -13,10 +13,11 @@ public class CacheManager
         this.cache = cache;
     }
 
-    public void initializeCache()
+    public boolean initializeCache()
     {
-        cache.read();
+        return cache.read();
     }
+
     private boolean isCacheEmpty()
     {
         boolean isEmpty = false;

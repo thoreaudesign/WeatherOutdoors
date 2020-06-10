@@ -10,10 +10,7 @@ import android.widget.Toast;
 
 import com.thoreaudesign.weatheroutdoors.ForecastData;
 import com.thoreaudesign.weatheroutdoors.ForecastExpandableListAdapter;
-import com.thoreaudesign.weatheroutdoors.Log;
 import com.thoreaudesign.weatheroutdoors.R;
-import com.thoreaudesign.weatheroutdoors.aws.ServiceName;
-import com.thoreaudesign.weatheroutdoors.cache.Cache;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.DatumHourly;
 
 import java.util.ArrayList;
@@ -22,70 +19,17 @@ import java.util.List;
 
 public class MinutelyForecastFragment extends WeatherFragmentBase
 {
-    private View layout;
-
     public static MinutelyForecastFragment newInstance(String cacheData)
     {
-        Log.v("--- Begin ---");
-        MinutelyForecastFragment currentWeatherFragment = new MinutelyForecastFragment();
-
-        Bundle bundle = new Bundle();
-        bundle.putString(Cache.BUNDLE_KEY_DATA, cacheData);
-
-        currentWeatherFragment.setArguments(bundle);
-
-        Log.v("--- End ---");
-
-        return currentWeatherFragment;
+        return (MinutelyForecastFragment)setBundle(new MinutelyForecastFragment(), cacheData);
     }
 
-    public void onCreate(Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        Log.v("--- Begin ---");
-        super.onCreate(savedInstanceState);
-        Log.v("--- End ---");
+        return createView(R.layout.fragment_minutely_forecast, inflater, container);
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
-        Log.v("--- Begin ---");
-        this.layout = inflater.inflate(R.layout.fragment_minutely_forecast, container, false);
-        Log.v("--- End ---");
-        return this.layout;
-    }
-
-    public void onActivityCreated(Bundle savedInstanceState)
-    {
-        Log.v("--- Begin ---");
-
-        super.onActivityCreated(savedInstanceState);
-        Bundle newBundle = getArguments();
-        String cacheData = newBundle.getString(Cache.BUNDLE_KEY_DATA);
-
-        try
-        {
-            this.data = parseDarkskyCacheData(ServiceName.DARKSKY, cacheData);
-
-            if(this.data == null)
-            {
-                throw new NullPointerException("Darksky cache is empty.");
-            }
-            else
-            {
-                updateWeatherData();
-            }
-        }
-        catch (Throwable exception)
-        {
-            Log.e("Failed to parse Darksky data from cache.");
-            Log.e(exception.getMessage());
-        }
-
-        Log.v("--- End ---");
-    }
-
-    void populateLayoutWithData()
+    void populateLayout()
     {
         ForecastData forecastData = new ForecastData(this.data);
         ExpandableListView expandableListView = this.layout.findViewById(R.id.forecast_list_view);

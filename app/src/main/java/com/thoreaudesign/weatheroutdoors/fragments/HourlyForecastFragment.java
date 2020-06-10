@@ -4,32 +4,35 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
-
+import com.thoreaudesign.weatheroutdoors.Log;
 import com.thoreaudesign.weatheroutdoors.R;
 
-public class HourlyForecastFragment extends Fragment
+public class HourlyForecastFragment extends WeatherFragmentBase
 {
-    public HourlyForecastFragment()
+    public static HourlyForecastFragment newInstance(String cacheData)
     {
+        return (HourlyForecastFragment)setBundle(new HourlyForecastFragment(), cacheData);
     }
 
-    public static HourlyForecastFragment newInstance(String cacheDir)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        return new HourlyForecastFragment();
+        Log.v("--- Begin ---");
+        layout = inflater.inflate(R.layout.fragment_minutely_forecast, container, false);
+        Log.v("--- End ---");
+        return layout;
     }
 
-    public void onCreate(Bundle savedInstanceState)
+    void parseData()
     {
-        super.onCreate(savedInstanceState);
+        cacheData = "Hello World!!!";
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
+    void populateLayout()
     {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_hourly_forecast, container, false);
+        TextView hourlyText = this.layout.findViewById(R.id.hourly_text);
+        hourlyText.setText(cacheData);
     }
 }
 

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -14,6 +15,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.lambdainvoker.LambdaInvokerFactory;
 import com.amazonaws.regions.Regions;
+import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.thoreaudesign.weatheroutdoors.aws.AsyncRequest;
 import com.thoreaudesign.weatheroutdoors.aws.RequestParams;
@@ -33,8 +35,10 @@ public class Weather extends FragmentActivity
 {
     protected AsyncRequest asyncRequest;
 
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager mViewPager;
     private CacheManager cacheManager;
-
     private DevicePermissionsManager permissionsManager;
 
     //<editor-fold desc="/** AWS Lambda Plumbing **/">
@@ -117,6 +121,16 @@ public class Weather extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        toolbar = findViewById(R.id.toolbar);
+
+        ViewPager mViewPager = findViewById(R.id.viewPager);
+        WeatherPagerAdapter weatherPagerAdapter = new WeatherPagerAdapter(getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        weatherPagerAdapter.setWeather(this);
+        mViewPager.setAdapter(weatherPagerAdapter);
+
+        tabLayout = findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+
         this.permissionsManager = new DevicePermissionsManager( this);
 
         if (this.permissionsManager.permissionRequired())
@@ -138,29 +152,31 @@ public class Weather extends FragmentActivity
     {
         Log.v("--- Begin ---");
 
-        ViewPager mViewPager = findViewById(R.id.viewPager);
-        WeatherPagerAdapter weatherPagerAdapter  = new WeatherPagerAdapter(getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        weatherPagerAdapter.setWeather(this);
-        mViewPager.setAdapter(weatherPagerAdapter);
         super.onResume();
-
-        cacheManager = new CacheManager(new Cache(getCacheDir()));
-        cacheManager.initializeCache();
 
         if (this.permissionsManager.permissionRequired())
         {
             Log.v("Permission denied.");
         }
-        else if (cacheManager.isCacheOutdated())
-        {
-            ProgressBar progressBar = findViewById(R.id.progress);
-            populateCache(progressBar, getGPSParams(), getRequestTemplate());
-        }
         else
         {
-            updateFragments();
-        }
+            cacheManager = new CacheManager(new Cache(getCacheDir()));
 
+            if(cacheManager.initializeCache())
+            {
+                Log.i("Cache initialized from file.");
+            }
+            else if (cacheManager.isCacheOutdated())
+            {
+                Log.i("Cache is out-of-date.");
+                ProgressBar progressBar = findViewById(R.id.progress);
+                populateCache(progressBar, getGPSParams(), getRequestTemplate());
+            }
+            else
+            {
+                updateFragments();
+            }
+        }
         Log.v("--- End ---");
     }
 
@@ -224,18 +240,16 @@ public class Weather extends FragmentActivity
 
     public void updateFragments()
     {
+        String cacheData = cacheManager.getCacheData();
+
         List<Fragment> allFragments = getSupportFragmentManager().getFragments();
-        if (allFragments.isEmpty())
-        {
-            return;
-        }
-        else
+        if (!allFragments.isEmpty())
         {
             for (Fragment fragment : allFragments)
             {
                 if (fragment.isVisible())
                 {
-                    ((WeatherFragmentBase)fragment).updateWeatherData();
+                    ((WeatherFragmentBase)fragment).updateWeatherData(cacheData);
                 }
             }
         }
@@ -245,12 +259,12 @@ public class Weather extends FragmentActivity
     {
         Weather weather;
 
-        public WeatherPagerAdapter(@NonNull FragmentManager fm, int behavior)
+        WeatherPagerAdapter(@NonNull FragmentManager fm, int behavior)
         {
             super(fm, behavior);
         }
 
-        public void setWeather(Weather weather)
+        void setWeather(Weather weather)
         {
             this.weather = weather;
         }
@@ -260,18 +274,20 @@ public class Weather extends FragmentActivity
             return 3;
         }
 
+        @NonNull
         public Fragment getItem(int pos)
         {
             String cacheData = cacheManager.getCacheData();
+            Log.v("Cache data at fragment creation: " + cacheData);
 
             switch(pos)
             {
                 default:
                 case 0:
                     return HomeSummaryFragment.newInstance(cacheData);
-                case 1:
+               case 1:
                     return MinutelyForecastFragment.newInstance(cacheData);
-                case 2:
+               case 2:
                     return HourlyForecastFragment.newInstance(cacheData);
             }
         }

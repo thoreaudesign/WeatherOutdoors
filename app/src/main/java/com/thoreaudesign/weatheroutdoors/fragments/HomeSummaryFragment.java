@@ -11,83 +11,23 @@ import com.thoreaudesign.weatheroutdoors.Compass;
 import com.thoreaudesign.weatheroutdoors.Log;
 import com.thoreaudesign.weatheroutdoors.R;
 import com.thoreaudesign.weatheroutdoors.WeatherIcon;
-import com.thoreaudesign.weatheroutdoors.aws.ServiceName;
-import com.thoreaudesign.weatheroutdoors.cache.Cache;
-import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Darksky;
 
 public class HomeSummaryFragment extends WeatherFragmentBase
 {
-    private View layout;
-    private Darksky data;
-
     public static HomeSummaryFragment newInstance(String cacheData)
     {
-        Log.v("--- Begin ---");
-        HomeSummaryFragment currentWeatherFragment = new HomeSummaryFragment();
-
-        Bundle bundle = new Bundle();
-        bundle.putString(Cache.BUNDLE_KEY_DATA, cacheData);
-
-        currentWeatherFragment.setArguments(bundle);
-
-        Log.v("--- End ---");
-
-        return currentWeatherFragment;
+       return (HomeSummaryFragment)setBundle(new HomeSummaryFragment(), cacheData);
     }
 
-    public void onCreate(Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        return createView(R.layout.fragment_home_summary, inflater, container);
+    }
+
+    void populateLayout()
     {
         Log.v("--- Begin ---");
 
-        super.onCreate(savedInstanceState);
-
-        Log.v("--- End ---");
-    }
-
-    public View onCreateView(LayoutInflater paramLayoutInflater, ViewGroup container, Bundle savedInstanceState)
-    {
-        Log.v("--- Begin ---");
-
-        this.layout = paramLayoutInflater.inflate(R.layout.fragment_home_summary, container, false);
-
-        Log.v("--- End ---");
-
-        return this.layout;
-    }
-
-    public void onActivityCreated(Bundle savedInstanceState)
-    {
-        Log.v("--- Begin ---");
-        super.onActivityCreated(savedInstanceState);
-
-        Bundle newBundle = getArguments();
-        String cacheData = newBundle.getString(Cache.BUNDLE_KEY_DATA);
-
-        try
-        {
-            this.data = parseDarkskyCacheData(ServiceName.DARKSKY, cacheData);
-
-            if(this.data == null)
-            {
-                throw new NullPointerException("Darksky cache is empty.");
-            }
-            else
-            {
-                updateWeatherData();
-            }
-        }
-        catch (Throwable exception)
-        {
-            Log.e("Failed to parse Darksky data from cache.");
-            Log.e(exception.getMessage());
-        }
-
-        Log.v("--- End ---");
-    }
-
-    void populateLayoutWithData()
-    {
-        Log.v("--- Begin ---");
         Integer temperature = getInt(this.data.getCurrently().getTemperature());
         Integer apparentTemperature = getInt(this.data.getCurrently().getApparentTemperature());
         Integer humidity = getInt(this.data.getCurrently().getHumidity() * 100.0D);

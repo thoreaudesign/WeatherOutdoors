@@ -240,6 +240,8 @@ public class Weather extends FragmentActivity
 
     public void updateFragments()
     {
+        cacheManager.initializeCache();
+
         String cacheData = cacheManager.getCacheData();
 
         List<Fragment> allFragments = getSupportFragmentManager().getFragments();

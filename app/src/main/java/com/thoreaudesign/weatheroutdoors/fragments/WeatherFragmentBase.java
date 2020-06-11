@@ -51,7 +51,7 @@ public abstract class WeatherFragmentBase extends Fragment
         if(args != null && args.containsKey(Cache.BUNDLE_KEY_DATA))
         {
             cacheData = args.getString(Cache.BUNDLE_KEY_DATA);
-            updateWeatherData();
+            updateWeatherData(cacheData);
         }
         else
         {

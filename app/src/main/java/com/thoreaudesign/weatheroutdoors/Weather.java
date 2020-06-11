@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
@@ -21,7 +24,8 @@ import com.thoreaudesign.weatheroutdoors.aws.AsyncRequest;
 import com.thoreaudesign.weatheroutdoors.aws.RequestParams;
 import com.thoreaudesign.weatheroutdoors.aws.RequestTemplate;
 import com.thoreaudesign.weatheroutdoors.cache.Cache;
-import com.thoreaudesign.weatheroutdoors.cache.CacheManager;
+import com.thoreaudesign.weatheroutdoors.cache.CacheViewModel;
+import com.thoreaudesign.weatheroutdoors.cache.CacheManagerViewModelFactory;
 import com.thoreaudesign.weatheroutdoors.fragments.HomeSummaryFragment;
 import com.thoreaudesign.weatheroutdoors.fragments.HourlyForecastFragment;
 import com.thoreaudesign.weatheroutdoors.fragments.MinutelyForecastFragment;
@@ -38,7 +42,7 @@ public class Weather extends FragmentActivity
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager mViewPager;
-    private CacheManager cacheManager;
+    private CacheViewModel cacheViewModel;
     private DevicePermissionsManager permissionsManager;
 
     //<editor-fold desc="/** AWS Lambda Plumbing **/">
@@ -131,6 +135,23 @@ public class Weather extends FragmentActivity
         tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        /**
+         * Subscribe to CacheViewModel and observe CacheViewModel.Cache.
+         */
+         Cache cache = new Cache(getCacheDir());
+        CacheViewModel cacheViewModel = new ViewModelProvider(this, new CacheManagerViewModelFactory(cache)).get(CacheViewModel.class);
+
+        final Observer<Cache> observedCache = new Observer<Cache>()
+        {
+            @Override
+            public void onChanged(@Nullable final Cache newCache)
+            {
+                Weather.this.updateFragments(newCache.getData());
+            }
+        };
+
+        cacheViewModel.getCacheLive().observe(this, observedCache);
+
         this.permissionsManager = new DevicePermissionsManager( this);
 
         if (this.permissionsManager.permissionRequired())
@@ -160,13 +181,9 @@ public class Weather extends FragmentActivity
         }
         else
         {
-            cacheManager = new CacheManager(new Cache(getCacheDir()));
+            cacheViewModel = new CacheViewModel(new Cache(getCacheDir()));
 
-            if(cacheManager.initializeCache())
-            {
-                Log.i("Cache initialized from file.");
-            }
-            else if (cacheManager.isCacheOutdated())
+            if (cacheViewModel.isCacheOutdated())
             {
                 Log.i("Cache is out-of-date.");
                 ProgressBar progressBar = findViewById(R.id.progress);
@@ -174,7 +191,7 @@ public class Weather extends FragmentActivity
             }
             else
             {
-                updateFragments();
+                updateFragments(cacheViewModel.getCacheData());
             }
         }
         Log.v("--- End ---");
@@ -224,11 +241,11 @@ public class Weather extends FragmentActivity
 
                 if (asyncRequest.isResponseValid(response))
                 {
-                    cacheManager.populateCache(response);
+                    cacheViewModel.populateCache(response);
                 }
                 else
                 {
-                    cacheManager.setLastModified(System.currentTimeMillis());
+                    cacheViewModel.setLastModified(System.currentTimeMillis());
 
                     Log.e("Lambda response failed validation. Updated lastModified date of cache. Data not updated.");
                 }
@@ -238,12 +255,8 @@ public class Weather extends FragmentActivity
         asyncRequest.execute(requestParams);
     }
 
-    public void updateFragments()
+    public void updateFragments(String cacheData)
     {
-        cacheManager.initializeCache();
-
-        String cacheData = cacheManager.getCacheData();
-
         List<Fragment> allFragments = getSupportFragmentManager().getFragments();
         if (!allFragments.isEmpty())
         {
@@ -252,6 +265,21 @@ public class Weather extends FragmentActivity
                 if (fragment.isVisible())
                 {
                     ((WeatherFragmentBase)fragment).updateWeatherData(cacheData);
+                }
+            }
+        }
+    }
+
+    public void updateFragments()
+    {
+        List<Fragment> allFragments = getSupportFragmentManager().getFragments();
+        if (!allFragments.isEmpty())
+        {
+            for (Fragment fragment : allFragments)
+            {
+                if (fragment.isVisible())
+                {
+                    ((WeatherFragmentBase)fragment).updateWeatherData(cacheViewModel.getCacheData());
                 }
             }
         }
@@ -279,7 +307,7 @@ public class Weather extends FragmentActivity
         @NonNull
         public Fragment getItem(int pos)
         {
-            String cacheData = cacheManager.getCacheData();
+            String cacheData = cacheViewModel.getCacheData();
             Log.v("Cache data at fragment creation: " + cacheData);
 
             switch(pos)

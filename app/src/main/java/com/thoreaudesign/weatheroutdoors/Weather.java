@@ -184,6 +184,7 @@ public class Weather extends FragmentActivity
     {
         Log.v("--- Begin ---");
         super.onPause();
+        cacheManager.deleteCache();
         Log.v("--- End ---");
     }
 
@@ -240,6 +241,7 @@ public class Weather extends FragmentActivity
 
     public void updateFragments()
     {
+        cacheManager.initializeCache();
         String cacheData = cacheManager.getCacheData();
 
         List<Fragment> allFragments = getSupportFragmentManager().getFragments();

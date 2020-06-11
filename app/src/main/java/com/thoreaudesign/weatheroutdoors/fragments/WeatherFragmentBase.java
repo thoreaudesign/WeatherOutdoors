@@ -46,7 +46,17 @@ public abstract class WeatherFragmentBase extends Fragment
 
         layout = inflater.inflate(resource, container, false);
 
-        updateWeatherData();
+        Bundle args = getArguments();
+
+        if(args != null && args.containsKey(Cache.BUNDLE_KEY_DATA))
+        {
+            cacheData = args.getString(Cache.BUNDLE_KEY_DATA);
+            updateWeatherData();
+        }
+        else
+        {
+            Log.e("Failed to obtain cache data from bundle.");
+        }
 
         Log.v("--- End ---");
 

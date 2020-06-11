@@ -189,10 +189,6 @@ public class Weather extends FragmentActivity
                 ProgressBar progressBar = findViewById(R.id.progress);
                 populateCache(progressBar, getGPSParams(), getRequestTemplate());
             }
-            else
-            {
-                updateFragments(cacheViewModel.getCacheData());
-            }
         }
         Log.v("--- End ---");
     }

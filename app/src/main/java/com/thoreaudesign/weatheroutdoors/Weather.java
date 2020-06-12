@@ -1,14 +1,19 @@
 package com.thoreaudesign.weatheroutdoors;
 
+import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.Observer;
@@ -24,8 +29,8 @@ import com.thoreaudesign.weatheroutdoors.aws.AsyncRequest;
 import com.thoreaudesign.weatheroutdoors.aws.RequestParams;
 import com.thoreaudesign.weatheroutdoors.aws.RequestTemplate;
 import com.thoreaudesign.weatheroutdoors.cache.Cache;
-import com.thoreaudesign.weatheroutdoors.cache.CacheViewModel;
 import com.thoreaudesign.weatheroutdoors.cache.CacheManagerViewModelFactory;
+import com.thoreaudesign.weatheroutdoors.cache.CacheViewModel;
 import com.thoreaudesign.weatheroutdoors.fragments.HomeSummaryFragment;
 import com.thoreaudesign.weatheroutdoors.fragments.HourlyForecastFragment;
 import com.thoreaudesign.weatheroutdoors.fragments.MinutelyForecastFragment;
@@ -35,11 +40,11 @@ import java.util.List;
 
 import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT;
 
-public class Weather extends FragmentActivity
+public class Weather extends AppCompatActivity
 {
     protected AsyncRequest asyncRequest;
+    ActionBarDrawerToggle mDrawerToggle;
 
-    private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager mViewPager;
     private CacheViewModel cacheViewModel;
@@ -118,6 +123,19 @@ public class Weather extends FragmentActivity
 
     //<editor-fold desc="/** Android Activity Lifecycle **/">
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState)
+    {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
     protected void onCreate(Bundle savedInstanceState)
     {
         Log.v("--- Begin ---");
@@ -125,7 +143,33 @@ public class Weather extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+
+        setSupportActionBar(toolbar);
+        final ActionBar actionBar = getSupportActionBar();
+
+        if(actionBar != null)
+        {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_description_open, R.string.drawer_description_close)
+            {
+                public void onDrawerClosed(View view)
+                {
+                    supportInvalidateOptionsMenu();
+                    //drawerOpened = false;
+                }
+
+                public void onDrawerOpened(View drawerView)
+                {
+                    supportInvalidateOptionsMenu();
+                    //drawerOpened = true;
+                }
+            };
+            mDrawerToggle.setDrawerIndicatorEnabled(true);
+            drawerLayout.setDrawerListener(mDrawerToggle);
+            mDrawerToggle.syncState();
+        }
 
         ViewPager mViewPager = findViewById(R.id.viewPager);
         WeatherPagerAdapter weatherPagerAdapter = new WeatherPagerAdapter(getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);

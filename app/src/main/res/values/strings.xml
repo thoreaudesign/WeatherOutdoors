@@ -4,4 +4,6 @@
     <string name="title">Welcome to WeatherOutdoors!</string>
     <string name="hourly_blank_fragment">Hourly blank fragment</string>
     <string name="daily_blank_fragment">Daily blank fragment</string>
+    <string name="drawer_description_open">OpenDrawer</string>
+    <string name="drawer_description_close">CloseDrawer</string>
 </resources>

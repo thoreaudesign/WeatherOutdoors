@@ -29,7 +29,7 @@ public class MinutelyForecastFragment extends WeatherFragmentBase
         return createView(R.layout.fragment_minutely_forecast, inflater, container);
     }
 
-    void populateLayout()
+    protected void populateLayout()
     {
         ForecastData forecastData = new ForecastData(this.data);
         ExpandableListView expandableListView = this.layout.findViewById(R.id.forecast_list_view);

@@ -19,12 +19,12 @@ import org.json.JSONObject;
 
 public abstract class WeatherFragmentBase extends Fragment
 {
-    String cacheData;
-    View layout;
+    protected String cacheData;
+    protected View layout;
 
     protected Darksky data;
 
-    abstract void populateLayout();
+    protected abstract void populateLayout();
 
     static Fragment setBundle(Fragment fragment, String cacheData)
     {
@@ -40,7 +40,7 @@ public abstract class WeatherFragmentBase extends Fragment
         return fragment;
     }
 
-    View createView(int resource, LayoutInflater inflater, ViewGroup container)
+    protected View createView(int resource, LayoutInflater inflater, ViewGroup container)
     {
         Log.v("--- Begin ---");
 

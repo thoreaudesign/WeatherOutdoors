@@ -24,7 +24,7 @@ public class HomeSummaryFragment extends WeatherFragmentBase
         return createView(R.layout.fragment_home_summary, inflater, container);
     }
 
-    void populateLayout()
+    protected void populateLayout()
     {
         Log.v("--- Begin ---");
 

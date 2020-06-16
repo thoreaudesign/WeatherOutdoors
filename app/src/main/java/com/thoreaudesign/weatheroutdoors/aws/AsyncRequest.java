@@ -67,7 +67,7 @@ public class AsyncRequest extends AsyncTask<RequestParams, Integer, Object>
         }
         this.progress.setVisibility(View.GONE);
 
-        weatherActivity.updateFragments();
+//        weatherActivity.updateFragments();
     }
 
     protected void onPreExecute()

@@ -23,8 +23,6 @@ import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Darksky;
 
 public class WeatherSummaryFragment extends WeatherFragmentBase
 {
-    private WeatherViewModel weatherViewModel;
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {

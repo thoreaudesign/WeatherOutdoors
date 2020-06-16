@@ -24,7 +24,7 @@ public abstract class WeatherFragmentBase extends Fragment
 
     protected Darksky data;
 
-    protected abstract void populateLayout();
+    protected void populateLayout() {}
 
     static Fragment setBundle(Fragment fragment, String cacheData)
     {
@@ -67,11 +67,11 @@ public abstract class WeatherFragmentBase extends Fragment
     {
         Log.v("--- Begin ---");
         super.onActivityCreated(savedInstanceState);
-        Bundle newBundle = getArguments();
-        cacheData = newBundle.getString(Cache.BUNDLE_KEY_DATA);
+//        Bundle newBundle = getArguments();
+//        cacheData = newBundle.getString(Cache.BUNDLE_KEY_DATA);
     }
 
-    private Darksky parseDarkskyCacheData(String cacheData) throws Throwable
+    protected Darksky parseDarkskyCacheData(String cacheData) throws Throwable
     {
         Log.v("--- Begin ---");
 

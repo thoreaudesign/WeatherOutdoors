@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">WeatherOutdoors</string>
-    <string name="action_settings">Settings</string>
-    <string name="title">Welcome to WeatherOutdoors!</string>
-    <string name="hourly_blank_fragment">Hourly blank fragment</string>
-    <string name="daily_blank_fragment">Daily blank fragment</string>
-    <string name="drawer_description_open">OpenDrawer</string>
-    <string name="drawer_description_close">CloseDrawer</string>
+    <string name="title_weather">Weather</string>
+    <string name="title_marine">Marine</string>
+    <string name="title_lunar">Lunar</string>
+    <string name="title_maps">Maps</string>
 </resources>

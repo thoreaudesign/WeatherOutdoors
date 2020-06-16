@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_weather">
+
+    <fragment
+        android:id="@+id/navigation_weather"
+        android:name="com.thoreaudesign.weatheroutdoors.ui.weather.WeatherParentFragment"
+        android:label="@string/title_weather"
+        tools:layout="@layout/weather_tabs" />
+
+    <fragment
+        android:id="@+id/navigation_marine"
+        android:name="com.thoreaudesign.weatheroutdoors.ui.marine.MarineFragment"
+        android:label="@string/title_marine"
+        tools:layout="@layout/fragment_marine" />
+
+    <fragment
+        android:id="@+id/navigation_lunar"
+        android:name="com.thoreaudesign.weatheroutdoors.ui.lunar.LunarFragment"
+        android:label="@string/title_lunar"
+        tools:layout="@layout/fragment_lunar" />
+
+    <fragment
+        android:id="@+id/navigation_maps"
+        android:name="com.thoreaudesign.weatheroutdoors.ui.maps.MapsFragment"
+        android:label="@string/title_maps"
+        tools:layout="@layout/fragment_maps" />
+</navigation>

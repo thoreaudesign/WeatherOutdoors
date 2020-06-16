@@ -1,17 +1,15 @@
 package com.thoreaudesign.weatheroutdoors;
 
-import android.content.res.Configuration;
 import android.location.Location;
 import android.os.Bundle;
-import android.view.View;
+import android.view.MenuItem;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -23,6 +21,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobileconnectors.lambdainvoker.LambdaInvokerFactory;
 import com.amazonaws.regions.Regions;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
 import com.thoreaudesign.weatheroutdoors.aws.AsyncRequest;
@@ -43,8 +42,11 @@ import static androidx.fragment.app.FragmentStatePagerAdapter.BEHAVIOR_RESUME_ON
 public class Weather extends AppCompatActivity
 {
     protected AsyncRequest asyncRequest;
-    ActionBarDrawerToggle mDrawerToggle;
 
+    private DrawerLayout mDrawer;
+    private NavigationView nvDrawer;
+
+    private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager mViewPager;
     private CacheViewModel cacheViewModel;
@@ -124,17 +126,61 @@ public class Weather extends AppCompatActivity
     //<editor-fold desc="/** Android Activity Lifecycle **/">
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState)
-    {
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // The action bar home/up action should open or close the drawer.
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawer.openDrawer(GravityCompat.START);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    private void setupDrawerContent(NavigationView navigationView) {
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        selectDrawerItem(menuItem);
+                        return true;
+                    }
+                });
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig)
-    {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
+    public void selectDrawerItem(MenuItem menuItem) {
+        // Create a new fragment and specify the fragment to show based on nav item clicked
+        Fragment fragment = null;
+        Class fragmentClass;
+        switch(menuItem.getItemId()) {
+            case R.id.nav_first_fragment:
+                fragmentClass = HomeSummaryFragment.class;
+                break;
+            case R.id.nav_second_fragment:
+                fragmentClass = HourlyForecastFragment.class;
+                break;
+            case R.id.nav_third_fragment:
+                fragmentClass = MinutelyForecastFragment.class;
+                break;
+            default:
+                fragmentClass = HomeSummaryFragment.class;
+        }
+
+        try {
+            fragment = (Fragment) fragmentClass.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.current_summary, fragment).commit();
+
+        // Highlight the selected item has been done by NavigationView
+        menuItem.setChecked(true);
+        // Set action bar title
+        setTitle(menuItem.getTitle());
+        // Close the navigation drawer
+        mDrawer.closeDrawers();
     }
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -143,33 +189,21 @@ public class Weather extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-
+        toolbar = findViewById(R.id.toolbar);
+        // Set a Toolbar to replace the ActionBar.
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        final ActionBar actionBar = getSupportActionBar();
 
-        if(actionBar != null)
-        {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            mDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_description_open, R.string.drawer_description_close)
-            {
-                public void onDrawerClosed(View view)
-                {
-                    supportInvalidateOptionsMenu();
-                    //drawerOpened = false;
-                }
+        // This will display an Up icon (<-), we will replace it with hamburger later
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-                public void onDrawerOpened(View drawerView)
-                {
-                    supportInvalidateOptionsMenu();
-                    //drawerOpened = true;
-                }
-            };
-            mDrawerToggle.setDrawerIndicatorEnabled(true);
-            drawerLayout.setDrawerListener(mDrawerToggle);
-            mDrawerToggle.syncState();
-        }
+        // Find our drawer view
+        mDrawer = findViewById(R.id.drawer_layout);
+
+        // Find our drawer view
+        nvDrawer = (NavigationView) findViewById(R.id.nvView);
+        // Setup drawer view
+        setupDrawerContent(nvDrawer);
 
         ViewPager mViewPager = findViewById(R.id.viewPager);
         WeatherPagerAdapter weatherPagerAdapter = new WeatherPagerAdapter(getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
@@ -232,10 +266,6 @@ public class Weather extends AppCompatActivity
                 Log.i("Cache is out-of-date.");
                 ProgressBar progressBar = findViewById(R.id.progress);
                 populateCache(progressBar, getGPSParams(), getRequestTemplate());
-            }
-            else
-            {
-                updateFragments(cacheViewModel.getCacheData());
             }
         }
         Log.v("--- End ---");

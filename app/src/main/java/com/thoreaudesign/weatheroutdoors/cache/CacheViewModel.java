@@ -1,11 +1,14 @@
 package com.thoreaudesign.weatheroutdoors.cache;
 
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ViewModel;
 
 import com.thoreaudesign.weatheroutdoors.Log;
 
-public class CacheViewModel extends ViewModel
+public class CacheViewModel extends ViewModel implements LifecycleObserver
 {
     private static final long CACHE_LIFE_MILLIS = 30 * 60 * 1000;
 
@@ -32,9 +35,10 @@ public class CacheViewModel extends ViewModel
         return cache;
     }
 
-    private boolean loadCacheData()
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    private void loadCacheData()
     {
-        return cache.getValue().read();
+        cache.getValue().read();
     }
 
     private boolean isCacheEmpty()

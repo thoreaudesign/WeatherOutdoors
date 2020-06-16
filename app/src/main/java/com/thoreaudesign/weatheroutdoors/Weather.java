@@ -8,9 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -31,9 +28,6 @@ import com.thoreaudesign.weatheroutdoors.aws.RequestTemplate;
 import com.thoreaudesign.weatheroutdoors.cache.Cache;
 import com.thoreaudesign.weatheroutdoors.cache.CacheManagerViewModelFactory;
 import com.thoreaudesign.weatheroutdoors.cache.CacheViewModel;
-import com.thoreaudesign.weatheroutdoors.fragments.HomeSummaryFragment;
-import com.thoreaudesign.weatheroutdoors.fragments.HourlyForecastFragment;
-import com.thoreaudesign.weatheroutdoors.fragments.MinutelyForecastFragment;
 
 public class Weather extends AppCompatActivity
 {
@@ -126,6 +120,7 @@ public class Weather extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //<editor-fold desc="/** Configure navigation **/">
         final BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -136,10 +131,8 @@ public class Weather extends AppCompatActivity
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+        //</editor-fold>
 
-        /**
-         * Subscribe to CacheViewModel and observe CacheViewModel.Cache.
-         */
         Cache cache = new Cache(getCacheDir());
         CacheViewModel cacheViewModel = new ViewModelProvider(this, new CacheManagerViewModelFactory(cache)).get(CacheViewModel.class);
 
@@ -282,7 +275,6 @@ public class Weather extends AppCompatActivity
             }
         }
     }
-*/
     private class WeatherPagerAdapter extends FragmentPagerAdapter
     {
         Weather weather;
@@ -320,4 +312,5 @@ public class Weather extends AppCompatActivity
             }
         }
     }
+*/
 }

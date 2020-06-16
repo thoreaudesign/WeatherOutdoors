@@ -29,7 +29,7 @@ public class HourlyForecastFragment extends WeatherFragmentBase
         cacheData = "Hello World!!!";
     }
 
-    void populateLayout()
+    protected void populateLayout()
     {
         TextView hourlyText = this.layout.findViewById(R.id.hourly_text);
         hourlyText.setText(cacheData);

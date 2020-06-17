@@ -12,7 +12,7 @@ public class CacheViewModel extends ViewModel implements LifecycleObserver
 {
     private static final long CACHE_LIFE_MILLIS = 30 * 60 * 1000;
 
-    MutableLiveData<Cache> cache;
+    private MutableLiveData<Cache> cache;
 
     public CacheViewModel(Cache cache)
     {
@@ -127,15 +127,5 @@ public class CacheViewModel extends ViewModel implements LifecycleObserver
     public void setLastModified(long time)
     {
         this.getCache().getFile().setLastModified(time);
-    }
-
-    public String getCacheData()
-    {
-        return this.getCache().getData();
-    }
-
-    public void deleteCache()
-    {
-        this.getCache().delete();
     }
 }

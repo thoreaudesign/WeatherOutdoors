@@ -1,5 +1,8 @@
 package com.thoreaudesign.weatheroutdoors.cache;
 
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+
 import com.thoreaudesign.weatheroutdoors.Log;
 
 import java.io.BufferedReader;
@@ -9,29 +12,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class Cache
+public class Cache extends BaseObservable
 {
-    /**
-     * @param data Cache data in string format.
-     */
     private String data;
-
-    /**
-     * @param dir File object representing directory that stores cache - "cacheDir"
-     */
     private File dir;
-
-    /**
-     * @param file File object representing the cache file itself.
-     */
     private File file;
 
-    /**
-     * @param CACHE_NAME Static string used to CACHE_NAME the cache file.
-     */
     private static final String CACHE_NAME = "weatheroutdoors";
-
-    public static final String BUNDLE_KEY_DATA = "cacheData";
 
     public Cache(File paramFile)
     {
@@ -67,6 +54,7 @@ public class Cache
 
     //<editor-fold desc="/** Getters & Setters **/">
     //<editor-fold desc="/** Getters **/">
+    @Bindable
     public String getData()
     {
         return this.data;

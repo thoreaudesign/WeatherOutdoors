@@ -76,7 +76,8 @@ public class WeatherParentFragment extends Fragment
 
         @NonNull
         @Override
-        public Fragment createFragment(int position) {
+        public Fragment createFragment(int position)
+        {
             switch(position) {
                 case 0:
                     return new WeatherSummaryFragment();

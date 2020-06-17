@@ -2,73 +2,34 @@ package com.thoreaudesign.weatheroutdoors;
 
 import android.location.Location;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.viewpager.widget.ViewPager;
 
-import com.amazonaws.auth.CognitoCachingCredentialsProvider;
-import com.amazonaws.mobileconnectors.lambdainvoker.LambdaInvokerFactory;
-import com.amazonaws.regions.Regions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.tabs.TabLayout;
-import com.google.gson.Gson;
-import com.thoreaudesign.weatheroutdoors.aws.AsyncRequest;
 import com.thoreaudesign.weatheroutdoors.aws.RequestParams;
-import com.thoreaudesign.weatheroutdoors.aws.RequestTemplate;
+import com.thoreaudesign.weatheroutdoors.aws.WeatherServiceClient;
 import com.thoreaudesign.weatheroutdoors.cache.Cache;
 import com.thoreaudesign.weatheroutdoors.cache.CacheManagerViewModelFactory;
 import com.thoreaudesign.weatheroutdoors.cache.CacheViewModel;
-import com.thoreaudesign.weatheroutdoors.fragments.HomeSummaryFragment;
-import com.thoreaudesign.weatheroutdoors.fragments.HourlyForecastFragment;
-import com.thoreaudesign.weatheroutdoors.fragments.MinutelyForecastFragment;
+import com.thoreaudesign.weatheroutdoors.serialization.WeatherDataResponse;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class Weather extends AppCompatActivity
 {
-    protected AsyncRequest asyncRequest;
-
-    private Toolbar toolbar;
-    private TabLayout tabLayout;
-    private ViewPager mViewPager;
-    private CacheViewModel cacheViewModel;
+    CacheViewModel cacheViewModel;
     private DevicePermissionsManager permissionsManager;
-
-    //<editor-fold desc="/** AWS Lambda Plumbing **/">
-
-    private CognitoCachingCredentialsProvider getCredentialsProvider()
-    {
-        return new CognitoCachingCredentialsProvider(
-            getApplicationContext(),
-            "us-east-1:710ef06b-950f-44d4-8b5b-dbd630484d1c",
-            Regions.US_EAST_1);
-    }
-
-    private LambdaInvokerFactory getLambdaInvokerFactory(CognitoCachingCredentialsProvider paramCognitoCachingCredentialsProvider)
-    {
-        return new LambdaInvokerFactory(
-                getApplicationContext(),
-                Regions.US_EAST_1,
-                paramCognitoCachingCredentialsProvider);
-    }
-
-    private RequestTemplate getRequestTemplate()
-    {
-        return new RequestTemplate(getLambdaInvokerFactory(getCredentialsProvider()));
-    }
-
-    //</editor-fold>
 
     //<editor-fold desc="/** Android GPS Coordinates **/">
 
@@ -85,8 +46,7 @@ public class Weather extends AppCompatActivity
             Log.v("Longitude: " + lon);
 
             return new RequestParams(lat, lon);
-        }
-        else
+        } else
         {
             throw new RuntimeException("Failed to obatin GPS coordinates from device.");
         }
@@ -126,6 +86,7 @@ public class Weather extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //<editor-fold desc="/** Configure navigation **/">
         final BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -136,33 +97,30 @@ public class Weather extends AppCompatActivity
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+        //</editor-fold>
 
-        /**
-         * Subscribe to CacheViewModel and observe CacheViewModel.Cache.
-         */
         Cache cache = new Cache(getCacheDir());
         CacheViewModel cacheViewModel = new ViewModelProvider(this, new CacheManagerViewModelFactory(cache)).get(CacheViewModel.class);
 
-        final Observer<Cache> observedCache = new Observer<Cache>()
+        final Observer<Cache> observedCache = newCache ->
         {
-            @Override
-            public void onChanged(@Nullable final Cache newCache)
-            {
 //                Weather.this.updateFragments(newCache.getData());
-            }
         };
 
         cacheViewModel.getCacheLive().observe(this, observedCache);
 
-        this.permissionsManager = new DevicePermissionsManager( this);
+        this.permissionsManager = new DevicePermissionsManager(this);
 
         if (this.permissionsManager.permissionRequired())
         {
             this.permissionsManager.requestPermissions();
         }
 
+        getWeatherData(getGPSParams().getLat(), getGPSParams().getLon());
+
         Log.v("--- End ---");
     }
+
 
     protected void onStart()
     {
@@ -180,8 +138,7 @@ public class Weather extends AppCompatActivity
         if (this.permissionsManager.permissionRequired())
         {
             Log.v("Permission denied.");
-        }
-        else
+        } else
         {
             cacheViewModel = new CacheViewModel(new Cache(getCacheDir()));
 
@@ -189,7 +146,7 @@ public class Weather extends AppCompatActivity
             {
                 Log.i("Cache is out-of-date.");
                 ProgressBar progressBar = findViewById(R.id.progress);
-                populateCache(progressBar, getGPSParams(), getRequestTemplate());
+                progressBar.setVisibility(View.VISIBLE);
             }
         }
         Log.v("--- End ---");
@@ -205,7 +162,6 @@ public class Weather extends AppCompatActivity
     protected void onStop()
     {
         Log.v("--- Begin ---");
-        killAsyncRequest();
         super.onStop();
         Log.v("--- End ---");
     }
@@ -219,105 +175,45 @@ public class Weather extends AppCompatActivity
 
     //</editor-fold>
 
-    public void killAsyncRequest()
+    public void getWeatherData(String lat, String lon)
     {
-        if (asyncRequest != null)
-            asyncRequest.cancel(true);
-    }
+        WeatherServiceClient.getInstance()
+                .getWeatherData(lat, lon)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new io.reactivex.rxjava3.core.Observer<WeatherDataResponse>()
+                           {
+                               @Override
+                               public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d)
+                               {
+                                   Log.v("-- Begin WeatherServcieClient.onSubscribe() --");
+                                   Log.v("-- End WeatherServcieClient.onSubscribe() --");
+                               }
 
-    private void populateCache(ProgressBar progressBar, RequestParams requestParams, RequestTemplate requestTemplate)
-    {
-        asyncRequest = new AsyncRequest(requestTemplate, progressBar, this);
+                               @Override
+                               public void onNext(@io.reactivex.rxjava3.annotations.NonNull WeatherDataResponse response)
+                               {
+                                   Log.v("-- Begin WeatherServcieClient.onNext() --");
+                                   Log.v("Weather Data:");
+                                   Weather.this.cacheViewModel.populateCache(response.toString());
+                                   Log.v("-- End WeatherServcieClient.onNext() --");
+                               }
 
-        asyncRequest.setListener(new AsyncRequest.Listener()
-        {
-            public void onTaskResult(Object lambdaResult)
-            {
-                String response = new Gson().toJson(lambdaResult);
+                               @Override
+                               public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e)
+                               {
+                                   Log.v("-- Begin WeatherServcieClient.onError() --");
+                                   Log.e(e.getMessage());
+                                   Log.v("-- End WeatherServcieClient.onError() --");
+                               }
 
-                Log.v(response);
-
-                if (asyncRequest.isResponseValid(response))
-                {
-                    cacheViewModel.populateCache(response);
-                }
-                else
-                {
-                    cacheViewModel.setLastModified(System.currentTimeMillis());
-
-                    Log.e("Lambda response failed validation. Updated lastModified date of cache. Data not updated.");
-                }
-            }
-        });
-
-        asyncRequest.execute(requestParams);
-    }
-/*
-    public void updateFragments(String cacheData)
-    {
-        List<Fragment> allFragments = getSupportFragmentManager().getFragments();
-        if (!allFragments.isEmpty())
-        {
-            for (Fragment fragment : allFragments)
-            {
-                if (fragment.isVisible())
-                {
-                    ((WeatherFragmentBase)fragment).updateWeatherData(cacheData);
-                }
-            }
-        }
-    }
-
-    public void updateFragments()
-    {
-        List<Fragment> allFragments = getSupportFragmentManager().getFragments();
-        if (!allFragments.isEmpty())
-        {
-            for (Fragment fragment : allFragments)
-            {
-                if (fragment.isVisible())
-                {
-                    ((WeatherFragmentBase)fragment).updateWeatherData(cacheViewModel.getCacheData());
-                }
-            }
-        }
-    }
-*/
-    private class WeatherPagerAdapter extends FragmentPagerAdapter
-    {
-        Weather weather;
-
-        WeatherPagerAdapter(@NonNull FragmentManager fm, int behavior)
-        {
-            super(fm, behavior);
-        }
-
-        void setWeather(Weather weather)
-        {
-            this.weather = weather;
-        }
-
-        public int getCount()
-        {
-            return 3;
-        }
-
-        @NonNull
-        public Fragment getItem(int pos)
-        {
-            String cacheData = cacheViewModel.getCacheData();
-            Log.v("Cache data at fragment creation: " + cacheData);
-
-            switch(pos)
-            {
-                default:
-                case 0:
-                    return HomeSummaryFragment.newInstance(cacheData);
-               case 1:
-                    return MinutelyForecastFragment.newInstance(cacheData);
-               case 2:
-                    return HourlyForecastFragment.newInstance(cacheData);
-            }
-        }
+                               @Override
+                               public void onComplete()
+                               {
+                                   Log.v("-- Begin WeatherServcieClient.onComplete() --");
+                                   Log.v("-- End WeatherServcieClient.onComplete() --");
+                               }
+                           }
+                );
     }
 }

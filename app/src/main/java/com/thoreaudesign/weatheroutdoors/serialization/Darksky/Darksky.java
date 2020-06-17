@@ -19,38 +19,41 @@ public class Darksky implements Serializable, Parcelable
     @SerializedName("latitude")
     @Expose
     private double latitude;
+
     @SerializedName("longitude")
     @Expose
     private double longitude;
+
     @SerializedName("timezone")
     @Expose
     private String timezone;
+
     @SerializedName("currently")
     @Expose
-
     private Currently currently;
+
     @SerializedName("minutely")
     @Expose
-
     private Minutely minutely;
+
     @SerializedName("hourly")
     @Expose
-
     private Hourly hourly;
+
     @SerializedName("daily")
     @Expose
-
     private Daily daily;
+
     @SerializedName("flags")
     @Expose
-
     private Flags flags;
+
     @SerializedName("offset")
     @Expose
     private double offset;
+
     public final static Parcelable.Creator<Darksky> CREATOR = new Creator<Darksky>()
     {
-
 
         @SuppressWarnings({
                 "unchecked"

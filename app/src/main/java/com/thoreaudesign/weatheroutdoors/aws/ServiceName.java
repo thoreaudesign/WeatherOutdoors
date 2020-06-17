@@ -9,7 +9,7 @@ public enum ServiceName
 
     public String toLower()
     {
-        if (this == this.STORMGLASSASTRO)
+        if (this == ServiceName.STORMGLASSASTRO)
         {
             return "stormglass_astro";
         }

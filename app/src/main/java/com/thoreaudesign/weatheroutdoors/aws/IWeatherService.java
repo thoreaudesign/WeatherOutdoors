@@ -1,15 +1,15 @@
 package com.thoreaudesign.weatheroutdoors.aws;
 
-import org.json.JSONObject;
 
-import retrofit2.Call;
+import com.thoreaudesign.weatheroutdoors.serialization.WeatherDataResponse;
+
+import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface IWeatherService
 {
-    String BASE_URL = "https://ul5bddlgti.execute-api.us-east-1.amazonaws.com/dev/";
 
-    @GET("data?lat={lat}&lon={lon}")
-    Call<JSONObject> getWeatherData(@Path("lat") int lat, @Path("lon") int lon);
+    @GET("/dev/data")
+    Observable<WeatherDataResponse> getWeatherData(@Query("lat") String lat, @Query("lon") String lon);
 }

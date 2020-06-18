@@ -1,7 +1,7 @@
 package com.thoreaudesign.weatheroutdoors.aws;
 
 
-import com.thoreaudesign.weatheroutdoors.serialization.WeatherData;
+import com.thoreaudesign.weatheroutdoors.livedata.WeatherData;
 
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.GET;

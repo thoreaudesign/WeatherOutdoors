@@ -1,4 +1,4 @@
-package com.thoreaudesign.weatheroutdoors.aws;
+package com.thoreaudesign.weatheroutdoors.serialization;
 
 public enum ServiceName
 {

@@ -4,7 +4,7 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Observable;
 import androidx.lifecycle.MutableLiveData;
 
-public class WeatherMutableLiveData<T extends BaseObservable> extends MutableLiveData<T>
+public class WeatherLiveData<T extends BaseObservable> extends MutableLiveData<T>
 {
     @Override
     public void setValue(T value)
@@ -14,13 +14,12 @@ public class WeatherMutableLiveData<T extends BaseObservable> extends MutableLiv
         value.addOnPropertyChangedCallback(callback);
     }
 
-    Observable.OnPropertyChangedCallback callback = new Observable.OnPropertyChangedCallback() {
+    Observable.OnPropertyChangedCallback callback = new Observable.OnPropertyChangedCallback()
+    {
         @Override
-        public void onPropertyChanged(Observable sender, int propertyId) {
-
-            //Trigger LiveData observer on change of any property in object
+        public void onPropertyChanged(Observable sender, int propertyId)
+        {
             setValue(getValue());
-
         }
     };
 }

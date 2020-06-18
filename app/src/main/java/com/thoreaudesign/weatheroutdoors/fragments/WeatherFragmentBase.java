@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.thoreaudesign.weatheroutdoors.Log;
-import com.thoreaudesign.weatheroutdoors.aws.ServiceName;
+import com.thoreaudesign.weatheroutdoors.serialization.ServiceName;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Darksky;
 
 import org.json.JSONException;

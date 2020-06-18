@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.thoreaudesign.weatheroutdoors.serialization.WeatherData;
+import com.thoreaudesign.weatheroutdoors.livedata.WeatherData;
 
 import io.reactivex.rxjava3.core.Observable;
 import okhttp3.OkHttpClient;

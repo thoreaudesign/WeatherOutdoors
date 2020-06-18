@@ -41,7 +41,7 @@ public class WeatherHourlyForecastFragment extends WeatherFragmentBase
         final View view = mView;
         super.onViewCreated(view, savedInstanceState);
         CacheViewModel model = new ViewModelProvider(requireActivity()).get(CacheViewModel.class);
-        model.getCacheLive().observe(getViewLifecycleOwner(), new Observer<Cache>()
+        model.getCache().observe(getViewLifecycleOwner(), new Observer<Cache>()
         {
             @Override
             public void onChanged(Cache cache)

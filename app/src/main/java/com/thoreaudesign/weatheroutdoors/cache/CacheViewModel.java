@@ -2,41 +2,59 @@ package com.thoreaudesign.weatheroutdoors.cache;
 
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ViewModel;
 
+import com.google.gson.Gson;
 import com.thoreaudesign.weatheroutdoors.Log;
+import com.thoreaudesign.weatheroutdoors.serialization.WeatherDataResponse;
 
 public class CacheViewModel extends ViewModel implements LifecycleObserver
 {
     private static final long CACHE_LIFE_MILLIS = 30 * 60 * 1000;
 
-    private MutableLiveData<Cache> cache;
+    private CacheMutableLiveData<Cache> cache;
 
     public CacheViewModel(Cache cache)
     {
-        getCacheLive().setValue(cache);
-        loadCacheData();
+        getCache().setValue(cache);
+        readCache();
     }
 
-    private Cache getCache()
+    private Cache getCacheData()
     {
         return this.cache.getValue();
     }
 
-    public MutableLiveData<Cache> getCacheLive()
+    public CacheMutableLiveData<Cache> getCache()
     {
         if(cache == null)
         {
-            cache = new MutableLiveData<>();
+            cache = new CacheMutableLiveData<>();
         }
 
         return cache;
     }
 
+    public void serialize()
+    {
+        getCacheData().setData(getCacheData().weatherDataResponse.toString());
+        cache.setValue(getCacheData());
+    }
+
+    public void deserialize()
+    {
+        Gson gson = new Gson();
+
+        WeatherDataResponse data = gson.fromJson(getCacheData().getData(), WeatherDataResponse.class);
+
+        getCacheData().setWeatherDataResponse(data);
+
+        cache.setValue(getCacheData());
+    }
+
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    private void loadCacheData()
+    private void readCache()
     {
         cache.getValue().read();
     }
@@ -45,7 +63,7 @@ public class CacheViewModel extends ViewModel implements LifecycleObserver
     {
         boolean isEmpty = false;
 
-        if(this.getCache().getData() == null)
+        if(this.getCacheData().getData() == null)
         {
             Log.i("Cache is empty.");
             isEmpty = true;
@@ -63,11 +81,11 @@ public class CacheViewModel extends ViewModel implements LifecycleObserver
         boolean isExpired = false;
 
         long now = System.currentTimeMillis();
-        long lastModified = this.getCache().getFile().lastModified();
+        long lastModified = this.getCacheData().getFile().lastModified();
 
         Log.v("Current time: " + now);
         Log.v("Last modified: " + lastModified);
-        Log.v("Fileize: " + this.getCache().getFile().length());
+        Log.v("Fileize: " + this.getCacheData().getFile().length());
 
         if (now - lastModified > CACHE_LIFE_MILLIS)
         {
@@ -87,11 +105,11 @@ public class CacheViewModel extends ViewModel implements LifecycleObserver
         boolean isOutdated = false;
 
         Log.i("Validating cache file...");
-        Log.v("Cache file: " + this.getCache().getFile().toString());
+        Log.v("Cache file: " + this.getCacheData().getFile().toString());
 
-        if(this.getCache().getFile().exists())
+        if(this.getCacheData().getFile().exists())
         {
-            this.loadCacheData();
+            this.readCache();
 
             if (this.isCacheEmpty() || this.isCacheExpired())
             {
@@ -110,12 +128,13 @@ public class CacheViewModel extends ViewModel implements LifecycleObserver
         return isOutdated;
     }
 
-    public void populateCache(String lambdaResponse)
+    public void populateCache(WeatherDataResponse cacheData)
     {
-        this.getCache().setData(lambdaResponse);
+        this.getCacheData().setData(cacheData);
 
-        if (this.getCache().write())
+        if (this.getCacheData().write())
         {
+            serialize();
             Log.i("Lambda response succeeeded. Updated cache with latest data.");
         }
         else
@@ -124,8 +143,18 @@ public class CacheViewModel extends ViewModel implements LifecycleObserver
         }
     }
 
-    public void setLastModified(long time)
+    public void populateCache(String lambdaResponse)
     {
-        this.getCache().getFile().setLastModified(time);
+        this.getCacheData().setData(lambdaResponse);
+
+        if (this.getCacheData().write())
+        {
+            deserialize();
+            Log.i("Lambda response succeeeded. Updated cache with latest data.");
+        }
+        else
+        {
+            Log.w("Failed to write cache data.");
+        }
     }
 }

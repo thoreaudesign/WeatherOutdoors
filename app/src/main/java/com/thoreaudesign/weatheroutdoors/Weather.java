@@ -15,7 +15,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.thoreaudesign.weatheroutdoors.aws.RequestParams;
 import com.thoreaudesign.weatheroutdoors.aws.WeatherServiceClient;
 import com.thoreaudesign.weatheroutdoors.cache.Cache;
 import com.thoreaudesign.weatheroutdoors.cache.CacheManagerViewModelFactory;
@@ -30,10 +29,12 @@ public class Weather extends AppCompatActivity
 {
     CacheViewModel cacheViewModel;
     private DevicePermissionsManager permissionsManager;
+    private String lat;
+    private String lon;
 
     //<editor-fold desc="/** Android GPS Coordinates **/">
 
-    private RequestParams getGPSParams()
+    private void getGPSParams()
     {
         Location location = (new GPSCoordinates(this)).getLocation();
 
@@ -41,11 +42,12 @@ public class Weather extends AppCompatActivity
         {
             String lat = Double.toString(location.getLatitude());
             Log.v("Latitude: " + lat);
+            this.lat = lat;
 
             String lon = Double.toString(location.getLongitude());
             Log.v("Longitude: " + lon);
+            this.lon = lon;
 
-            return new RequestParams(lat, lon);
         } else
         {
             throw new RuntimeException("Failed to obatin GPS coordinates from device.");
@@ -100,14 +102,14 @@ public class Weather extends AppCompatActivity
         //</editor-fold>
 
         Cache cache = new Cache(getCacheDir());
-        CacheViewModel cacheViewModel = new ViewModelProvider(this, new CacheManagerViewModelFactory(cache)).get(CacheViewModel.class);
+        cacheViewModel = new ViewModelProvider(this, new CacheManagerViewModelFactory(cache)).get(CacheViewModel.class);
 
         final Observer<Cache> observedCache = newCache ->
         {
 //                Weather.this.updateFragments(newCache.getData());
         };
 
-        cacheViewModel.getCacheLive().observe(this, observedCache);
+        cacheViewModel.getCache().observe(this, observedCache);
 
         this.permissionsManager = new DevicePermissionsManager(this);
 
@@ -115,12 +117,14 @@ public class Weather extends AppCompatActivity
         {
             this.permissionsManager.requestPermissions();
         }
-
-        getWeatherData(getGPSParams().getLat(), getGPSParams().getLon());
+        else
+        {
+            getGPSParams();
+            getWeatherData(lat, lon);
+        }
 
         Log.v("--- End ---");
     }
-
 
     protected void onStart()
     {
@@ -138,7 +142,8 @@ public class Weather extends AppCompatActivity
         if (this.permissionsManager.permissionRequired())
         {
             Log.v("Permission denied.");
-        } else
+        }
+        else
         {
             cacheViewModel = new CacheViewModel(new Cache(getCacheDir()));
 
@@ -195,7 +200,7 @@ public class Weather extends AppCompatActivity
                                {
                                    Log.v("-- Begin WeatherServcieClient.onNext() --");
                                    Log.v("Weather Data:");
-                                   Weather.this.cacheViewModel.populateCache(response.toString());
+                                   Weather.this.cacheViewModel.populateCache(response);
                                    Log.v("-- End WeatherServcieClient.onNext() --");
                                }
 

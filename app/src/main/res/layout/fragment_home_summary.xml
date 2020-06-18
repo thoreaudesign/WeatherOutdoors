@@ -1,101 +1,111 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/current_summary"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="cacheViewModel"
+            type="com.thoreaudesign.weatheroutdoors.cache.CacheViewModel"
+            />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/current_summary"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="10.0sp" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="10.0sp" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="10.0sp" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="10.0sp" />
 
-    <TextView
-        android:id="@+id/current_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8.0sp"
-        android:layout_marginTop="8.0sp"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="18.0sp"
-        app:layout_constraintStart_toStartOf="@+id/current_icon"
-        app:layout_constraintTop_toBottomOf="@+id/current_icon" />
+        <TextView
+            android:id="@+id/current_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8.0sp"
+            android:layout_marginTop="8.0sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18.0sp"
+            android:text="@{cacheViewModel.cache.icon}"
+            app:layout_constraintStart_toStartOf="@+id/current_icon"
+            app:layout_constraintTop_toBottomOf="@+id/current_icon" />
 
-    <ImageView
-        android:id="@+id/current_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8.0sp"
-        android:layout_marginTop="8.0sp"
-        android:gravity="center"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
+        <ImageView
+            android:id="@+id/current_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8.0sp"
+            android:layout_marginTop="8.0sp"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="@+id/guideline" />
 
-    <TextView
-        android:id="@+id/current_degrees"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8.0sp"
-        android:layout_marginTop="8.0sp"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="25.0sp"
-        app:layout_constraintStart_toEndOf="@+id/current_icon"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
+        <TextView
+            android:id="@+id/current_degrees"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8.0sp"
+            android:layout_marginTop="8.0sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="25.0sp"
+            app:layout_constraintStart_toEndOf="@+id/current_icon"
+            app:layout_constraintTop_toTopOf="@+id/guideline" />
 
-    <TextView
-        android:id="@+id/current_humidity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2.0sp"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="12.0sp"
-        app:layout_constraintStart_toStartOf="@+id/current_degrees"
-        app:layout_constraintTop_toBottomOf="@+id/current_apparent_temp" />
+        <TextView
+            android:id="@+id/current_humidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2.0sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="12.0sp"
+            app:layout_constraintStart_toStartOf="@+id/current_degrees"
+            app:layout_constraintTop_toBottomOf="@+id/current_apparent_temp" />
 
-    <TextView
-        android:id="@+id/current_apparent_temp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2.0sp"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="12.0sp"
-        android:textStyle="italic"
-        app:layout_constraintStart_toStartOf="@+id/current_humidity"
-        app:layout_constraintTop_toBottomOf="@+id/current_degrees" />
+        <TextView
+            android:id="@+id/current_apparent_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2.0sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="12.0sp"
+            android:textStyle="italic"
+            app:layout_constraintStart_toStartOf="@+id/current_humidity"
+            app:layout_constraintTop_toBottomOf="@+id/current_degrees" />
 
-    <TextView
-        android:id="@+id/current_wind"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2.0sp"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="12.0sp"
-        app:layout_constraintStart_toStartOf="@+id/current_humidity"
-        app:layout_constraintTop_toBottomOf="@+id/current_humidity" />
+        <TextView
+            android:id="@+id/current_wind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2.0sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="12.0sp"
+            app:layout_constraintStart_toStartOf="@+id/current_humidity"
+            app:layout_constraintTop_toBottomOf="@+id/current_humidity" />
 
-    <TextView
-        android:id="@+id/current_dewpoint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2.0sp"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="12.0sp"
-        app:layout_constraintStart_toStartOf="@+id/current_wind"
-        app:layout_constraintTop_toBottomOf="@+id/current_wind" />
+        <TextView
+            android:id="@+id/current_dewpoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2.0sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="12.0sp"
+            app:layout_constraintStart_toStartOf="@+id/current_wind"
+            app:layout_constraintTop_toBottomOf="@+id/current_wind" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="170.0sp" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="170.0sp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

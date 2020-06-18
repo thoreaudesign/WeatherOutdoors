@@ -15,23 +15,25 @@ import com.thoreaudesign.weatheroutdoors.Compass;
 import com.thoreaudesign.weatheroutdoors.Log;
 import com.thoreaudesign.weatheroutdoors.R;
 import com.thoreaudesign.weatheroutdoors.WeatherIcon;
-import com.thoreaudesign.weatheroutdoors.cache.Cache;
-import com.thoreaudesign.weatheroutdoors.cache.CacheViewModel;
 import com.thoreaudesign.weatheroutdoors.databinding.FragmentHomeSummaryBinding;
 import com.thoreaudesign.weatheroutdoors.fragments.WeatherFragmentBase;
+import com.thoreaudesign.weatheroutdoors.livedata.WeatherViewModel;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Darksky;
+import com.thoreaudesign.weatheroutdoors.serialization.WeatherData;
 
 public class WeatherSummaryFragment extends WeatherFragmentBase
 {
-    private CacheViewModel cacheViewModel;
+    private WeatherViewModel weatherViewModel;
     private FragmentHomeSummaryBinding homeSummaryBinding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState)
     {
-        cacheViewModel = new ViewModelProvider(requireActivity()).get(CacheViewModel.class);
+        Log.v("-- Begin --");
+        weatherViewModel = new ViewModelProvider(requireActivity()).get(com.thoreaudesign.weatheroutdoors.livedata.WeatherViewModel.class);
         homeSummaryBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_summary, container, false);
-        homeSummaryBinding.setCacheViewModel(cacheViewModel);
+        homeSummaryBinding.setWeatherViewModel(weatherViewModel);
+        Log.v("-- End --");
         return homeSummaryBinding.getRoot();
     }
 
@@ -39,15 +41,15 @@ public class WeatherSummaryFragment extends WeatherFragmentBase
     public void onViewCreated(@NonNull View mView, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(mView, savedInstanceState);
-        cacheViewModel.getCache().observe(getViewLifecycleOwner(), new Observer<Cache>()
+        weatherViewModel.getWeatherMutableLiveData().observe(getViewLifecycleOwner(), new Observer<WeatherData>()
         {
             @Override
-            public void onChanged(Cache cache)
+            public void onChanged(WeatherData weatherData)
             {
                 Log.v("--- Begin ---");
                 try
                 {
-                    Darksky darksky = cacheViewModel.getCache().getValue().getDarkskyData();
+                    Darksky darksky = weatherData.darksky;
 
                     Integer temperature = getInt(darksky.getCurrently().getTemperature());
                     Integer apparentTemperature = getInt(darksky.getCurrently().getApparentTemperature());
@@ -56,6 +58,9 @@ public class WeatherSummaryFragment extends WeatherFragmentBase
                     Integer windSpeed = getInt(darksky.getCurrently().getWindSpeed());
                     Integer windDirection = getInt(darksky.getCurrently().getWindBearing());
                     String summary = darksky.getCurrently().getSummary();
+
+                    if(summary.equals("partly-cloudy-day") || summary.equals("partly-cloudy-night"))
+                        summary = "Partly Cloudy";
 
                     String temperatureText = temperature.toString() + "F";
                     String apparentTemperatureText = "Feels like " + apparentTemperature.toString() + "F";

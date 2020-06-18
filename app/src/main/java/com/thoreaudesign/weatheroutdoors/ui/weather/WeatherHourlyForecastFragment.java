@@ -4,28 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ExpandableListAdapter;
-import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.thoreaudesign.weatheroutdoors.ForecastData;
-import com.thoreaudesign.weatheroutdoors.ForecastExpandableListAdapter;
-import com.thoreaudesign.weatheroutdoors.Log;
 import com.thoreaudesign.weatheroutdoors.R;
-import com.thoreaudesign.weatheroutdoors.cache.Cache;
-import com.thoreaudesign.weatheroutdoors.cache.CacheViewModel;
 import com.thoreaudesign.weatheroutdoors.fragments.WeatherFragmentBase;
-import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Darksky;
-import com.thoreaudesign.weatheroutdoors.serialization.Darksky.DatumHourly;
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import com.thoreaudesign.weatheroutdoors.livedata.WeatherViewModel;
 
 public class WeatherHourlyForecastFragment extends WeatherFragmentBase
 {
@@ -40,7 +26,8 @@ public class WeatherHourlyForecastFragment extends WeatherFragmentBase
     {
         final View view = mView;
         super.onViewCreated(view, savedInstanceState);
-        CacheViewModel model = new ViewModelProvider(requireActivity()).get(CacheViewModel.class);
+        WeatherViewModel model = new ViewModelProvider(requireActivity()).get(com.thoreaudesign.weatheroutdoors.livedata.WeatherViewModel.class);
+        /*
         model.getCache().observe(getViewLifecycleOwner(), new Observer<Cache>()
         {
             @Override
@@ -104,5 +91,6 @@ public class WeatherHourlyForecastFragment extends WeatherFragmentBase
                 }
             }
         });
+         */
     }
 }

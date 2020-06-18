@@ -1,10 +1,10 @@
-package com.thoreaudesign.weatheroutdoors.cache;
+package com.thoreaudesign.weatheroutdoors.livedata;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Observable;
 import androidx.lifecycle.MutableLiveData;
 
-public class CacheMutableLiveData<T extends BaseObservable> extends MutableLiveData<T>
+public class WeatherMutableLiveData<T extends BaseObservable> extends MutableLiveData<T>
 {
     @Override
     public void setValue(T value)

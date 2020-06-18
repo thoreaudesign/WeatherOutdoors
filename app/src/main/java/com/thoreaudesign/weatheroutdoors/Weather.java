@@ -2,8 +2,8 @@ package com.thoreaudesign.weatheroutdoors;
 
 import android.location.Location;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ProgressBar;
+import android.view.Gravity;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,10 +15,8 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.thoreaudesign.weatheroutdoors.aws.WeatherServiceClient;
-import com.thoreaudesign.weatheroutdoors.cache.Cache;
-import com.thoreaudesign.weatheroutdoors.cache.CacheManagerViewModelFactory;
-import com.thoreaudesign.weatheroutdoors.cache.CacheViewModel;
-import com.thoreaudesign.weatheroutdoors.serialization.WeatherDataResponse;
+import com.thoreaudesign.weatheroutdoors.livedata.WeatherViewModel;
+import com.thoreaudesign.weatheroutdoors.serialization.WeatherData;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -26,10 +24,11 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class Weather extends AppCompatActivity
 {
-    CacheViewModel cacheViewModel;
+    WeatherViewModel weatherViewModel;
     private DevicePermissionsManager permissionsManager;
     private String lat;
     private String lon;
+    private Cache cache;
 
     //<editor-fold desc="/** Android GPS Coordinates **/">
 
@@ -78,7 +77,6 @@ public class Weather extends AppCompatActivity
     //</editor-fold>
 
     //<editor-fold desc="/** Android Activity Lifecycle **/">
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -106,23 +104,12 @@ public class Weather extends AppCompatActivity
         {
             this.permissionsManager.requestPermissions();
         }
-        getGPSParams();
-
-        Cache cache = new Cache(getCacheDir());
-        cacheViewModel = new ViewModelProvider(this, new CacheManagerViewModelFactory(cache)).get(CacheViewModel.class);
-
-        if(!cacheViewModel.getCache().getValue().read())
+        else
         {
-            getWeatherData(lat, lon);
+            getGPSParams();
+            cache = new Cache(getCacheDir());
+            weatherViewModel = new ViewModelProvider(this).get(WeatherViewModel.class);
         }
-        /*
-        final Observer<Cache> observedCache = newCache ->
-        {
-                Weather.this.updateFragments(newCache.getData());
-        };
-        cacheViewModel.getCache().observe(this, observedCache);
-        */
-
 
         Log.v("--- End ---");
     }
@@ -146,11 +133,15 @@ public class Weather extends AppCompatActivity
         }
         else
         {
-            if (cacheViewModel.isCacheOutdated())
+            cache.read();
+
+            if (cache.isCacheOutdated())
             {
-                Log.i("Cache is out-of-date.");
-                ProgressBar progressBar = findViewById(R.id.progress);
-                progressBar.setVisibility(View.VISIBLE);
+                getWeatherData(lat, lon);
+            }
+            else
+            {
+                weatherViewModel.setWeatherData(cache.getData());
             }
         }
         Log.v("--- End ---");
@@ -167,6 +158,7 @@ public class Weather extends AppCompatActivity
     {
         Log.v("--- Begin ---");
         super.onStop();
+        cache.delete();
         Log.v("--- End ---");
     }
 
@@ -176,48 +168,52 @@ public class Weather extends AppCompatActivity
         super.onDestroy();
         Log.v("--- End ---");
     }
-
     //</editor-fold>
 
     public void getWeatherData(String lat, String lon)
     {
         WeatherServiceClient.getInstance()
-                .getWeatherData(lat, lon)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new io.reactivex.rxjava3.core.Observer<WeatherDataResponse>()
-                           {
-                               @Override
-                               public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d)
-                               {
-                                   Log.v("-- Begin WeatherServcieClient.onSubscribe() --");
-                                   Log.v("-- End WeatherServcieClient.onSubscribe() --");
-                               }
+            .getWeatherData(lat, lon)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new io.reactivex.rxjava3.core.Observer<WeatherData>()
+            {
+                @Override
+                public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d)
+                {
+                    Log.v("-- Begin --");
+                    Log.v("-- End --");
+                }
 
-                               @Override
-                               public void onNext(@io.reactivex.rxjava3.annotations.NonNull WeatherDataResponse response)
-                               {
-                                   Log.v("-- Begin WeatherServcieClient.onNext() --");
-                                   Log.v("Weather Data:");
-                                   Weather.this.cacheViewModel.populateCache(response);
-                                   Log.v("-- End WeatherServcieClient.onNext() --");
-                               }
+                @Override
+                public void onNext(@io.reactivex.rxjava3.annotations.NonNull WeatherData response)
+                {
+                    Log.v("-- Begin --");
+                    Weather.this.weatherViewModel.setWeatherData(response);
+                    Weather.this.cache.setData(response.toString());
+                    Weather.this.cache.write();
 
-                               @Override
-                               public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e)
-                               {
-                                   Log.v("-- Begin WeatherServcieClient.onError() --");
-                                   Log.e(e.getMessage());
-                                   Log.v("-- End WeatherServcieClient.onError() --");
-                               }
+                    Log.v("-- End --");
+                }
 
-                               @Override
-                               public void onComplete()
-                               {
-                                   Log.v("-- Begin WeatherServcieClient.onComplete() --");
-                                   Log.v("-- End WeatherServcieClient.onComplete() --");
-                               }
-                           }
-                );
+                @Override
+                public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e)
+                {
+                    Log.v("-- Begin --");
+                    Log.e(e.getMessage());
+                    Log.v("-- End --");
+                }
+
+                @Override
+                public void onComplete()
+                {
+                    Log.v("-- Begin --");
+                    Toast toast = Toast.makeText(getApplicationContext(), "Weather data updated!", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_HORIZONTAL|Gravity.BOTTOM, 0, 250);
+                    toast.show();
+                    Log.v("-- End --");
+                }
+            }
+        );
     }
 }

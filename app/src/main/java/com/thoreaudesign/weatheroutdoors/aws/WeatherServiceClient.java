@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.thoreaudesign.weatheroutdoors.serialization.WeatherDataResponse;
+import com.thoreaudesign.weatheroutdoors.livedata.WeatherData;
 
 import io.reactivex.rxjava3.core.Observable;
 import okhttp3.OkHttpClient;
@@ -49,7 +49,7 @@ public class WeatherServiceClient
         return instance;
     }
 
-    public Observable<WeatherDataResponse> getWeatherData(@NonNull String lat, @NonNull String lon)
+    public Observable<WeatherData> getWeatherData(@NonNull String lat, @NonNull String lon)
     {
         return weatherService.getWeatherData(lat, lon);
     }

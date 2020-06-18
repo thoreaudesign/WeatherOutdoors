@@ -2,12 +2,9 @@ package com.thoreaudesign.weatheroutdoors;
 
 import android.location.Location;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -15,25 +12,18 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.thoreaudesign.weatheroutdoors.aws.RequestParams;
-import com.thoreaudesign.weatheroutdoors.aws.WeatherServiceClient;
-import com.thoreaudesign.weatheroutdoors.cache.Cache;
-import com.thoreaudesign.weatheroutdoors.cache.CacheManagerViewModelFactory;
-import com.thoreaudesign.weatheroutdoors.cache.CacheViewModel;
-import com.thoreaudesign.weatheroutdoors.serialization.WeatherDataResponse;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
+import com.thoreaudesign.weatheroutdoors.livedata.WeatherViewModel;
 
 public class Weather extends AppCompatActivity
 {
-    CacheViewModel cacheViewModel;
+    WeatherViewModel weatherViewModel;
     private DevicePermissionsManager permissionsManager;
+    private String lat;
+    private String lon;
 
     //<editor-fold desc="/** Android GPS Coordinates **/">
 
-    private RequestParams getGPSParams()
+    private void getGPSParams()
     {
         Location location = (new GPSCoordinates(this)).getLocation();
 
@@ -41,11 +31,12 @@ public class Weather extends AppCompatActivity
         {
             String lat = Double.toString(location.getLatitude());
             Log.v("Latitude: " + lat);
+            this.lat = lat;
 
             String lon = Double.toString(location.getLongitude());
             Log.v("Longitude: " + lon);
+            this.lon = lon;
 
-            return new RequestParams(lat, lon);
         } else
         {
             throw new RuntimeException("Failed to obatin GPS coordinates from device.");
@@ -77,7 +68,6 @@ public class Weather extends AppCompatActivity
     //</editor-fold>
 
     //<editor-fold desc="/** Android Activity Lifecycle **/">
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -99,28 +89,35 @@ public class Weather extends AppCompatActivity
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
         //</editor-fold>
 
-        Cache cache = new Cache(getCacheDir());
-        CacheViewModel cacheViewModel = new ViewModelProvider(this, new CacheManagerViewModelFactory(cache)).get(CacheViewModel.class);
-
-        final Observer<Cache> observedCache = newCache ->
-        {
-//                Weather.this.updateFragments(newCache.getData());
-        };
-
-        cacheViewModel.getCacheLive().observe(this, observedCache);
-
         this.permissionsManager = new DevicePermissionsManager(this);
 
         if (this.permissionsManager.permissionRequired())
         {
             this.permissionsManager.requestPermissions();
         }
+        else
+        {
+            getGPSParams();
+            weatherViewModel = new ViewModelProvider(this).get(WeatherViewModel.class);
+            weatherViewModel.setLatLon(lat, lon);
 
-        getWeatherData(getGPSParams().getLat(), getGPSParams().getLon());
+            Cache cache = new Cache(getCacheDir());
+            weatherViewModel.setCache(cache);
+            weatherViewModel.getCache().read();
+
+            if (weatherViewModel.getCache().isCacheOutdated())
+            {
+                weatherViewModel.getWeatherDataFromAWS();
+            }
+            else
+            {
+                weatherViewModel.setWeatherData(
+                    weatherViewModel.getCache().getData());
+            }
+        }
 
         Log.v("--- End ---");
     }
-
 
     protected void onStart()
     {
@@ -140,14 +137,6 @@ public class Weather extends AppCompatActivity
             Log.v("Permission denied.");
         } else
         {
-            cacheViewModel = new CacheViewModel(new Cache(getCacheDir()));
-
-            if (cacheViewModel.isCacheOutdated())
-            {
-                Log.i("Cache is out-of-date.");
-                ProgressBar progressBar = findViewById(R.id.progress);
-                progressBar.setVisibility(View.VISIBLE);
-            }
         }
         Log.v("--- End ---");
     }
@@ -163,6 +152,7 @@ public class Weather extends AppCompatActivity
     {
         Log.v("--- Begin ---");
         super.onStop();
+//        weatherViewModel.getCache().delete();
         Log.v("--- End ---");
     }
 
@@ -172,48 +162,6 @@ public class Weather extends AppCompatActivity
         super.onDestroy();
         Log.v("--- End ---");
     }
-
     //</editor-fold>
-
-    public void getWeatherData(String lat, String lon)
-    {
-        WeatherServiceClient.getInstance()
-                .getWeatherData(lat, lon)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new io.reactivex.rxjava3.core.Observer<WeatherDataResponse>()
-                           {
-                               @Override
-                               public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d)
-                               {
-                                   Log.v("-- Begin WeatherServcieClient.onSubscribe() --");
-                                   Log.v("-- End WeatherServcieClient.onSubscribe() --");
-                               }
-
-                               @Override
-                               public void onNext(@io.reactivex.rxjava3.annotations.NonNull WeatherDataResponse response)
-                               {
-                                   Log.v("-- Begin WeatherServcieClient.onNext() --");
-                                   Log.v("Weather Data:");
-                                   Weather.this.cacheViewModel.populateCache(response.toString());
-                                   Log.v("-- End WeatherServcieClient.onNext() --");
-                               }
-
-                               @Override
-                               public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e)
-                               {
-                                   Log.v("-- Begin WeatherServcieClient.onError() --");
-                                   Log.e(e.getMessage());
-                                   Log.v("-- End WeatherServcieClient.onError() --");
-                               }
-
-                               @Override
-                               public void onComplete()
-                               {
-                                   Log.v("-- Begin WeatherServcieClient.onComplete() --");
-                                   Log.v("-- End WeatherServcieClient.onComplete() --");
-                               }
-                           }
-                );
-    }
 }
+

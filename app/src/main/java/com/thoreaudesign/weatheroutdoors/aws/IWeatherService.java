@@ -1,7 +1,7 @@
 package com.thoreaudesign.weatheroutdoors.aws;
 
 
-import com.thoreaudesign.weatheroutdoors.serialization.WeatherDataResponse;
+import com.thoreaudesign.weatheroutdoors.livedata.WeatherData;
 
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.GET;
@@ -11,5 +11,5 @@ public interface IWeatherService
 {
 
     @GET("/dev/data")
-    Observable<WeatherDataResponse> getWeatherData(@Query("lat") String lat, @Query("lon") String lon);
+    Observable<WeatherData> getWeatherData(@Query("lat") String lat, @Query("lon") String lon);
 }

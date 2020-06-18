@@ -1,13 +1,9 @@
-package com.thoreaudesign.weatheroutdoors.cache;
+package com.thoreaudesign.weatheroutdoors;
 
 import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
-
-import com.thoreaudesign.weatheroutdoors.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,83 +11,50 @@ import java.io.IOException;
 public class Cache extends BaseObservable
 {
     private String data;
-    private File dir;
     private File file;
 
     private static final String CACHE_NAME = "weatheroutdoors";
+    private static final int CACHE_LIFE_MILLIS = 15 * 60 * 1000;
 
     public Cache(File paramFile)
     {
-        this.dir = paramFile;
-        this.file = new File(paramFile, this.CACHE_NAME);
-        this.data = null;
+        this.file = new File(paramFile, Cache.CACHE_NAME);
     }
 
     public Cache(String cacheDirPath)
     {
-        this.dir = new File(cacheDirPath);
-        this.file = new File(cacheDirPath, this.CACHE_NAME);
-    }
-
-    public boolean exists()
-    {
-        return getFile().exists();
-    }
-
-    public String toString()
-    {
-        return getData();
-    }
-
-    public String getSection(String paramString)
-    {
-        if (exists())
-        {
-            read();
-        }
-        return null;
+        this.file = new File(cacheDirPath, Cache.CACHE_NAME);
     }
 
     //<editor-fold desc="/** Getters & Setters **/">
     //<editor-fold desc="/** Getters **/">
-    @Bindable
-    public String getData()
-    {
-        return this.data;
-    }
-
-    public File getDir()
-    {
-        return this.dir;
-    }
 
     public File getFile()
     {
-        return this.file;
+        return file;
     }
 
     public String getName()
     {
         return Cache.CACHE_NAME;
     }
+
+    public String getData()
+    {
+        return data;
+    }
     //</editor-fold>
 
     //<editor-fold desc="/** Setters **/">
-    public void setData(String paramString)
+    public void setData(String cacheData)
     {
-        this.data = paramString;
+        this.data = cacheData;
     }
-
-    public void setDir(File paramFile)
-    {
-        this.dir = paramFile;
-    }
-
     //</editor-fold>
     //</editor-fold>
 
     //<editor-fold desc="/** IO Ops (R, W, D) **/">
-    public boolean read()
+    public void read()
     {
         StringBuilder cacheData = new StringBuilder();
         try
@@ -106,43 +69,31 @@ public class Cache extends BaseObservable
             Log.i("'" + getName() + "' file read: " + getFile().getAbsolutePath());
 
             setData(cacheData.toString());
-
-            return true;
         }
-        catch (FileNotFoundException fileNotFoundException)
+        catch (IOException fileNotFoundException)
         {
             Log.e(fileNotFoundException.toString());
-            return false;
-        }
-        catch (IOException iOException)
-        {
-            Log.e(iOException.toString());
-            return false;
         }
     }
 
-    public boolean write()
+    public void write()
     {
         try
         {
             FileWriter fileWriter = new FileWriter(getFile());
-            fileWriter.write(getData());
+            fileWriter.write(data);
             fileWriter.close();
 
             Log.i("'" + getName() + "' file written: " + getFile().getAbsolutePath());
-            Log.v("Wrote cache data: " + getData());
-
-            return true;
-
+            Log.v("Wrote cache data: " + data);
         }
         catch (IOException iOException)
         {
             Log.e(iOException.toString());
-            return false;
         }
     }
 
-    public boolean delete()
+    public void delete()
     {
         String str = getFile().getAbsolutePath();
         if (getFile().exists())
@@ -150,20 +101,88 @@ public class Cache extends BaseObservable
             if (getFile().delete())
             {
                 Log.i("'" + getName() + "' file deleted: " + str);
-                return true;
             }
             else
             {
                 Log.w("Failed to delete '" + getName() + "' file: " + str);
-                return false;
             }
         }
         else
         {
             Log.w("Unable to delete '" + getName() + "' file - does not exist: ");
-            return false;
         }
     }
-
     //</editor-fold>
+
+    private boolean isCacheEmpty()
+    {
+        boolean isEmpty = false;
+
+        if(data == null)
+        {
+            Log.w("Cache is empty.");
+            Log.w("Verify Cache.read() was called prior to Cache.isOutdated().");
+            isEmpty = true;
+        }
+        else
+        {
+            Log.i("Cache is populated.");
+        }
+
+        return isEmpty;
+    }
+
+    private boolean isCacheExpired()
+    {
+        boolean isExpired = false;
+
+        long now = System.currentTimeMillis();
+        long lastModified = file.lastModified();
+
+        Log.v("Current time: " + now);
+        Log.v("Last modified: " + lastModified);
+        Log.v("Fileize: " + file.length());
+
+        if (now - lastModified > CACHE_LIFE_MILLIS)
+        {
+            Log.i("Cache is out-of-date.");
+            isExpired = true;
+        }
+        else
+        {
+            Log.i("Cache is current.");
+        }
+
+        return isExpired;
+    }
+
+    public boolean isCacheOutdated()
+    {
+        boolean isOutdated = false;
+
+        Log.i("Validating cache file: " + file.toString());
+
+        if(file.exists())
+        {
+            if (isCacheEmpty() || isCacheExpired())
+            {
+                isOutdated = true;
+            }
+            else
+            {
+                Log.i("Cache is up-to-date.");
+            }
+        }
+        else
+        {
+            Log.i("Cache file does not exist.");
+            isOutdated = true;
+        }
+
+        return isOutdated;
+    }
+
+    public void setWeatherDataResponseFromData()
+    {
+    }
 }

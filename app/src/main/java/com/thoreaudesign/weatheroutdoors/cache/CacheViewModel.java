@@ -18,7 +18,6 @@ public class CacheViewModel extends ViewModel implements LifecycleObserver
     public CacheViewModel(Cache cache)
     {
         getCache().setValue(cache);
-        readCache();
     }
 
     private Cache getCacheData()
@@ -54,9 +53,9 @@ public class CacheViewModel extends ViewModel implements LifecycleObserver
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    private void readCache()
+    private boolean readCache()
     {
-        cache.getValue().read();
+        return cache.getValue().read();
     }
 
     private boolean isCacheEmpty()

@@ -7,7 +7,6 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -101,27 +100,29 @@ public class Weather extends AppCompatActivity
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
         //</editor-fold>
 
-        Cache cache = new Cache(getCacheDir());
-        cacheViewModel = new ViewModelProvider(this, new CacheManagerViewModelFactory(cache)).get(CacheViewModel.class);
-
-        final Observer<Cache> observedCache = newCache ->
-        {
-//                Weather.this.updateFragments(newCache.getData());
-        };
-
-        cacheViewModel.getCache().observe(this, observedCache);
-
         this.permissionsManager = new DevicePermissionsManager(this);
 
         if (this.permissionsManager.permissionRequired())
         {
             this.permissionsManager.requestPermissions();
         }
-        else
+        getGPSParams();
+
+        Cache cache = new Cache(getCacheDir());
+        cacheViewModel = new ViewModelProvider(this, new CacheManagerViewModelFactory(cache)).get(CacheViewModel.class);
+
+        if(!cacheViewModel.getCache().getValue().read())
         {
-            getGPSParams();
             getWeatherData(lat, lon);
         }
+        /*
+        final Observer<Cache> observedCache = newCache ->
+        {
+                Weather.this.updateFragments(newCache.getData());
+        };
+        cacheViewModel.getCache().observe(this, observedCache);
+        */
+
 
         Log.v("--- End ---");
     }
@@ -145,8 +146,6 @@ public class Weather extends AppCompatActivity
         }
         else
         {
-            cacheViewModel = new CacheViewModel(new Cache(getCacheDir()));
-
             if (cacheViewModel.isCacheOutdated())
             {
                 Log.i("Cache is out-of-date.");

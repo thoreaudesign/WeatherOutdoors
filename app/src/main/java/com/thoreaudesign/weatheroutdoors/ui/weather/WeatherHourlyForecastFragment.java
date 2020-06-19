@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.ScrollView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -71,15 +71,17 @@ public class WeatherHourlyForecastFragment extends WeatherFragmentBase
     {
         Darksky darksky = weatherDataObservable.getWeatherData().darksky;
 
-        ScrollView scrollView = (ScrollView)homeSummaryBinding.getRoot().findViewById(R.id.hourly_forecast_scrollView);
+        LinearLayout layout = homeSummaryBinding.getRoot().findViewById(R.id.hourly_forecast_linearLayout);
 
         for(DatumHourly hourlyData : darksky.getHourly().getData())
         {
+            Log.v("Time: " + Double.toString(hourlyData.getTime()));
             TextView hourTextView = new TextView(getActivity());
+            hourTextView.setId((int)hourlyData.getTime());
             hourTextView.setText(hourlyData.getSummary());
             hourTextView.setGravity(Gravity.CENTER);
             hourTextView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-            scrollView.addView(hourTextView);
+            layout.addView(hourTextView);
         }
     }
 }

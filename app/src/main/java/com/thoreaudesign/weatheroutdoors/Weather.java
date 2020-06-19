@@ -22,7 +22,6 @@ public class Weather extends AppCompatActivity
     private String lon;
 
     //<editor-fold desc="/** Android GPS Coordinates **/">
-
     private void getGPSParams()
     {
         Location location = (new GPSCoordinates(this)).getLocation();
@@ -42,11 +41,9 @@ public class Weather extends AppCompatActivity
             throw new RuntimeException("Failed to obatin GPS coordinates from device.");
         }
     }
-
     //</editor-fold>
 
     //<editor-fold desc="/** Android Permissions **/">
-
     public void onRequestPermissionsResult(int paramInt, @NonNull String[] paramArrayOfString, @NonNull int[] paramArrayOfint)
     {
         Log.v("--- Begin ---");
@@ -64,7 +61,6 @@ public class Weather extends AppCompatActivity
         }
         Log.v("Failed to match request code...");
     }
-
     //</editor-fold>
 
     //<editor-fold desc="/** Android Activity Lifecycle **/">
@@ -129,15 +125,7 @@ public class Weather extends AppCompatActivity
     protected void onResume()
     {
         Log.v("--- Begin ---");
-
         super.onResume();
-
-        if (this.permissionsManager.permissionRequired())
-        {
-            Log.v("Permission denied.");
-        } else
-        {
-        }
         Log.v("--- End ---");
     }
 
@@ -152,7 +140,6 @@ public class Weather extends AppCompatActivity
     {
         Log.v("--- Begin ---");
         super.onStop();
-//        weatherViewModel.getCache().delete();
         Log.v("--- End ---");
     }
 

@@ -14,21 +14,14 @@ public class Cache extends BaseObservable
     private File file;
 
     private static final String CACHE_NAME = "weatheroutdoors";
-    private static final int CACHE_LIFE_MILLIS = 15 * 60 * 1000;
+    private static final int CACHE_LIFE_MILLIS = 15 * 60 * 1000; //15 minutes
 
     public Cache(File paramFile)
     {
         this.file = new File(paramFile, Cache.CACHE_NAME);
     }
 
-    public Cache(String cacheDirPath)
-    {
-        this.file = new File(cacheDirPath, Cache.CACHE_NAME);
-    }
-
-    //<editor-fold desc="/** Getters & Setters **/">
     //<editor-fold desc="/** Getters **/">
-
     public File getFile()
     {
         return file;
@@ -50,7 +43,6 @@ public class Cache extends BaseObservable
     {
         this.data = cacheData;
     }
-    //</editor-fold>
     //</editor-fold>
 
     //<editor-fold desc="/** IO Ops (R, W, D) **/">
@@ -114,6 +106,7 @@ public class Cache extends BaseObservable
     }
     //</editor-fold>
 
+    //<editor-fold desc="/** Cache Validity Functions **/">
     private boolean isCacheEmpty()
     {
         boolean isEmpty = false;
@@ -181,8 +174,5 @@ public class Cache extends BaseObservable
 
         return isOutdated;
     }
-
-    public void setWeatherDataResponseFromData()
-    {
-    }
+    //</editor-fold>
 }

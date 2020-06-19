@@ -25,25 +25,10 @@ public class WeatherViewModel extends ViewModel implements LifecycleObserver
         this.weatherDataObservable = new WeatherLiveData<>();
     }
 
-    public void setCache(Cache cache)
-    {
-        this.cache = cache;
-    }
-
+    //<editor-fold desc="/** Getters **/">
     public Cache getCache()
     {
         return cache;
-    }
-
-    public void setLatLon(String lat, String lon)
-    {
-        this.lat = lat;
-        this.lon = lon;
-    }
-
-    public void setWeatherDataObservable(WeatherLiveData<WeatherDataObservable> weatherDataObservable)
-    {
-        this.weatherDataObservable = weatherDataObservable;
     }
 
     public WeatherLiveData<WeatherDataObservable> getWeatherDataObservable()
@@ -54,6 +39,19 @@ public class WeatherViewModel extends ViewModel implements LifecycleObserver
             weatherDataObservable.setValue(new WeatherDataObservable());
         }
         return weatherDataObservable;
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="/** Setters **/">
+    public void setCache(Cache cache)
+    {
+        this.cache = cache;
+    }
+
+    public void setLatLon(String lat, String lon)
+    {
+        this.lat = lat;
+        this.lon = lon;
     }
 
     public void setWeatherData(String cacheData)
@@ -66,7 +64,9 @@ public class WeatherViewModel extends ViewModel implements LifecycleObserver
         weatherDataObservable.setWeatherData(cacheData);
         this.weatherDataObservable.setValue(weatherDataObservable);
     }
+    //</editor-fold>
 
+    //<editor-fold desc="/** Network Calls **/">
     public void getWeatherDataFromAWS()
     {
         if(weatherDataObservable == null)
@@ -122,4 +122,5 @@ public class WeatherViewModel extends ViewModel implements LifecycleObserver
                            }
                 );
     }
+    //</editor-fold>
 }

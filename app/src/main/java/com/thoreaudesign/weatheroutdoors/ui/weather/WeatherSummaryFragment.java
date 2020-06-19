@@ -31,16 +31,12 @@ public class WeatherSummaryFragment extends WeatherFragmentBase
                              ViewGroup container, Bundle savedInstanceState)
     {
         Log.v("-- Begin --");
-
         weatherViewModel = new ViewModelProvider(requireActivity()).get(com.thoreaudesign.weatheroutdoors.livedata.WeatherViewModel.class);
-
-        Log.v("-- End --");
-       // return inflater.inflate(R.layout.fragment_home_summary, container, false);
         homeSummaryBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_summary, container, false);
         homeSummaryBinding.setWeatherDataObservable(weatherViewModel.getWeatherDataObservable().getValue());
+        Log.v("-- End --");
         return homeSummaryBinding.getRoot();
     }
-
 
     @Override
     public void onViewCreated(@NonNull View mView, @Nullable Bundle savedInstanceState)

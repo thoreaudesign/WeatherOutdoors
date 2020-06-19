@@ -84,7 +84,7 @@ public class WeatherParentFragment extends Fragment
                 case 1:
                     return new WeatherHourlyForecastFragment();
                 case 2:
-                    return new WeatherHourlyForecastFragment();
+                    return new WeatherDailyForecastFragment();
                 default:
                     throw new IllegalArgumentException();
             }

@@ -1,5 +1,6 @@
 package com.thoreaudesign.weatheroutdoors;
 
+import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -15,7 +16,7 @@ public class GPSCoordinates
 
     public Location getLocation()
     {
-        LocationManager locationManager = (LocationManager) this.activity.getSystemService("location");
+        LocationManager locationManager = (LocationManager) this.activity.getSystemService(Context.LOCATION_SERVICE);
         Log.v("Successfully instansiated LocationManager from Context.LOCATION_SERVICE.");
         try
         {

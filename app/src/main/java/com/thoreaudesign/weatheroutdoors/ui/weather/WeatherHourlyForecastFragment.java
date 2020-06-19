@@ -26,6 +26,14 @@ import com.thoreaudesign.weatheroutdoors.livedata.WeatherViewModel;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Darksky;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.DatumHourly;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.List;
+
 public class WeatherHourlyForecastFragment extends WeatherFragmentBase
 {
     private WeatherViewModel weatherViewModel;
@@ -75,15 +83,27 @@ public class WeatherHourlyForecastFragment extends WeatherFragmentBase
     {
         Darksky darksky = weatherDataObservable.getWeatherData().darksky;
         LinearLayout outterLayout = homeSummaryBinding.getRoot().findViewById(R.id.hourly_forecast_linearLayout);
+        List<DatumHourly> datumHourlyList = darksky.getHourly().getData();
 
-        for(DatumHourly hourlyData : darksky.getHourly().getData())
+        for(int i = 1; i < 24; i++)
         {
+            DatumHourly hourlyData = datumHourlyList.get(i);
             ConstraintLayout innerLayout = (ConstraintLayout)LayoutInflater.from(context).inflate(R.layout.forecast_list_item_container, null);
-            ((TextView)innerLayout.findViewById(R.id.time)).setText(String.format(Double.toString(hourlyData.getTime())));
+            ((TextView)innerLayout.findViewById(R.id.time)).setText(formatEpochTimestamp(hourlyData.getTime()));
             ((TextView)innerLayout.findViewById(R.id.summary)).setText(hourlyData.getSummary());
             ((ImageView)innerLayout.findViewById(R.id.imageView)).setImageResource(WeatherIcon.get(hourlyData.getIcon()));
             ((TextView)innerLayout.findViewById(R.id.precipProbability)).setText(String.format(Double.toString(hourlyData.getPrecipProbability())));
             outterLayout.addView(innerLayout);
         }
+    }
+
+    private String formatEpochTimestamp(Double epoch)
+    {
+        long longTime = Double.valueOf(epoch).longValue();
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT, FormatStyle.SHORT);
+        Instant instant = Instant.ofEpochSecond(longTime);
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime,ZoneId.systemDefault());
+        return formatter.format(zonedDateTime);
     }
 }

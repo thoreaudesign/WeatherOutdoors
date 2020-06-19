@@ -31,6 +31,7 @@ public class WeatherSummaryFragment extends WeatherFragmentBase
                              ViewGroup container, Bundle savedInstanceState)
     {
         Log.v("-- Begin --");
+        super.onCreateView(inflater, container, savedInstanceState);
         weatherViewModel = new ViewModelProvider(requireActivity()).get(com.thoreaudesign.weatheroutdoors.livedata.WeatherViewModel.class);
         homeSummaryBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_summary, container, false);
         homeSummaryBinding.setWeatherDataObservable(weatherViewModel.getWeatherDataObservable().getValue());
@@ -41,8 +42,8 @@ public class WeatherSummaryFragment extends WeatherFragmentBase
     @Override
     public void onViewCreated(@NonNull View mView, @Nullable Bundle savedInstanceState)
     {
+        Log.v("-- Begin --");
         super.onViewCreated(mView, savedInstanceState);
-
         weatherViewModel.getWeatherDataObservable().observe(getViewLifecycleOwner(), new Observer<WeatherDataObservable>()
         {
             @Override
@@ -51,7 +52,7 @@ public class WeatherSummaryFragment extends WeatherFragmentBase
                 Log.v("--- Begin ---");
                 try
                 {
-                    populateViews(weatherDataObservable.getWeatherData().darksky);
+                    populateViews(weatherDataObservable);
                 }
                 catch (Throwable e)
                 {
@@ -60,10 +61,12 @@ public class WeatherSummaryFragment extends WeatherFragmentBase
                 Log.v("--- End ---");
             }
         });
+        Log.v("--- End ---");
     }
 
-    private void populateViews(Darksky darksky)
+    private void populateViews(WeatherDataObservable weatherDataObservable)
     {
+        Darksky darksky = weatherDataObservable.getWeatherData().darksky;
         Integer temperature = getInt(darksky.getCurrently().getTemperature());
         Integer apparentTemperature = getInt(darksky.getCurrently().getApparentTemperature());
         Integer humidity = getInt(darksky.getCurrently().getHumidity() * 100.0D);

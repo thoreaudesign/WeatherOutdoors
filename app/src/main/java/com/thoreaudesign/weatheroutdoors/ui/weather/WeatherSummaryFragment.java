@@ -1,5 +1,6 @@
 package com.thoreaudesign.weatheroutdoors.ui.weather;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +12,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.thoreaudesign.weatheroutdoors.Compass;
+import com.thoreaudesign.weatheroutdoors.DataPrinter;
 import com.thoreaudesign.weatheroutdoors.Log;
 import com.thoreaudesign.weatheroutdoors.R;
 import com.thoreaudesign.weatheroutdoors.WeatherIcon;
@@ -19,7 +20,9 @@ import com.thoreaudesign.weatheroutdoors.databinding.FragmentHomeSummaryBinding;
 import com.thoreaudesign.weatheroutdoors.fragments.WeatherFragmentBase;
 import com.thoreaudesign.weatheroutdoors.livedata.WeatherDataObservable;
 import com.thoreaudesign.weatheroutdoors.livedata.WeatherViewModel;
+import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Currently;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Darksky;
+
 
 public class WeatherSummaryFragment extends WeatherFragmentBase
 {
@@ -57,6 +60,12 @@ public class WeatherSummaryFragment extends WeatherFragmentBase
                 catch (Throwable e)
                 {
                     Log.e(e.getMessage());
+                    StackTraceElement[] stackTrace = e.getStackTrace();
+
+                    for(int i = 0; i < stackTrace.length; i++)
+                    {
+                        Log.e(stackTrace[i].toString());
+                    }
                 }
                 Log.v("--- End ---");
             }
@@ -64,36 +73,19 @@ public class WeatherSummaryFragment extends WeatherFragmentBase
         Log.v("--- End ---");
     }
 
+    @SuppressLint("SetTextI18n")
     private void populateViews(WeatherDataObservable weatherDataObservable)
     {
         Darksky darksky = weatherDataObservable.getWeatherData().darksky;
-        Integer temperature = getInt(darksky.getCurrently().getTemperature());
-        Integer apparentTemperature = getInt(darksky.getCurrently().getApparentTemperature());
-        Integer humidity = getInt(darksky.getCurrently().getHumidity() * 100.0D);
-        Integer dewPoint = getInt(darksky.getCurrently().getDewPoint());
-        Integer windSpeed = getInt(darksky.getCurrently().getWindSpeed());
-        Integer windDirection = getInt(darksky.getCurrently().getWindBearing());
-        String summary = darksky.getCurrently().getSummary();
+        Currently currently = darksky.getCurrently();
+        String summary = currently.getSummary();
 
-        if(summary.equals("partly-cloudy-day") || summary.equals("partly-cloudy-night"))
-            summary = "Partly Cloudy";
-
-        String temperatureText = temperature.toString() + "F";
-        String apparentTemperatureText = "Feels like " + apparentTemperature.toString() + "F";
-        String windText = "Wind " + windSpeed.toString() + "mph " + Compass.getWindDirection(windDirection);
-        String humidityText = "Humidity " + humidity + "%";
-        String dewPointText = "Dew Point " + dewPoint.toString() + "F";
-
-        homeSummaryBinding.currentDegrees.setText(temperatureText);
-        homeSummaryBinding.currentApparentTemp.setText(apparentTemperatureText);
-        homeSummaryBinding.currentHumidity.setText(humidityText);
-        homeSummaryBinding.currentDewpoint.setText(dewPointText);
-        homeSummaryBinding.currentWind.setText(windText);
+        homeSummaryBinding.currentDegrees.setText(DataPrinter.printTemperatureF(currently.getTemperature()));
+        homeSummaryBinding.currentApparentTemp.setText(DataPrinter.printApparentTemperatureF(currently.getApparentTemperature()));
+        homeSummaryBinding.currentHumidity.setText(DataPrinter.printHumidity(currently.getHumidity()));
+        homeSummaryBinding.currentDewpoint.setText(DataPrinter.printDewpoint(currently.getDewPoint()));
+        homeSummaryBinding.currentWind.setText(DataPrinter.printWindSpeedAndDir(currently.getWindSpeed(), currently.getWindBearing()));
         homeSummaryBinding.currentDescription.setText(summary);
-        homeSummaryBinding.currentIcon.setImageResource(WeatherIcon.get(darksky.getCurrently().getIcon()));
-    }
-    private Integer getInt(Double paramDouble)
-    {
-        return (int)Math.round(paramDouble);
+        homeSummaryBinding.currentIcon.setImageResource(WeatherIcon.get(currently.getIcon()));
     }
 }

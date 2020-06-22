@@ -4,4 +4,6 @@
     <string name="title_marine">Marine</string>
     <string name="title_lunar">Lunar</string>
     <string name="title_maps">Maps</string>
+    <string name="currently_prefix_humidity">Humidity: </string>
+    <string name="currently_prefix_dewpoint">DewPoint: </string>
 </resources>

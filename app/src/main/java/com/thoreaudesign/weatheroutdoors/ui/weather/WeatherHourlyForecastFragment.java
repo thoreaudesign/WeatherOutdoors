@@ -1,5 +1,6 @@
 package com.thoreaudesign.weatheroutdoors.ui.weather;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.thoreaudesign.weatheroutdoors.DataPrinter;
 import com.thoreaudesign.weatheroutdoors.Log;
 import com.thoreaudesign.weatheroutdoors.R;
 import com.thoreaudesign.weatheroutdoors.WeatherIcon;
@@ -26,12 +28,6 @@ import com.thoreaudesign.weatheroutdoors.livedata.WeatherViewModel;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Darksky;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.DatumHourly;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.List;
 
 public class WeatherHourlyForecastFragment extends WeatherFragmentBase
@@ -79,31 +75,37 @@ public class WeatherHourlyForecastFragment extends WeatherFragmentBase
         Log.v("-- End --");
     }
 
+    @SuppressLint("SetTextI18n")
     private void populateViews(WeatherDataObservable weatherDataObservable)
     {
         Darksky darksky = weatherDataObservable.getWeatherData().darksky;
         LinearLayout outterLayout = homeSummaryBinding.getRoot().findViewById(R.id.hourly_forecast_linearLayout);
         List<DatumHourly> datumHourlyList = darksky.getHourly().getData();
 
-        for(int i = 1; i < 24; i++)
+        for(int i = 1; i <= 25; i++)
         {
             DatumHourly hourlyData = datumHourlyList.get(i);
             ConstraintLayout innerLayout = (ConstraintLayout)LayoutInflater.from(context).inflate(R.layout.forecast_list_item_container, null);
-            ((TextView)innerLayout.findViewById(R.id.time)).setText(formatEpochTimestamp(hourlyData.getTime()));
-            ((TextView)innerLayout.findViewById(R.id.summary)).setText(hourlyData.getSummary());
+            ((TextView)innerLayout.findViewById(R.id.time)).setText(DataPrinter.printEpochAsDateTime(hourlyData.getTime()));
+            ((TextView)innerLayout.findViewById(R.id.temperature)).setText(DataPrinter.printTemperatureF(hourlyData.getTemperature()));
+            ((TextView)innerLayout.findViewById(R.id.apparent_temperature)).setText(DataPrinter.printApparentTemperatureF(hourlyData.getApparentTemperature()));
+            ((TextView)innerLayout.findViewById(R.id.dewpoint)).setText(DataPrinter.printDewpoint(hourlyData.getDewPoint()));
             ((ImageView)innerLayout.findViewById(R.id.imageView)).setImageResource(WeatherIcon.get(hourlyData.getIcon()));
-            ((TextView)innerLayout.findViewById(R.id.precipProbability)).setText(String.format(Double.toString(hourlyData.getPrecipProbability())));
+            ((TextView)innerLayout.findViewById(R.id.cloudCover)).setText(DataPrinter.printCloudCover(hourlyData.getCloudCover()));
+            ((TextView)innerLayout.findViewById(R.id.summary)).setText(DataPrinter.printSummary(hourlyData.getSummary()));
+            ((TextView)innerLayout.findViewById(R.id.pressure)).setText(DataPrinter.printPressure(hourlyData.getPressure()));
+            ((TextView)innerLayout.findViewById(R.id.precipProbability)).setText("Chance of rain: " + DataPrinter.printPercentage(hourlyData.getPrecipProbability()));
+            ((TextView)innerLayout.findViewById(R.id.humidity)).setText(DataPrinter.printHumidity(hourlyData.getHumidity()));
+            ((TextView)innerLayout.findViewById(R.id.wind)).setText(DataPrinter.printWindSpeedAndDir(hourlyData.getWindSpeed(), hourlyData.getWindBearing()));
+            ((TextView)innerLayout.findViewById(R.id.windGust)).setText(DataPrinter.printSpeedMPH(hourlyData.getWindGust()));
+            ((TextView)innerLayout.findViewById(R.id.uvIndex)).setText(DataPrinter.getInt(hourlyData.getUvIndex()).toString());
+            ((TextView)innerLayout.findViewById(R.id.ozone)).setText(DataPrinter.getInt(hourlyData.getOzone()).toString());
+
+            if(i == 25)
+            {
+                innerLayout.setPadding(0, 0,0,175);
+            }
             outterLayout.addView(innerLayout);
         }
-    }
-
-    private String formatEpochTimestamp(Double epoch)
-    {
-        long longTime = Double.valueOf(epoch).longValue();
-        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT, FormatStyle.SHORT);
-        Instant instant = Instant.ofEpochSecond(longTime);
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-        ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime,ZoneId.systemDefault());
-        return formatter.format(zonedDateTime);
     }
 }

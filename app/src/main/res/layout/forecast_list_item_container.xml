@@ -11,45 +11,134 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/forecast_list_constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="wrap_content"
+        >
         <TextView
             android:id="@+id/time"
             android:text="10:00am"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="15dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/temperature"
+            />
+        <TextView
+            android:id="@+id/temperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/imageView"
+            android:text="89F"
+            app:layout_constraintTop_toBottomOf="@+id/time"
+            app:layout_constraintBottom_toTopOf="@+id/apparent_temperature"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-        />
-
+            />
+        <TextView
+            android:id="@+id/apparent_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Feels like 77F"
+            app:layout_constraintTop_toBottomOf="@+id/temperature"
+            app:layout_constraintBottom_toTopOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+        <TextView
+            android:id="@+id/dewpoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="65F Dewpoint"
+            app:layout_constraintTop_toBottomOf="@+id/time"
+            app:layout_constraintBottom_toTopOf="@+id/imageView"
+            app:layout_constraintStart_toEndOf="@+id/apparent_temperature"
+            />
         <ImageView
             android:id="@+id/imageView"
             android:background="@mipmap/foggy_foreground"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/time"
-            app:layout_constraintTop_toBottomOf="parent" />
-
+            app:layout_constraintTop_toBottomOf="@+id/apparent_temperature"
+            app:layout_constraintBottom_toTopOf="@+id/cloudCover"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+        <TextView
+            android:id="@+id/cloudCover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cloudy"
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="parent"
+            />
         <TextView
             android:id="@+id/summary"
             android:text="Foggy and dreary."
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/cloudCover"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
-            app:layout_constraintStart_toEndOf="@+id/time" />
-
+            app:layout_constraintStart_toStartOf="parent"
+            />
+        <TextView
+            android:id="@+id/pressure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pressure: 80mB"
+            app:layout_constraintTop_toBottomOf="@+id/time"
+            app:layout_constraintBottom_toTopOf="@+id/precipProbability"
+            app:layout_constraintStart_toEndOf="@+id/dewpoint"
+            />
         <TextView
             android:id="@+id/precipProbability"
             android:text="40% chance of rain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pressure"
+            app:layout_constraintBottom_toTopOf="@+id/humidity"
+            app:layout_constraintStart_toStartOf="@+id/pressure"
+            />
+        <TextView
+            android:id="@+id/humidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="80% Humidity"
+            app:layout_constraintTop_toBottomOf="@+id/precipProbability"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView" />
-
+            app:layout_constraintStart_toStartOf="@+id/pressure"
+            />
+        <TextView
+            android:id="@+id/wind"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wind Speed: 10mph"
+            app:layout_constraintTop_toBottomOf="@+id/time"
+            app:layout_constraintBottom_toTopOf="@+id/windGust"
+            app:layout_constraintStart_toEndOf="@+id/precipProbability"
+            />
+        <TextView
+            android:id="@+id/windGust"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gust: 25mph"
+            app:layout_constraintTop_toBottomOf="@+id/wind"
+            app:layout_constraintBottom_toTopOf="@+id/uvIndex"
+            app:layout_constraintStart_toStartOf="@+id/wind"
+            />
+        <TextView
+            android:id="@+id/uvIndex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UV Index: 89%"
+            app:layout_constraintTop_toBottomOf="@+id/windGust"
+            app:layout_constraintBottom_toTopOf="@+id/ozone"
+            app:layout_constraintStart_toStartOf="@+id/wind"
+            />
+        <TextView
+            android:id="@+id/ozone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ozone: 42"
+            app:layout_constraintTop_toBottomOf="@+id/uvIndex"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/wind"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

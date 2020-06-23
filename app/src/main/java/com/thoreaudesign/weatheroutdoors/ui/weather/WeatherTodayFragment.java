@@ -2,7 +2,6 @@ package com.thoreaudesign.weatheroutdoors.ui.weather;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,7 +92,7 @@ public class WeatherTodayFragment extends Fragment
         homeSummaryBinding.precipIntensity.setText(DataPrinter.printPrecipitationIntensity(currently.getPrecipIntensity()));
         homeSummaryBinding.cloudCover.setText(DataPrinter.printCloudCover(currently.getPrecipIntensity()));
         homeSummaryBinding.visibility.setText(DataPrinter.printVisibility(currently.getVisibility()));
-        homeSummaryBinding.uvIndex.setText(DataPrinter.printUv(currently.getOzone()));
+        homeSummaryBinding.uvIndex.setText(DataPrinter.printUv(currently.getUvIndex()));
         homeSummaryBinding.ozone.setText(DataPrinter.printOzone(currently.getOzone()));
     }
 }

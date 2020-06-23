@@ -14,6 +14,16 @@ public class DataPrinter
         return (int)Math.round(paramDouble);
     }
 
+    public static String printEpochAsDateTime(Double epoch)
+    {
+        long longTime = Double.valueOf(epoch).longValue();
+        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT, FormatStyle.SHORT);
+        Instant instant = Instant.ofEpochSecond(longTime);
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime,ZoneId.systemDefault());
+        return formatter.format(zonedDateTime);
+    }
+
     public static String printTemperatureF(Double d)
     {
         return getInt(d).toString() + "F";
@@ -24,9 +34,14 @@ public class DataPrinter
         return "Feels like " + printTemperatureF(d);
     }
 
-    public static String printWindSpeedAndDir(Double speed, Double bearing)
+    public static String printWind(Double speed, Double bearing)
     {
-        return "Wind " + printSpeedMPH(speed) + " " + Compass.getWindDirection(getInt(bearing));
+        return "Wind " + printSpeedMPH(speed) + " " + Compass.getCompassFromBearing(getInt(bearing));
+    }
+
+    public static String printWindGusts(Double d)
+    {
+        return "Gusts up to " + printSpeedMPH(d);
     }
 
     public static String printPercentage(Double d)
@@ -44,12 +59,17 @@ public class DataPrinter
 
     public static String printPressure(Double d)
     {
-        return getInt(d).toString() + " in";
+        return getInt(d).toString() + "in";
     }
 
     public static String printSpeedMPH(Double d)
     {
-        return getInt(d).toString() + " mph";
+        return getInt(d).toString() + "mph";
+    }
+
+    public static String printDistanceMI(Double d)
+    {
+        return getInt(d).toString() + "mi";
     }
 
     public static String printHumidity(Double d)
@@ -77,13 +97,23 @@ public class DataPrinter
         return "Ozone: " + getInt(d);
     }
 
-    public static String printEpochAsDateTime(Double epoch)
+    public static String printNearestStorm(Double distance, Double bearing)
     {
-        long longTime = Double.valueOf(epoch).longValue();
-        DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT, FormatStyle.SHORT);
-        Instant instant = Instant.ofEpochSecond(longTime);
-        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-        ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime,ZoneId.systemDefault());
-        return formatter.format(zonedDateTime);
+        return "Nearest storm: " + printDistanceMI(distance) + " " + Compass.getCompassFromBearing(getInt(bearing));
+    }
+
+    public static String printChanceOfRain(Double d)
+    {
+        return "Chance of rain: " + printPercentage(d);
+    }
+
+    public static String printPrecipitationIntensity(Double d)
+    {
+        return "Precipitation Intensity: " + getInt(d) + "in/hr";
+    }
+
+    public static String printVisibility(Double d)
+    {
+        return "Visibility: " + printDistanceMI(d);
     }
 }

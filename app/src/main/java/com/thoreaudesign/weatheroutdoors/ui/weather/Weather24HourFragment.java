@@ -94,10 +94,10 @@ public class Weather24HourFragment extends Fragment
             ((TextView)innerLayout.findViewById(R.id.cloudCover)).setText(DataPrinter.printCloudCover(hourlyData.getCloudCover()));
             ((TextView)innerLayout.findViewById(R.id.summary)).setText(DataPrinter.printSummary(hourlyData.getSummary()));
             ((TextView)innerLayout.findViewById(R.id.pressure)).setText(DataPrinter.printPressure(hourlyData.getPressure()));
-            ((TextView)innerLayout.findViewById(R.id.precipProbability)).setText("Chance of rain: " + DataPrinter.printPercentage(hourlyData.getPrecipProbability()));
+            ((TextView)innerLayout.findViewById(R.id.precipProbability)).setText(DataPrinter.printChanceOfRain(hourlyData.getPrecipProbability()));
             ((TextView)innerLayout.findViewById(R.id.humidity)).setText(DataPrinter.printHumidity(hourlyData.getHumidity()));
-            ((TextView)innerLayout.findViewById(R.id.wind)).setText(DataPrinter.printWindSpeedAndDir(hourlyData.getWindSpeed(), hourlyData.getWindBearing()));
-            ((TextView)innerLayout.findViewById(R.id.windGust)).setText(DataPrinter.printSpeedMPH(hourlyData.getWindGust()));
+            ((TextView)innerLayout.findViewById(R.id.wind)).setText(DataPrinter.printWind(hourlyData.getWindSpeed(), hourlyData.getWindBearing()));
+            ((TextView)innerLayout.findViewById(R.id.windGust)).setText(DataPrinter.printWindGusts(hourlyData.getWindGust()));
             ((TextView)innerLayout.findViewById(R.id.uvIndex)).setText(DataPrinter.printUv(hourlyData.getUvIndex()));
             ((TextView)innerLayout.findViewById(R.id.ozone)).setText(DataPrinter.printOzone(hourlyData.getOzone()));
 

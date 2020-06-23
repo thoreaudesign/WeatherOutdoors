@@ -2,7 +2,7 @@ package com.thoreaudesign.weatheroutdoors;
 
 public class Compass
 {
-    public static String getWindDirection(Integer paramInteger)
+    public static String getCompassFromBearing(Integer paramInteger)
     {
         switch (Integer.valueOf((int) Math.round(paramInteger.intValue() / 22.5D)).intValue())
         {

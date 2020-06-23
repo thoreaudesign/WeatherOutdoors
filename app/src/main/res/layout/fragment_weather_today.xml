@@ -120,5 +120,89 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="170.0sp" />
 
+        <TextView
+            android:id="@+id/nearest_storm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2.0sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20.0sp"
+            app:layout_constraintTop_toBottomOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Nearest storm: 32mi SSW"
+            />
+
+        <TextView
+            android:id="@+id/precipProbability"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2.0sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20.0sp"
+            app:layout_constraintTop_toBottomOf="@+id/nearest_storm"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Chance of rain: 50%"
+            />
+
+        <TextView
+            android:id="@+id/precipIntensity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2.0sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20.0sp"
+            app:layout_constraintTop_toBottomOf="@+id/precipProbability"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Precipitation Intensity: 3 in/hr"
+            />
+
+        <TextView
+            android:id="@+id/cloudCover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2.0sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20.0sp"
+            app:layout_constraintTop_toBottomOf="@+id/precipIntensity"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Cloud cover: 40%"
+            />
+
+        <TextView
+            android:id="@+id/visibility"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2.0sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20.0sp"
+            app:layout_constraintTop_toBottomOf="@+id/cloudCover"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Visibility: 20mi"
+            />
+
+        <TextView
+            android:id="@+id/uvIndex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2.0sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20.0sp"
+            app:layout_constraintTop_toBottomOf="@+id/visibility"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="UV Index: 5"
+            />
+
+        <TextView
+            android:id="@+id/ozone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2.0sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20.0sp"
+            app:layout_constraintTop_toBottomOf="@+id/uvIndex"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="Ozone: 334"
+            />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

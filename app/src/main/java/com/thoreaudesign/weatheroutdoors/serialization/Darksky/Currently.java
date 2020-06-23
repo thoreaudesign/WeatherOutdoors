@@ -73,24 +73,29 @@ public class Currently implements Serializable, Parcelable
     @SerializedName("ozone")
     @Expose
     private double ozone;
-    public final static Parcelable.Creator<Currently> CREATOR = new Creator<Currently>()
+
+    public final static Parcelable.Creator<Currently> CREATOR;
+
+    static
     {
-
-
-        @SuppressWarnings({
-                "unchecked"
-        })
-        public Currently createFromParcel(Parcel in)
+        CREATOR = new Creator<Currently>()
         {
-            return new Currently(in);
-        }
+            @SuppressWarnings({
+                    "unchecked"
+            })
+            public Currently createFromParcel(Parcel in)
+            {
+                return new Currently(in);
+            }
 
-        public Currently[] newArray(int size)
-        {
-            return (new Currently[size]);
-        }
+            public Currently[] newArray(int size)
+            {
+                return (new Currently[size]);
+            }
 
-    };
+        };
+    }
+
     private final static long serialVersionUID = -2598816022788777640L;
 
     protected Currently(Parcel in)

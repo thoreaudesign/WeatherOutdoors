@@ -2,6 +2,7 @@ package com.thoreaudesign.weatheroutdoors.ui.weather;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,8 +85,15 @@ public class WeatherTodayFragment extends Fragment
         homeSummaryBinding.currentApparentTemp.setText(DataPrinter.printApparentTemperatureF(currently.getApparentTemperature()));
         homeSummaryBinding.currentHumidity.setText(DataPrinter.printHumidity(currently.getHumidity()));
         homeSummaryBinding.currentDewpoint.setText(DataPrinter.printDewpoint(currently.getDewPoint()));
-        homeSummaryBinding.currentWind.setText(DataPrinter.printWindSpeedAndDir(currently.getWindSpeed(), currently.getWindBearing()));
+        homeSummaryBinding.currentWind.setText(DataPrinter.printWind(currently.getWindSpeed(), currently.getWindBearing()));
         homeSummaryBinding.currentDescription.setText(summary);
         homeSummaryBinding.currentIcon.setImageResource(WeatherIcon.get(currently.getIcon()));
+        homeSummaryBinding.nearestStorm.setText(DataPrinter.printNearestStorm(currently.getNearestStormDistance(), currently.getNearestStormBearing()));
+        homeSummaryBinding.precipProbability.setText(DataPrinter.printChanceOfRain(currently.getPrecipProbability()));
+        homeSummaryBinding.precipIntensity.setText(DataPrinter.printPrecipitationIntensity(currently.getPrecipIntensity()));
+        homeSummaryBinding.cloudCover.setText(DataPrinter.printCloudCover(currently.getPrecipIntensity()));
+        homeSummaryBinding.visibility.setText(DataPrinter.printVisibility(currently.getVisibility()));
+        homeSummaryBinding.uvIndex.setText(DataPrinter.printUv(currently.getOzone()));
+        homeSummaryBinding.ozone.setText(DataPrinter.printOzone(currently.getOzone()));
     }
 }

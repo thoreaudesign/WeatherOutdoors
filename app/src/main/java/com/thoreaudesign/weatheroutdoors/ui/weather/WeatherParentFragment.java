@@ -80,11 +80,11 @@ public class WeatherParentFragment extends Fragment
         {
             switch(position) {
                 case 0:
-                    return new WeatherSummaryFragment();
+                    return new WeatherTodayFragment();
                 case 1:
-                    return new WeatherHourlyForecastFragment();
+                    return new Weather24HourFragment();
                 case 2:
-                    return new WeatherDailyForecastFragment();
+                    return new Weather10DayFragment();
                 default:
                     throw new IllegalArgumentException();
             }

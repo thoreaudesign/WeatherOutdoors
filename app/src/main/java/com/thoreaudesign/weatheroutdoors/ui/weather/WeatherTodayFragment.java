@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -16,18 +17,17 @@ import com.thoreaudesign.weatheroutdoors.DataPrinter;
 import com.thoreaudesign.weatheroutdoors.Log;
 import com.thoreaudesign.weatheroutdoors.R;
 import com.thoreaudesign.weatheroutdoors.WeatherIcon;
-import com.thoreaudesign.weatheroutdoors.databinding.FragmentHomeSummaryBinding;
-import com.thoreaudesign.weatheroutdoors.fragments.WeatherFragmentBase;
+import com.thoreaudesign.weatheroutdoors.databinding.FragmentWeatherTodayBinding;
 import com.thoreaudesign.weatheroutdoors.livedata.WeatherDataObservable;
 import com.thoreaudesign.weatheroutdoors.livedata.WeatherViewModel;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Currently;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Darksky;
 
 
-public class WeatherSummaryFragment extends WeatherFragmentBase
+public class WeatherTodayFragment extends Fragment
 {
     private WeatherViewModel weatherViewModel;
-    private FragmentHomeSummaryBinding homeSummaryBinding;
+    private FragmentWeatherTodayBinding homeSummaryBinding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -36,7 +36,7 @@ public class WeatherSummaryFragment extends WeatherFragmentBase
         Log.v("-- Begin --");
         super.onCreateView(inflater, container, savedInstanceState);
         weatherViewModel = new ViewModelProvider(requireActivity()).get(com.thoreaudesign.weatheroutdoors.livedata.WeatherViewModel.class);
-        homeSummaryBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_summary, container, false);
+        homeSummaryBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather_today, container, false);
         homeSummaryBinding.setWeatherDataObservable(weatherViewModel.getWeatherDataObservable().getValue());
         Log.v("-- End --");
         return homeSummaryBinding.getRoot();

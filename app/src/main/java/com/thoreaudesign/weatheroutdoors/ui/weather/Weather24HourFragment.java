@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -21,8 +22,7 @@ import com.thoreaudesign.weatheroutdoors.DataPrinter;
 import com.thoreaudesign.weatheroutdoors.Log;
 import com.thoreaudesign.weatheroutdoors.R;
 import com.thoreaudesign.weatheroutdoors.WeatherIcon;
-import com.thoreaudesign.weatheroutdoors.databinding.FragmentHourlyForecastBinding;
-import com.thoreaudesign.weatheroutdoors.fragments.WeatherFragmentBase;
+import com.thoreaudesign.weatheroutdoors.databinding.FragmentWeather24hourBinding;
 import com.thoreaudesign.weatheroutdoors.livedata.WeatherDataObservable;
 import com.thoreaudesign.weatheroutdoors.livedata.WeatherViewModel;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Darksky;
@@ -30,10 +30,10 @@ import com.thoreaudesign.weatheroutdoors.serialization.Darksky.DatumHourly;
 
 import java.util.List;
 
-public class WeatherHourlyForecastFragment extends WeatherFragmentBase
+public class Weather24HourFragment extends Fragment
 {
     private WeatherViewModel weatherViewModel;
-    private FragmentHourlyForecastBinding homeSummaryBinding;
+    private FragmentWeather24hourBinding homeSummaryBinding;
     private Context context;
 
     @Override
@@ -44,7 +44,7 @@ public class WeatherHourlyForecastFragment extends WeatherFragmentBase
         super.onCreateView(inflater, container, savedInstanceState);
         context = this.getContext();
         weatherViewModel = new ViewModelProvider(requireActivity()).get(com.thoreaudesign.weatheroutdoors.livedata.WeatherViewModel.class);
-        homeSummaryBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_hourly_forecast, container, false);
+        homeSummaryBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather_24hour, container, false);
         homeSummaryBinding.setWeatherDataObservable(weatherViewModel.getWeatherDataObservable().getValue());
         Log.v("-- End --");
         return homeSummaryBinding.getRoot();

@@ -12,22 +12,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.thoreaudesign.weatheroutdoors.Log;
 import com.thoreaudesign.weatheroutdoors.R;
-import com.thoreaudesign.weatheroutdoors.databinding.FragmentHourlyForecastBinding;
-import com.thoreaudesign.weatheroutdoors.fragments.WeatherFragmentBase;
+import com.thoreaudesign.weatheroutdoors.databinding.FragmentWeather24hourBinding;
 import com.thoreaudesign.weatheroutdoors.livedata.WeatherDataObservable;
 import com.thoreaudesign.weatheroutdoors.livedata.WeatherViewModel;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.Darksky;
 import com.thoreaudesign.weatheroutdoors.serialization.Darksky.DatumDaily;
 
-public class WeatherDailyForecastFragment extends WeatherFragmentBase
+public class Weather10DayFragment extends Fragment
 {
     private WeatherViewModel weatherViewModel;
-    private FragmentHourlyForecastBinding homeSummaryBinding;
+    private FragmentWeather24hourBinding homeSummaryBinding;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -36,7 +36,7 @@ public class WeatherDailyForecastFragment extends WeatherFragmentBase
         Log.v("-- Begin --");
         super.onCreateView(inflater, container, savedInstanceState);
         weatherViewModel = new ViewModelProvider(requireActivity()).get(WeatherViewModel.class);
-        homeSummaryBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_hourly_forecast, container, false);
+        homeSummaryBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather_24hour, container, false);
         homeSummaryBinding.setWeatherDataObservable(weatherViewModel.getWeatherDataObservable().getValue());
         Log.v("-- End --");
         return homeSummaryBinding.getRoot();

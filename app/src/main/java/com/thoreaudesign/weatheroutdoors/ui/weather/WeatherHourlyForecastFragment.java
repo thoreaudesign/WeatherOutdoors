@@ -98,8 +98,10 @@ public class WeatherHourlyForecastFragment extends WeatherFragmentBase
             ((TextView)innerLayout.findViewById(R.id.humidity)).setText(DataPrinter.printHumidity(hourlyData.getHumidity()));
             ((TextView)innerLayout.findViewById(R.id.wind)).setText(DataPrinter.printWindSpeedAndDir(hourlyData.getWindSpeed(), hourlyData.getWindBearing()));
             ((TextView)innerLayout.findViewById(R.id.windGust)).setText(DataPrinter.printSpeedMPH(hourlyData.getWindGust()));
-            ((TextView)innerLayout.findViewById(R.id.uvIndex)).setText(DataPrinter.getInt(hourlyData.getUvIndex()).toString());
-            ((TextView)innerLayout.findViewById(R.id.ozone)).setText(DataPrinter.getInt(hourlyData.getOzone()).toString());
+            ((TextView)innerLayout.findViewById(R.id.uvIndex)).setText(DataPrinter.printUv(hourlyData.getUvIndex()));
+            ((TextView)innerLayout.findViewById(R.id.ozone)).setText(DataPrinter.printOzone(hourlyData.getOzone()));
+
+            innerLayout.setPadding(0, 0, 0, 50);
 
             if(i == 25)
             {

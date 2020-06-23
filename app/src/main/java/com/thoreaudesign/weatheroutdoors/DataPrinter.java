@@ -67,6 +67,16 @@ public class DataPrinter
         return "Cloud cover: " + printPercentage(d);
     }
 
+    public static String printUv(Double d)
+    {
+        return "UV Index: " + getInt(d);
+    }
+
+    public static String printOzone(Double d)
+    {
+        return "Ozone: " + getInt(d);
+    }
+
     public static String printEpochAsDateTime(Double epoch)
     {
         long longTime = Double.valueOf(epoch).longValue();

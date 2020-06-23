@@ -13,7 +13,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class WeatherViewModel extends ViewModel implements LifecycleObserver
 {
-    private static final long CACHE_LIFE_MILLIS = 30 * 60 * 1000;
+    private static final long CACHE_LIFE_MILLIS = 60 * 60 * 1000;
 
     private WeatherLiveData<WeatherDataObservable> weatherDataObservable;
     private Cache cache;

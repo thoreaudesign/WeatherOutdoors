@@ -35,7 +35,9 @@
             android:textColor="@color/colorPrimaryDark"
             android:textSize="18.0sp"
             app:layout_constraintStart_toStartOf="@+id/current_icon"
-            app:layout_constraintTop_toBottomOf="@+id/current_icon" />
+            app:layout_constraintTop_toBottomOf="@+id/current_icon"
+            android:text="Current description"
+            />
 
         <ImageView
             android:id="@+id/current_icon"
@@ -45,7 +47,9 @@
             android:layout_marginTop="8.0sp"
             android:gravity="center"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toTopOf="@+id/guideline" />
+            app:layout_constraintTop_toTopOf="@+id/guideline"
+            android:src="@mipmap/hot_foreground"
+            />
 
         <TextView
             android:id="@+id/current_degrees"
@@ -56,7 +60,9 @@
             android:textColor="@color/colorPrimaryDark"
             android:textSize="25.0sp"
             app:layout_constraintStart_toEndOf="@+id/current_icon"
-            app:layout_constraintTop_toTopOf="@+id/guideline" />
+            app:layout_constraintTop_toTopOf="@+id/guideline"
+            android:text="95F"
+            />
 
         <TextView
             android:id="@+id/current_humidity"
@@ -66,7 +72,9 @@
             android:textColor="@color/colorPrimaryDark"
             android:textSize="12.0sp"
             app:layout_constraintStart_toStartOf="@+id/current_degrees"
-            app:layout_constraintTop_toBottomOf="@+id/current_apparent_temp" />
+            app:layout_constraintTop_toBottomOf="@+id/current_apparent_temp"
+            android:text="Humidity: 80%"
+            />
 
         <TextView
             android:id="@+id/current_apparent_temp"
@@ -77,7 +85,9 @@
             android:textSize="12.0sp"
             android:textStyle="italic"
             app:layout_constraintStart_toStartOf="@+id/current_humidity"
-            app:layout_constraintTop_toBottomOf="@+id/current_degrees" />
+            app:layout_constraintTop_toBottomOf="@+id/current_degrees"
+            android:text="Feels like 105F"
+            />
 
         <TextView
             android:id="@+id/current_wind"
@@ -87,7 +97,9 @@
             android:textColor="@color/colorPrimaryDark"
             android:textSize="12.0sp"
             app:layout_constraintStart_toStartOf="@+id/current_humidity"
-            app:layout_constraintTop_toBottomOf="@+id/current_humidity" />
+            app:layout_constraintTop_toBottomOf="@+id/current_humidity"
+            android:text="Wind 25mph SSW"
+            />
 
         <TextView
             android:id="@+id/current_dewpoint"
@@ -97,7 +109,9 @@
             android:textColor="@color/colorPrimaryDark"
             android:textSize="12.0sp"
             app:layout_constraintStart_toStartOf="@+id/current_wind"
-            app:layout_constraintTop_toBottomOf="@+id/current_wind" />
+            app:layout_constraintTop_toBottomOf="@+id/current_wind"
+            android:text="Dew point: 76F"
+            />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
